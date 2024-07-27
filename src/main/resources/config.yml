@@ -1,0 +1,13 @@
+# Do not touch, determines compatibility with different versions.
+CONFIG_VERSION: 1
+
+# Language settings for the plugin.
+Language: 'EN-US'
+
+# Configuration for the chat game intervals.
+# Define how frequently the game events should occur, in seconds.
+GameInterval: 300
+
+# Minim number of players required to start the game.
+# The game will not start until this number of players have joined.
+MinimumPlayers: 2

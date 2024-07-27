@@ -1,0 +1,15 @@
+name: 'Trivia'
+description: ''
+timeout: 30
+
+reward:
+  message: '%player% completed the Trivia question.'
+  commands:
+    - eco give %player% 300
+
+questions:
+  - ['What is the capital of france?', 'Paris']
+  - ['What is the chemical symbol for gold?', 'Au']
+  - ['What is the smallest prime number?', '2']
+  - ['What is the most spoken language in the world?', 'English']
+
