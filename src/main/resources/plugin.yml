@@ -1,0 +1,5 @@
+name: ChatGames
+version: '1.0-SNAPSHOT'
+author: 'RareHyperIon'
+main: me.RareHyperIon.ChatGames.ChatGames
+api-version: '1.21'
