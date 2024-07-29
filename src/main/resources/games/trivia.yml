@@ -1,15 +1,15 @@
-name: 'Trivia'
-description: ''
+name: "Trivia"
+descriptor: "answer"
 timeout: 30
 
-reward:
-  message: '%player% completed the Trivia question.'
-  commands:
-    - eco give %player% 300
+reward-commands:
+  - eco give %player% 300
 
 questions:
-  - ['What is the capital of france?', 'Paris']
-  - ['What is the chemical symbol for gold?', 'Au']
-  - ['What is the smallest prime number?', '2']
-  - ['What is the most spoken language in the world?', 'English']
-
+  - ["What is the capital of france?", "Paris"]
+  - ["What is the chemical symbol for gold?", "Au"]
+  - ["What is the smallest prime number?", "2"]
+  - ["What is the most spoken language in the world?", "English"]
+  - ["Who originally made Minecraft?", "Notch"]
+  - ["Which mob is known for exploding?", "Creeper"]
+  - ["What is the chemical formula for water?", "H2O"]

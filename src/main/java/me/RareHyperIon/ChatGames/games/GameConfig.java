@@ -9,16 +9,18 @@ import java.util.Map;
 
 public class GameConfig {
 
-    private final String name, description, winMessage;
+    public final String name, descriptor;
 
-    private final List<Map.Entry<String, String>> choices;
-    private final List<String> commands;
+    public final List<Map.Entry<String, String>> choices;
+    public final List<String> commands;
+
+    public final int timeout;
 
     public GameConfig(final FileConfiguration configuration) {
         this.name = configuration.getString("name");
-        this.description = configuration.getString("description");
-        this.winMessage = configuration.getString("reward.message");
-        this.commands = configuration.getStringList("reward.commands");
+        this.descriptor = configuration.getString("descriptor");
+        this.commands = configuration.getStringList("reward-commands");
+        this.timeout = configuration.getInt("timeout");
 
         this.choices = this.parse(configuration.getList("questions"));
     }

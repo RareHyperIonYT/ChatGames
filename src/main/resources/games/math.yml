@@ -1,0 +1,13 @@
+name: "Math Wizard"
+descriptor: "solve"
+timeout: 30
+
+reward-commands:
+  - eco give %player% 250
+
+questions:
+  - ["What is 1+4", "5"]
+  - ["What is 4/4", "1"]
+  - ["What is 10 + 12", "22"]
+  - ["If x + x = 10, what is x?", "5"]
+  - ["if x + x = 20, what is x?", "10"]

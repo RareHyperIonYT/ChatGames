@@ -1,0 +1,26 @@
+name: "Unscramble"
+descriptor: "unscramble"
+timeout: 30
+
+reward-commands:
+  - eco give %player% 300
+
+questions:
+  - ["infmacter", "Minecraft"]
+  - ["acritnfem", "Minecraft"]
+  -
+  - ["eret", "Tree"]
+  - ["eter", "Tree"]
+  - ["eetr", "Tree"]
+  -
+  - ["pienlepap", "Pineapple"]
+  - ["epeilpnap", "Pineapple"]
+  - ["napipelpe", "Pineapple"]
+  -
+  - ["donimad", "Diamond"]
+  - ["madoind", "Diamond"]
+  - ["modadni", "Diamond"]
+
+
+
+

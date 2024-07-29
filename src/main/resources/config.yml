@@ -1,8 +1,8 @@
-# Do not touch, determines compatibility with different versions.
-CONFIG_VERSION: 1
+CONFIG_VERSION: 1 # Do not touch, determines compatibility with different versions.
+LOG_TYPE: "MINIMAL" # Change to FULL for extra logs.
 
 # Language settings for the plugin.
-Language: 'EN-US'
+Language: "EN-US"
 
 # Configuration for the chat game intervals.
 # Define how frequently the game events should occur, in seconds.
