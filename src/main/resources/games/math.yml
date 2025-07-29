@@ -3,7 +3,7 @@ descriptor: "solve"
 timeout: 30
 
 reward-commands:
-  - eco give %player% 250
+  - eco give {player} 250
 
 questions:
   - ["What is 1+4", "5"]
