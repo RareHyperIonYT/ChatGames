@@ -3,7 +3,7 @@ descriptor: "unscramble"
 timeout: 30
 
 reward-commands:
-  - eco give %player% 300
+  - eco give {player} 300
 
 questions:
   - ["infmacter", "Minecraft"]
