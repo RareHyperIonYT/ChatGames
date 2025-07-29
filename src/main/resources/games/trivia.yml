@@ -3,7 +3,7 @@ descriptor: "answer"
 timeout: 30
 
 reward-commands:
-  - eco give %player% 300
+  - eco give {player} 300
 
 questions:
   - ["What is the capital of france?", "Paris"]
