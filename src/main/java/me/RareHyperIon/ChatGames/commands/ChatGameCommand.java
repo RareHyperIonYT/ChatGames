@@ -20,22 +20,26 @@ public class ChatGameCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
 
-        if(cmd.getName().equalsIgnoreCase("ChatGames")) {
-            if(args.length == 0 || !args[0].equalsIgnoreCase("reload")) {
+        if (cmd.getName().equalsIgnoreCase("ChatGames")) {
+            if (args.length == 0 || !args[0].equalsIgnoreCase("reload")) {
                 sender.sendMessage(Utility.color("&cUsage: /cg reload"));
                 return true;
             }
 
+            if (!sender.hasPermission("chatgames.reload")) {
+                sender.sendMessage(Utility.color("&cYou do not have permission to use this command."));
+                return true;
+            }
+
             this.plugin.reload();
-            sender.sendMessage(Utility.color("&aSuccessfully reloaded."));
+            sender.sendMessage(Utility.color("&aChatGames configuration successfully reloaded."));
         }
 
         return true;
     }
 
     @Override
-    public List<String> onTabComplete(final CommandSender sender, final Command cnd, final String label, final String[] args) {
+    public List<String> onTabComplete(final CommandSender sender, final Command cmd, final String label, final String[] args) {
         return List.of("reload");
     }
-
 }
