@@ -7,3 +7,7 @@ api-version: 1.21
 commands:
   chatgames:
     aliases: [chatgame, cg]
+permissions:
+  chatgames.reload:
+    description: Allows the player to reload the ChatGames plugin
+    default: op
