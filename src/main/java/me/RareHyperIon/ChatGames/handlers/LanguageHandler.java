@@ -23,6 +23,8 @@ public class LanguageHandler {
     }
 
     public final void load() {
+        this.translations.clear();
+
         final String language = this.plugin.getConfig().getString("Language", "EN-US");
 
         if(!(new File(this.plugin.getDataFolder(), "language")).exists()) {
@@ -41,7 +43,7 @@ public class LanguageHandler {
             this.translations.put(key, lang.getString(key));
         }
 
-        ChatGames.LOGGER.info("[ChatGames] Loaded language.");
+        this.plugin.getSLF4JLogger().info("Loaded language: {}", language);
     }
 
     public final String get(final String key) {
@@ -63,7 +65,7 @@ public class LanguageHandler {
             }
         }
 
-        ChatGames.LOGGER.info("[ChatGames] Created default language configurations.");
+        this.plugin.getSLF4JLogger().info("Created default language configurations.");
     }
 
 }

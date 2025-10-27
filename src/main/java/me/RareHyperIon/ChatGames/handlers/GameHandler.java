@@ -15,7 +15,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GameHandler {
 
@@ -23,12 +23,13 @@ public class GameHandler {
     private final LanguageHandler language;
 
     private final List<GameConfig> games = new ArrayList<>();
-    private final Random random = new Random();
 
-    private int minimumPlayers, taskId;
+    private int minimumPlayers;
+    private BukkitTask intervalTask;
+    private boolean automaticGames;
 
     private ActiveGame game;
-    private BukkitTask task;
+    private BukkitTask gameTask;
 
     public GameHandler(final ChatGames plugin, final LanguageHandler language) {
         this.plugin = plugin;
@@ -36,29 +37,32 @@ public class GameHandler {
     }
 
     public final void interval() {
+        if(!this.automaticGames) return;
         if(Bukkit.getOnlinePlayers().size() < this.minimumPlayers) return;
         if(this.game != null) return;
 
-        final GameConfig config = this.games.get(this.random.nextInt(this.games.size()));
-        this.game = new ActiveGame(this.plugin, config, this.language);
-
-        this.task = Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
-            this.game.end();
-            this.game = null;
-            this.task = null;
-        }, config.timeout * 20L);
+        final GameConfig config = this.games.get(ThreadLocalRandom.current().nextInt(this.games.size()));
+        this.startGame(config);
     }
 
     public final void win(final Player player) {
-        this.task.cancel();
-        this.task = null;
+        if (this.gameTask != null) {
+            this.gameTask.cancel();
+            this.gameTask = null;
+        }
 
-        this.game.win(player);
-        this.game = null;
+        if (this.game != null) {
+            this.game.win(player);
+            this.game = null;
+        }
     }
 
     public final ActiveGame getGame() {
         return this.game;
+    }
+
+    public final List<GameConfig> getGames() {
+        return this.games;
     }
 
     public final void load() {
@@ -71,7 +75,7 @@ public class GameHandler {
         final File[] games = folder.listFiles(((dir, name) -> name.toLowerCase().endsWith(".yml")));
 
         if(games == null || games.length == 0) {
-            ChatGames.LOGGER.warning("[ChatGames] There are no games to load.");
+            this.plugin.getSLF4JLogger().warn("There are no games to load.");
             return;
         }
 
@@ -86,10 +90,11 @@ public class GameHandler {
         final int interval = pluginConfig.getInt("GameInterval");
 
         this.minimumPlayers = pluginConfig.getInt("MinimumPlayers");
+        this.automaticGames = pluginConfig.getBoolean("AutomaticGames");
 
-        this.taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(this.plugin, this::interval, 0, interval * 20L);
+        this.intervalTask = Bukkit.getScheduler().runTaskTimer(this.plugin, this::interval, 0L, interval * 20L);
 
-        ChatGames.LOGGER.info("[ChatGames] Loaded games.");
+        this.plugin.getSLF4JLogger().info("Loaded {} game(s).", this.games.size());
     }
 
     private void saveDefault() {
@@ -107,13 +112,56 @@ public class GameHandler {
             }
         }
 
-        ChatGames.LOGGER.info("[ChatGames] Created default game configurations.");
+        this.plugin.getSLF4JLogger().info("Created default game configurations.");
     }
 
     public final void reload() {
+        this.shutdown();
         this.games.clear();
-        Bukkit.getScheduler().cancelTask(this.taskId);
         this.load();
+    }
+
+    public final void shutdown() {
+        if (this.intervalTask != null) {
+            this.intervalTask.cancel();
+            this.intervalTask = null;
+        }
+        if (this.gameTask != null) {
+            this.gameTask.cancel();
+            this.gameTask = null;
+        }
+        if (this.game != null) {
+            this.game = null;
+        }
+    }
+
+    public void startGame(final GameConfig config) {
+        if(this.game != null) return;
+        this.game = new ActiveGame(this.plugin, config, this.language);
+
+        this.gameTask = Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
+            if (this.game != null) {
+                this.game.end();
+                this.game = null;
+            }
+            this.gameTask = null;
+        }, config.timeout * 20L);
+    }
+
+    public void stopGame() {
+        if (this.gameTask != null) {
+            this.gameTask.cancel();
+            this.gameTask = null;
+        }
+
+        if (this.game != null) {
+            this.game.end();
+            this.game = null;
+        }
+    }
+
+    public void setAutomaticGames(final boolean automaticGames) {
+        this.automaticGames = automaticGames;
     }
 
 }

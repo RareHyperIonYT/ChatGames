@@ -12,6 +12,7 @@ public class GameConfig {
     public final String name, descriptor;
 
     public final List<Map.Entry<String, String>> choices;
+    public final List<String> words;
     public final List<String> commands;
 
     public final int timeout;
@@ -22,13 +23,14 @@ public class GameConfig {
         this.commands = configuration.getStringList("reward-commands");
         this.timeout = configuration.getInt("timeout");
 
-        this.choices = this.parse(configuration.getList("questions"));
+        this.choices = this.parseChoices(configuration.getList("questions"));
+        this.words = configuration.getStringList("words");
     }
 
-    private List<Map.Entry<String, String>> parse(final List<?> list) {
+    private List<Map.Entry<String, String>> parseChoices(final List<?> list) {
         final List<Map.Entry<String, String>> choices = new ArrayList<>();
 
-        if(list == null) throw new IllegalArgumentException("Game \"" + this.name + "\" does not contain questions.");
+        if(list == null) return choices;
 
         for(final Object object : list) {
             if(!(object instanceof List<?> choice)) continue;

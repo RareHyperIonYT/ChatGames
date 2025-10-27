@@ -1,0 +1,11 @@
+name: "Reaction"
+descriptor: "click"
+timeout: 10
+
+reward-commands:
+  - eco give %player% 100
+
+words:
+  - "Click Me!"
+  - "Press the Button!"
+  - "Don't Click! (Just kidding, click!)"
