@@ -53,6 +53,7 @@ public class MathGame extends Game {
                 .replaceAll("\\{name}", this.config.name)
                 .replaceAll("\\{descriptor}", this.config.descriptor)
                 .replaceAll("\\{question}", this.question.getKey())
+                .replaceAll("\\{answer}", this.question.getValue())
                 .replaceAll("\\n", "\n");
 
             online.sendMessage(Utility.colorComponent(message, online));
@@ -79,6 +80,7 @@ public class MathGame extends Game {
                 .replaceAll("\\{timeout}", String.valueOf(this.config.timeout))
                 .replaceAll("\\{descriptor}", this.config.descriptor)
                 .replaceAll("\\{question}", this.question.getKey())
+                .replaceAll("\\{answer}", this.question.getValue())
                 .replaceAll("\\n", "\n");
 
             player.sendMessage(Utility.colorComponent(message, player));

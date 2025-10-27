@@ -65,4 +65,8 @@ public final class ChatGames extends JavaPlugin {
         return this.gameHandler;
     }
 
+    public LanguageHandler getLanguageHandler() {
+        return this.languageHandler;
+    }
+
 }

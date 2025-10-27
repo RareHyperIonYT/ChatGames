@@ -31,7 +31,7 @@ public class ReactionGame extends Game {
         messageComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/chatgames-internal-win"));
 
         for (final Player player : Bukkit.getOnlinePlayers()) {
-            final String message = this.language.get("GameStart")
+            final String message = this.language.get("ReactionStart")
                 .replaceAll("\\{prefix}", this.language.get("Prefix"))
                 .replaceAll("\\{player}", player.getName())
                 .replaceAll("\\{name}", this.config.name)
@@ -53,7 +53,7 @@ public class ReactionGame extends Game {
         }
 
         for (final Player online : Bukkit.getOnlinePlayers()) {
-            final String message = this.language.get("GameWin")
+            final String message = this.language.get("ReactionWin")
                 .replaceAll("\\{prefix}", this.language.get("Prefix"))
                 .replaceAll("\\{player}", player.getName())
                 .replaceAll("\\{name}", this.config.name)
@@ -77,7 +77,7 @@ public class ReactionGame extends Game {
         }
 
         for (final Player player : Bukkit.getOnlinePlayers()) {
-            final String message = this.language.get("GameEnd")
+            final String message = this.language.get("ReactionEnd")
                 .replaceAll("\\{prefix}", this.language.get("Prefix"))
                 .replaceAll("\\{player}", player.getName())
                 .replaceAll("\\{name}", this.config.name)

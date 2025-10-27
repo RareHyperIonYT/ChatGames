@@ -26,7 +26,8 @@ public final class Utility {
     }
 
     public static String color(final String string) {
-        return LEGACY_SERIALIZER.serialize(LEGACY_SERIALIZER.deserialize(string));
+        // Convert & codes to § codes for legacy Bukkit components
+        return string.replace('&', '§');
     }
 
     public static String stripColor(final String string) {
@@ -45,7 +46,7 @@ public final class Utility {
             objIndex++;
         }
 
-        return "[ChatGames] " + formattedMessage;
+        return "&8[&6ChatGames&8] &r" + formattedMessage;
     }
 
 }

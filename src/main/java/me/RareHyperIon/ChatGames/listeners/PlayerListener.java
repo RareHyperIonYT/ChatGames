@@ -19,7 +19,7 @@ public class PlayerListener implements Listener {
         this.handler = handler;
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerChat(final AsyncChatEvent event) {
         final ActiveGame activeGame = this.handler.getGame();
         if (activeGame == null) return;
@@ -34,6 +34,7 @@ public class PlayerListener implements Listener {
         final String answer = Utility.stripColor(question.getValue());
 
         if (message.equalsIgnoreCase(answer)) {
+            event.setCancelled(true);
             this.handler.win(event.getPlayer());
         }
     }
