@@ -10,11 +10,11 @@
 ###################################################################################
 
 Prefix: "&8[&6ChatGames&8]"
-GameStart: "\n{prefix} &aStarted game: &b{name}\n\n&eYou have &c{timeout} seconds &eto {descriptor}:\n&b&l{question}"
-GameEnd: "\n{prefix} &cNobody got the answer in time!\n&eThe correct answer was: &a{answer}\n"
-GameWin: "\n{prefix} &a{player} &ewon the game of &b{name}&e!\n&eAnswer: &a{answer}\n"
+GameStart: "\n{prefix} &aStarted game: &b{name}\n&eYou have &c{timeout} seconds &eto {descriptor}:\n&b&l{question}"
+GameEnd: "\n{prefix} &cNobody got the answer in time!\n              &eAnswer: &a{answer}\n"
+GameWin: "\n{prefix} &a{player} &ewon the game of &b{name}&e!\n              &eAnswer: &a{answer}\n"
 
 # Reaction game specific messages (no question/answer)
-ReactionStart: "\n{prefix} &aStarted game: &b{name}\n\n&eYou have &c{timeout} seconds &eto {descriptor}:\n"
+ReactionStart: "\n{prefix} &aStarted game: &b{name}\n&eYou have &c{timeout} seconds &eto {descriptor}:\n"
 ReactionEnd: "\n{prefix} &cNobody clicked in time!\n"
 ReactionWin: "\n{prefix} &a{player} &ewon the game of &b{name}&e!\n"

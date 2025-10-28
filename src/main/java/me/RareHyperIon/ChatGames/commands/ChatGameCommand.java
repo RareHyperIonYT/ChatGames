@@ -58,7 +58,8 @@ public class ChatGameCommand implements CommandExecutor, TabCompleter {
                     sender.sendMessage(Utility.color(prefix + " &cUsage: /cg start <game>"));
                     return true;
                 }
-                final String gameName = args[1];
+                // Join all arguments after "start" to support multi-word game names
+                final String gameName = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
                 final GameConfig gameConfig = gameHandler.getGames().stream()
                     .filter(game -> game.name.equalsIgnoreCase(gameName))
                     .findFirst()
@@ -68,7 +69,7 @@ public class ChatGameCommand implements CommandExecutor, TabCompleter {
                     return true;
                 }
                 gameHandler.startGame(gameConfig);
-                sender.sendMessage(Utility.color(prefix + " &aStarted game: " + gameConfig.name));
+                // Message is sent by the game's onStart() method, no need to send here
             }
             case STOP -> {
                 gameHandler.stopGame();

@@ -21,7 +21,7 @@ public class ActiveGame {
         return switch (config.name.toLowerCase()) {
             case "reaction" -> new ReactionGame(plugin, config, language);
             case "trivia" -> new TriviaGame(plugin, config, language);
-            case "math" -> new MathGame(plugin, config, language);
+            case "math", "math wizard" -> new MathGame(plugin, config, language);
             case "unscramble" -> new UnscrambleGame(plugin, config, language);
             default -> throw new IllegalArgumentException("Unknown game type: " + config.name);
         };
