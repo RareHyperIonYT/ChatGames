@@ -65,7 +65,7 @@ public class ReactionGame extends Game {
 
         Bukkit.getScheduler().runTask(this.plugin, () -> {
             for (final String command : this.config.commands) {
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replaceAll("\\{player}", player.getName()));
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replaceAll("\\{player}", player.getName()).replaceAll("%player%", player.getName()));
             }
         });
     }
