@@ -8,7 +8,7 @@ A Minecraft plugin that adds interactive chat-based minigames to engage your ser
   - **Trivia** - Answer trivia questions correctly
   - **Math** - Solve math problems
   - **Unscramble** - Unscramble words
-  - **Reaction** - Type specific words quickly
+  - **Reaction** - Click buttons quickly (with customizable variants)
 
 - **Automatic Game Scheduling** - Games start automatically at configurable intervals
 - **Customizable Rewards** - Configure commands to run when players win (economy rewards, items, etc.)
@@ -41,7 +41,7 @@ Each game has its own config file in `plugins/ChatGames/games/`:
 - `trivia.yml` - Trivia questions and answers
 - `math.yml` - Math problems
 - `unscramble.yml` - Words to scramble
-- `reaction.yml` - Words/phrases to type
+- `reaction.yml` - Clickable button variants
 
 **Example game config structure:**
 
@@ -152,12 +152,29 @@ words:
 
 Edit `games/reaction.yml`:
 
+The Reaction game supports **multiple variants** - each with its own clickable button text. Players compete to click the button first!
+
 ```yaml
-words:
-  - "quick"
-  - "fast"
-  - "speed"
+variants:
+  - name: "Click Game"
+    challenge: "&a&lClick Me!"
+    answer: ""
+
+  - name: "Color Game"
+    challenge: "&c[Red] &a[Green] &c[Red] &7- Click the &aGreen &7button"
+    answer: ""
+
+  - name: "Fast Click"
+    challenge: "&b&l⚡ &f&lFAST CLICK! &b&l⚡"
+    answer: ""
 ```
+
+**Variant fields:**
+- `name` - Display name for the variant type
+- `challenge` - The clickable text shown to players (supports color codes with `&`)
+- `answer` - Leave empty `""` for click-based games
+
+When a Reaction game starts, the plugin randomly selects one variant. Add as many custom variants as you want without modifying any code!
 
 ## Troubleshooting
 

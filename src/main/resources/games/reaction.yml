@@ -5,7 +5,25 @@ timeout: 10
 reward-commands:
   - eco give %player% 100
 
-words:
-  - "Click Me!"
-  - "Press the Button!"
-  - "Don't Click! (Just kidding, click!)"
+# Variants allow you to create multiple types of click-based reaction games
+# Each variant has:
+#   - name: A display name for the variant type
+#   - challenge: The clickable text shown to players (supports color codes)
+#   - answer: Not used for click games, can be left empty or omitted
+
+variants:
+  - name: "Click Game"
+    challenge: "&a&lClick Me!"
+    answer: ""
+
+  - name: "Color Game"
+    challenge: "&c[Red] &a[Green] &d[Purple] &7- Click the &aGreen &7button"
+    answer: ""
+
+  - name: "Button Game"
+    challenge: "&e&l>>> &6&lCLICK HERE &e&l<<<"
+    answer: ""
+
+  - name: "Emoji Game"
+    challenge: "&6🔴 &a🟢 &6🔴 &7- Click the middle circle!"
+    answer: ""
