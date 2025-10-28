@@ -57,6 +57,32 @@ public class GameHandler {
         }
     }
 
+    /**
+     * Attempts to win the game by validating the player's answer.
+     * If the answer is incorrect, the game continues.
+     */
+    public final void attemptWin(final Player player, final String answer) {
+        if (this.game == null) {
+            return;
+        }
+
+        // Get the expected answer from the game
+        final java.util.Map.Entry<String, String> questionAnswer = this.game.getGame().getQuestion();
+        if (questionAnswer == null || questionAnswer.getValue() == null) {
+            // No validation needed, accept any answer
+            win(player);
+            return;
+        }
+
+        final String correctAnswer = questionAnswer.getValue();
+
+        // Validate the answer (case-insensitive, strip color codes)
+        if (answer.equalsIgnoreCase(correctAnswer)) {
+            win(player);
+        }
+        // If incorrect, do nothing (game continues)
+    }
+
     public final ActiveGame getGame() {
         return this.game;
     }

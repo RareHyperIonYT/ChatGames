@@ -18,12 +18,16 @@ variants:
 
   - name: "Color Game"
     challenge: "&c[Red] &a[Green] &d[Purple] &7- Click the &aGreen &7button"
-    answer: ""
+    answer: "[Green]"
 
   - name: "Button Game"
     challenge: "&e&l>>> &6&lCLICK HERE &e&l<<<"
     answer: ""
 
   - name: "Emoji Game"
-    challenge: "&6🔴 &a🟢 &6🔴 &7- Click the middle circle!"
-    answer: ""
+    challenge: "&6[🔴] &a[🟢] &6[🔴] &7- Click the middle circle!"
+    answer: "[🟢]"
+
+  - name: "Symbol"
+    challenge: "&c[❤] &e[⭐] &a[✓] &7- Click the star"
+    answer: "[⭐]"

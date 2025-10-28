@@ -152,29 +152,41 @@ words:
 
 Edit `games/reaction.yml`:
 
-The Reaction game supports **multiple variants** - each with its own clickable button text. Players compete to click the button first!
+The Reaction game supports **multiple variants** - each with its own clickable button text. Players compete to click the correct button!
 
 ```yaml
 variants:
+  # Simple click game - click anywhere to win
   - name: "Click Game"
     challenge: "&a&lClick Me!"
     answer: ""
 
+  # Button challenge - players must click the correct button
   - name: "Color Game"
-    challenge: "&c[Red] &a[Green] &c[Red] &7- Click the &aGreen &7button"
-    answer: ""
+    challenge: "&c[Red] &a[Green] &d[Purple] &7- Click the &aGreen &7button"
+    answer: "[Green]"
 
-  - name: "Fast Click"
-    challenge: "&b&l⚡ &f&lFAST CLICK! &b&l⚡"
-    answer: ""
+  - name: "Number Game"
+    challenge: "&e[1] &e[2] &e[3] &e[4] &e[5] &7- Click number &e3"
+    answer: "[3]"
+
+  - name: "Direction"
+    challenge: "&f[North] &f[South] &f[East] &f[West] &7- Click &fNorth"
+    answer: "[North]"
 ```
 
 **Variant fields:**
 - `name` - Display name for the variant type
-- `challenge` - The clickable text shown to players (supports color codes with `&`)
-- `answer` - Leave empty `""` for click-based games
+- `challenge` - The text shown to players. Text in `[brackets]` becomes clickable buttons
+- `answer` - The correct button to click (e.g., `"[Green]"`). Leave empty `""` for games where any click wins
 
-When a Reaction game starts, the plugin randomly selects one variant. Add as many custom variants as you want without modifying any code!
+**Creating button challenges:**
+- Put button text in `[brackets]` to make them clickable
+- Use color codes before brackets to color the buttons (e.g., `&c[Red]`)
+- Set the `answer` field to the exact button text that should win (e.g., `"[Green]"`)
+- Players who click the wrong button will not win
+
+When a Reaction game starts, the plugin randomly selects one variant. Add as many custom variants as you want!
 
 ## Troubleshooting
 

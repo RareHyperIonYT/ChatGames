@@ -42,14 +42,25 @@ public class ReactionGame extends Game {
         }
 
         final String challengeText;
+        final String answer;
         if (useVariants) {
             challengeText = this.variant.challenge;
+            answer = this.variant.answer;
         } else {
             challengeText = this.word;
+            answer = null; // No validation for old word-based system
         }
 
-        final TextComponent messageComponent = new TextComponent(Utility.color(challengeText));
-        messageComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/chatgames-internal-win"));
+        final TextComponent messageComponent;
+
+        // If we have an answer to validate, parse buttons and make them individually clickable
+        if (answer != null && challengeText.contains("[")) {
+            messageComponent = parseClickableButtons(challengeText, answer);
+        } else {
+            // Fallback: make entire text clickable (old behavior)
+            messageComponent = new TextComponent(Utility.color(challengeText));
+            messageComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/chatgames-internal-win"));
+        }
 
         for (final Player player : Bukkit.getOnlinePlayers()) {
             String message = this.language.get("ReactionStart")
@@ -117,8 +128,87 @@ public class ReactionGame extends Game {
 
     @Override
     public Map.Entry<String, String> getQuestion() {
-        // Always return null for click-only reactions
+        // Return the answer if using variants for validation
+        if (useVariants && variant.answer != null) {
+            return Map.entry("", variant.answer);
+        }
+        // Always return null for click-only reactions (old behavior)
         return null;
+    }
+
+    /**
+     * Parses challenge text and creates separate clickable components for each button.
+     * Buttons are expected to be in the format [ButtonText] with optional color codes before them.
+     */
+    private TextComponent parseClickableButtons(final String text, final String correctAnswer) {
+        final TextComponent result = new TextComponent();
+        final StringBuilder currentText = new StringBuilder();
+        boolean insideBracket = false;
+        final StringBuilder buttonText = new StringBuilder();
+
+        for (int i = 0; i < text.length(); i++) {
+            final char c = text.charAt(i);
+
+            if (c == '[') {
+                // Capture any color codes immediately before the bracket
+                final StringBuilder colorCodes = new StringBuilder();
+                int j = currentText.length() - 1;
+
+                // Look backwards for color codes (e.g., &c, &a, &d)
+                while (j >= 0) {
+                    final char prevChar = currentText.charAt(j);
+                    if (j > 0 && currentText.charAt(j - 1) == '&' &&
+                        (Character.isLetterOrDigit(prevChar) || prevChar == 'r')) {
+                        colorCodes.insert(0, currentText.charAt(j - 1));
+                        colorCodes.insert(1, prevChar);
+                        j -= 2;
+                    } else {
+                        break;
+                    }
+                }
+
+                // Remove color codes from currentText if we found any
+                if (colorCodes.length() > 0) {
+                    currentText.setLength(currentText.length() - colorCodes.length());
+                }
+
+                // Add any remaining text before the bracket as non-clickable
+                if (currentText.length() > 0) {
+                    result.addExtra(new TextComponent(Utility.color(currentText.toString())));
+                    currentText.setLength(0);
+                }
+
+                insideBracket = true;
+                buttonText.setLength(0);
+                buttonText.append(colorCodes); // Include color codes with button
+                buttonText.append(c);
+            } else if (c == ']' && insideBracket) {
+                buttonText.append(c);
+                insideBracket = false;
+
+                // Create clickable button component with color codes included
+                final String fullButtonWithColor = buttonText.toString(); // e.g., "&c[Red]"
+                final TextComponent buttonComponent = new TextComponent(Utility.color(fullButtonWithColor));
+
+                // Extract just the [Text] part for the command (without color codes)
+                final String buttonTextOnly = fullButtonWithColor.substring(
+                    fullButtonWithColor.indexOf('['));
+                buttonComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,
+                    "/chatgames-internal-win " + buttonTextOnly));
+                result.addExtra(buttonComponent);
+            } else if (insideBracket) {
+                buttonText.append(c);
+            } else {
+                currentText.append(c);
+            }
+        }
+
+        // Add any remaining text
+        if (currentText.length() > 0) {
+            result.addExtra(new TextComponent(Utility.color(currentText.toString())));
+        }
+
+        return result;
     }
 
 }

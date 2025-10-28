@@ -23,7 +23,14 @@ public class InternalCommand implements CommandExecutor {
         }
 
         if (this.plugin.getGameHandler().getGame() != null) {
-            this.plugin.getGameHandler().win(player);
+            // If arguments are provided, validate the answer
+            if (args.length > 0) {
+                final String clickedText = String.join(" ", args);
+                this.plugin.getGameHandler().attemptWin(player, clickedText);
+            } else {
+                // No validation needed (old behavior for backwards compatibility)
+                this.plugin.getGameHandler().win(player);
+            }
         }
 
         return true;
