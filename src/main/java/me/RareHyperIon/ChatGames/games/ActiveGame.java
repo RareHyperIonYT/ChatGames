@@ -2,6 +2,7 @@ package me.RareHyperIon.ChatGames.games;
 
 import me.RareHyperIon.ChatGames.ChatGames;
 import me.RareHyperIon.ChatGames.games.types.MathGame;
+import me.RareHyperIon.ChatGames.games.types.MultipleChoiceGame;
 import me.RareHyperIon.ChatGames.games.types.ReactionGame;
 import me.RareHyperIon.ChatGames.games.types.TriviaGame;
 import me.RareHyperIon.ChatGames.games.types.UnscrambleGame;
@@ -23,6 +24,7 @@ public class ActiveGame {
             case "trivia" -> new TriviaGame(plugin, config, language);
             case "math", "math wizard" -> new MathGame(plugin, config, language);
             case "unscramble" -> new UnscrambleGame(plugin, config, language);
+            case "multiple choice" -> new MultipleChoiceGame(plugin, config, language);
             default -> throw new IllegalArgumentException("Unknown game type: " + config.name);
         };
     }

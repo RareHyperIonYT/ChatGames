@@ -10,6 +10,9 @@ import java.util.Map;
 public class GameConfig {
 
     public final String name, descriptor;
+    public final String question;
+    public final List<String> answers;
+    public final String correctAnswer;
 
     public final List<Map.Entry<String, String>> choices;
     public final List<String> words;
@@ -21,6 +24,9 @@ public class GameConfig {
     public GameConfig(final FileConfiguration configuration) {
         this.name = configuration.getString("name");
         this.descriptor = configuration.getString("descriptor");
+        this.question = configuration.getString("question");
+        this.answers = configuration.getStringList("answers");
+        this.correctAnswer = configuration.getString("correct-answer");
         this.commands = configuration.getStringList("reward-commands");
         this.timeout = configuration.getInt("timeout");
 

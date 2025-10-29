@@ -127,7 +127,7 @@ public class GameHandler {
         final File folder = new File(this.plugin.getDataFolder(), "games");
         if(!folder.mkdirs()) throw new IllegalStateException("Failed to create games folder.");
 
-        for(final String game : List.of("trivia.yml", "math.yml", "unscramble.yml", "reaction.yml")) {
+        for(final String game : List.of("trivia.yml", "math.yml", "unscramble.yml", "reaction.yml", "multiple_choice.yml")) {
             final File out = new File(folder, game);
 
             try(final InputStream stream = this.plugin.getResource("games/" + game)) {
