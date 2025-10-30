@@ -27,13 +27,14 @@ public class MultipleChoiceGame extends Game {
             this.plugin.getSLF4JLogger().info("Game \"{}\" has started.", this.config.name);
         }
 
+        final String descriptor = this.config.descriptor == null ? "" : this.config.descriptor;
         for (final Player player : Bukkit.getOnlinePlayers()) {
             final String message = this.language.get("GameStart")
                 .replaceAll("\\{prefix}", this.language.get("Prefix"))
                 .replaceAll("\\{player}", player.getName())
                 .replaceAll("\\{name}", this.config.name)
                 .replaceAll("\\{timeout}", String.valueOf(this.config.timeout))
-                .replaceAll("\\{descriptor}", this.config.descriptor)
+                .replaceAll("\\{descriptor}", descriptor)
                 .replaceAll("\\{question}", this.question.getKey())
                 .replaceAll("\\n", "\n");
 
@@ -47,12 +48,13 @@ public class MultipleChoiceGame extends Game {
             this.plugin.getSLF4JLogger().info("Player \"{}\" has won \"{}\"", player.getName(), this.config.name);
         }
 
+        final String descriptor = this.config.descriptor == null ? "" : this.config.descriptor;
         for (final Player online : Bukkit.getOnlinePlayers()) {
             final String message = this.language.get("GameWin")
                 .replaceAll("\\{prefix}", this.language.get("Prefix"))
                 .replaceAll("\\{player}", player.getName())
                 .replaceAll("\\{name}", this.config.name)
-                .replaceAll("\\{descriptor}", this.config.descriptor)
+                .replaceAll("\\{descriptor}", descriptor)
                 .replaceAll("\\{question}", this.question.getKey())
                 .replaceAll("\\{answer}", this.question.getValue())
                 .replaceAll("\\n", "\n");
@@ -73,13 +75,14 @@ public class MultipleChoiceGame extends Game {
             this.plugin.getSLF4JLogger().info("Game \"{}\" has ended.", this.config.name);
         }
 
+        final String descriptor = this.config.descriptor == null ? "" : this.config.descriptor;
         for (final Player player : Bukkit.getOnlinePlayers()) {
             final String message = this.language.get("GameEnd")
                 .replaceAll("\\{prefix}", this.language.get("Prefix"))
                 .replaceAll("\\{player}", player.getName())
                 .replaceAll("\\{name}", this.config.name)
                 .replaceAll("\\{timeout}", String.valueOf(this.config.timeout))
-                .replaceAll("\\{descriptor}", this.config.descriptor)
+                .replaceAll("\\{descriptor}", descriptor)
                 .replaceAll("\\{question}", this.question.getKey())
                 .replaceAll("\\{answer}", this.question.getValue())
                 .replaceAll("\\n", "\n");
