@@ -1,13 +1,20 @@
 ###################################################################################
 ##    Available Placeholders:                                                    ##
+##       {prefix} - The plugin prefix [ChatGames]                                ##
 ##       {player} - Retrieves the players name.                                  ##
 ##       {timeout} - The time until the chat game ends in seconds.               ##
 ##       {descriptor} - The current games descriptor (for example "answer").     ##
 ##       {question} - The current games question.                                ##
+##       {answer} - The correct answer to the question.                          ##
 ##       {name} - The name of the current game.                                  ##
 ###################################################################################
 
-Prefix: "&b&lChatGames&r"
-GameStart: "\n{prefix} You have &e{timeout} seconds &rto {descriptor}:\n&6{question}\n&r"
-GameEnd: "\n{prefix} &cNo got the answer in time.\n&r"
-GameWin: "\n{prefix} &a{player} won the game of {name}!\n&r"
+Prefix: "&8[&6ChatGames&8]"
+GameStart: "\n{prefix} &aStarted game: &b{name}\n&eYou have &c{timeout} seconds &eto {descriptor}:\n&b&l{question}"
+GameEnd: "\n{prefix} &cNobody got the answer in time!\n              &eAnswer: &a{answer}\n"
+GameWin: "\n{prefix} &a{player} &ewon the game of &b{name}&e!\n              &eAnswer: &a{answer}\n"
+
+# Reaction game specific messages (no question/answer)
+ReactionStart: "\n{prefix} &aStarted game: &b{name}\n&eYou have &c{timeout} seconds &eto {descriptor}:\n"
+ReactionEnd: "\n{prefix} &cNobody clicked in time!\n"
+ReactionWin: "\n{prefix} &a{player} &ewon the game of &b{name}&e!\n"

@@ -4,6 +4,9 @@ author: 'RareHyperIon'
 description: 'A plugin aimed to add fun chat based games to your server.'
 main: me.RareHyperIon.ChatGames.ChatGames
 api-version: '1.21'
+softdepend: [PlaceholderAPI]
 commands:
   chatgames:
     aliases: [chatgame, cg]
+  chatgames-internal-win:
+    permission: chatgames.internal

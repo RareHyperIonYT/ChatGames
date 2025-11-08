@@ -1,0 +1,12 @@
+name: "Multiple Choice"
+descriptor: "type the correct letter"
+timeout: 10
+reward-commands:
+  - eco give %player% 100
+question: "How much Gunpowder does it take to make TNT?"
+answers:
+  - "A. 6"
+  - "B. 4"
+  - "C. 0"
+  - "D. 5"
+correct-answer: "D"
