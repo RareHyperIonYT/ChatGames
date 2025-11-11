@@ -2,14 +2,14 @@ package me.RareHyperIon.ChatGames.utility;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public final class Utility {
 
-    private static final LegacyComponentSerializer LEGACY_SERIALIZER =
-        LegacyComponentSerializer.legacyAmpersand();
+    private static final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
     private static final boolean PLACEHOLDER_API_ENABLED =
         Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
 
@@ -21,18 +21,17 @@ public final class Utility {
             processed = PlaceholderAPI.setPlaceholders(player, processed);
         }
 
-        // Support legacy (&) color codes
-        return LEGACY_SERIALIZER.deserialize(processed);
+        // Support MiniMessage format
+        return MINI_MESSAGE.deserialize(processed);
     }
 
     public static String color(final String string) {
-        // Convert & codes to § codes for legacy Bukkit components
-        return string.replace('&', '§');
+        // Convert MiniMessage to legacy for compatibility
+        return LegacyComponentSerializer.legacySection().serialize(MINI_MESSAGE.deserialize(string));
     }
 
     public static String stripColor(final String string) {
-        return LEGACY_SERIALIZER.serialize(LEGACY_SERIALIZER.deserialize(string))
-            .replaceAll("§[0-9a-fk-or]", "");
+        return MINI_MESSAGE.stripTags(string);
     }
 
     public static String format(final String string, final Object... objects) {

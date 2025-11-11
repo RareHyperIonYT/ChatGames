@@ -1,5 +1,6 @@
 package me.RareHyperIon.ChatGames.games;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.AbstractMap;
@@ -10,29 +11,45 @@ import java.util.Map;
 public class GameConfig {
 
     public final String name, descriptor;
-    public final String question;
-    public final List<String> answers;
-    public final String correctAnswer;
+    public final List<String> commands;
+    public final int timeout;
 
+    public final List<MultipleChoiceQuestion> multipleChoiceQuestions;
     public final List<Map.Entry<String, String>> choices;
     public final List<String> words;
-    public final List<String> commands;
     public final List<ReactionVariant> reactionVariants;
-
-    public final int timeout;
 
     public GameConfig(final FileConfiguration configuration) {
         this.name = configuration.getString("name");
         this.descriptor = configuration.getString("descriptor");
-        this.question = configuration.getString("question");
-        this.answers = configuration.getStringList("answers");
-        this.correctAnswer = configuration.getString("correct-answer");
         this.commands = configuration.getStringList("reward-commands");
         this.timeout = configuration.getInt("timeout");
 
+        this.multipleChoiceQuestions = this.parseMultipleChoiceQuestions(configuration.getConfigurationSection("questions"));
         this.choices = this.parseChoices(configuration.getList("questions"));
         this.words = configuration.getStringList("words");
         this.reactionVariants = this.parseReactionVariants(configuration.getList("variants"));
+    }
+
+    private List<MultipleChoiceQuestion> parseMultipleChoiceQuestions(final ConfigurationSection section) {
+        final List<MultipleChoiceQuestion> questions = new ArrayList<>();
+
+        if (section == null) return questions;
+
+        for (final String key : section.getKeys(false)) {
+            final ConfigurationSection questionSection = section.getConfigurationSection(key);
+            if (questionSection == null) continue;
+
+            final String question = questionSection.getString("question");
+            final List<String> answers = questionSection.getStringList("answers");
+            final String correctAnswer = questionSection.getString("correct-answer");
+
+            if (question == null || answers.isEmpty() || correctAnswer == null) continue;
+
+            questions.add(new MultipleChoiceQuestion(question, answers, correctAnswer));
+        }
+
+        return questions;
     }
 
     private List<Map.Entry<String, String>> parseChoices(final List<?> list) {
@@ -68,6 +85,18 @@ public class GameConfig {
         }
 
         return variants;
+    }
+
+    public static class MultipleChoiceQuestion {
+        public final String question;
+        public final List<String> answers;
+        public final String correctAnswer;
+
+        public MultipleChoiceQuestion(final String question, final List<String> answers, final String correctAnswer) {
+            this.question = question;
+            this.answers = answers;
+            this.correctAnswer = correctAnswer;
+        }
     }
 
     public static class ReactionVariant {

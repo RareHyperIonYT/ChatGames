@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import java.util.AbstractMap;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class MultipleChoiceGame extends Game {
 
@@ -17,8 +18,12 @@ public class MultipleChoiceGame extends Game {
 
     public MultipleChoiceGame(final ChatGames plugin, final GameConfig config, final LanguageHandler language) {
         super(plugin, config, language);
-        final String questionText = config.question + "\n" + String.join("\n", config.answers);
-        this.question = new AbstractMap.SimpleEntry<>(questionText, config.correctAnswer);
+
+        // Get a random question from the list
+        final GameConfig.MultipleChoiceQuestion randomQuestion = config.multipleChoiceQuestions.get(ThreadLocalRandom.current().nextInt(config.multipleChoiceQuestions.size()));
+
+        final String questionText = randomQuestion.question + "\n" + String.join("\n", randomQuestion.answers);
+        this.question = new AbstractMap.SimpleEntry<>(questionText, randomQuestion.correctAnswer);
     }
 
     @Override

@@ -1,5 +1,5 @@
-name: "Unscramble"
-descriptor: "unscramble"
+id: "unscramble"
+name: "Unscramble The Word!"
 timeout: 30
 
 reward-commands:
@@ -20,7 +20,3 @@ questions:
   - ["donimad", "Diamond"]
   - ["madoind", "Diamond"]
   - ["modadni", "Diamond"]
-
-
-
-
