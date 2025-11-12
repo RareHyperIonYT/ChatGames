@@ -1,4 +1,5 @@
 name: "Multiple Choice"
+display-name: "Multiple Choice Madness"
 descriptor: "type the correct letter"
 timeout: 10
 reward-commands:

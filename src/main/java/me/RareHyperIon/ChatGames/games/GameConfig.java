@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class GameConfig {
 
-    public final String name, descriptor;
+    public final String name, descriptor, displayName;
     public final List<String> commands;
     public final int timeout;
 
@@ -22,6 +22,7 @@ public class GameConfig {
     public GameConfig(final FileConfiguration configuration) {
         this.name = configuration.getString("name");
         this.descriptor = configuration.getString("descriptor");
+        this.displayName = configuration.getString("display-name", this.name);
         this.commands = configuration.getStringList("reward-commands");
         this.timeout = configuration.getInt("timeout");
 

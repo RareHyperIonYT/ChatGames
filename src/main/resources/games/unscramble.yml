@@ -1,5 +1,5 @@
-id: "unscramble"
-name: "Unscramble The Word!"
+name: "unscramble"
+display-name: "Unscramble The Word!"
 timeout: 30
 
 reward-commands:
@@ -8,15 +8,12 @@ reward-commands:
 questions:
   - ["infmacter", "Minecraft"]
   - ["acritnfem", "Minecraft"]
-  -
   - ["eret", "Tree"]
   - ["eter", "Tree"]
   - ["eetr", "Tree"]
-  -
   - ["pienlepap", "Pineapple"]
   - ["epeilpnap", "Pineapple"]
   - ["napipelpe", "Pineapple"]
-  -
   - ["donimad", "Diamond"]
   - ["madoind", "Diamond"]
   - ["modadni", "Diamond"]
