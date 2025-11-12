@@ -9,7 +9,7 @@
 ##       {name} - The name of the current game.                                  ##
 ###################################################################################
 
-Prefix: "&8[&6ChatGames&8]"
+Prefix: "<red>ChatGames</red>"
 GameStart: "\n{prefix} &aStarted game: &b{name}\n&eYou have &c{timeout} seconds &eto {descriptor}:\n&b&l{question}"
 GameEnd: "\n{prefix} &cNobody got the answer in time!\n              &eAnswer: &a{answer}\n"
 GameWin: "\n{prefix} &a{player} &ewon the game of &b{name}&e!\n              &eAnswer: &a{answer}\n"
