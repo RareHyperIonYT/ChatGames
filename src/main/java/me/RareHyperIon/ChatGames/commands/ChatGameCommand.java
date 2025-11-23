@@ -8,6 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,21 +29,22 @@ public class ChatGameCommand implements CommandExecutor, TabCompleter {
                              @NotNull final String label, @NotNull final String[] args) {
 
         final String prefix = this.plugin.getLanguageHandler().get("Prefix");
+        final Player player = sender instanceof Player ? (Player) sender : null;
 
         if (args.length == 0) {
-            sender.sendMessage(Utility.color(prefix + " &cUsage: /cg <subcommand>"));
+            sender.sendMessage(Utility.colorComponent(prefix + " &cUsage: /cg <subcommand>", player));
             return true;
         }
 
         final SubCommand subCommand = SubCommand.fromString(args[0]);
 
         if (subCommand == null) {
-            sender.sendMessage(Utility.color(prefix + " &cUnknown subcommand. Usage: /cg <subcommand>"));
+            sender.sendMessage(Utility.colorComponent(prefix + " &cUnknown subcommand. Usage: /cg <subcommand>", player));
             return true;
         }
 
         if (!subCommand.hasPermission(sender)) {
-            sender.sendMessage(Utility.color(prefix + " &cYou don't have permission to use this command."));
+            sender.sendMessage(Utility.colorComponent(prefix + " &cYou don't have permission to use this command.", player));
             return true;
         }
 
@@ -51,11 +53,11 @@ public class ChatGameCommand implements CommandExecutor, TabCompleter {
         switch (subCommand) {
             case RELOAD -> {
                 this.plugin.reload();
-                sender.sendMessage(Utility.color(prefix + " &aSuccessfully reloaded ChatGames."));
+                sender.sendMessage(Utility.colorComponent(prefix + " &aSuccessfully reloaded ChatGames.", player));
             }
             case START -> {
                 if (args.length < 2) {
-                    sender.sendMessage(Utility.color(prefix + " &cUsage: /cg start <game>"));
+                    sender.sendMessage(Utility.colorComponent(prefix + " &cUsage: /cg start <game>", player));
                     return true;
                 }
                 // Join all arguments after "start" to support multi-word game names
@@ -65,7 +67,7 @@ public class ChatGameCommand implements CommandExecutor, TabCompleter {
                     .findFirst()
                     .orElse(null);
                 if (gameConfig == null) {
-                    sender.sendMessage(Utility.color(prefix + " &cUnknown game: " + gameName));
+                    sender.sendMessage(Utility.colorComponent(prefix + " &cUnknown game: " + gameName, player));
                     return true;
                 }
                 gameHandler.startGame(gameConfig);
@@ -73,21 +75,21 @@ public class ChatGameCommand implements CommandExecutor, TabCompleter {
             }
             case STOP -> {
                 gameHandler.stopGame();
-                sender.sendMessage(Utility.color(prefix + " &aGame stopped."));
+                sender.sendMessage(Utility.colorComponent(prefix + " &aGame stopped.", player));
             }
             case LIST -> {
-                sender.sendMessage(Utility.color(prefix + " &b&lAvailable games:"));
+                sender.sendMessage(Utility.colorComponent(prefix + " &b&lAvailable games:", player));
                 for (final GameConfig game : gameHandler.getGames()) {
-                    sender.sendMessage(Utility.color("&e- &a" + game.name));
+                    sender.sendMessage(Utility.colorComponent("&e- &a" + game.displayName, player));
                 }
             }
-            case INFO -> sender.sendMessage(Utility.color(prefix + " &aChatGames v" + this.plugin.getDescription().getVersion()));
+            case INFO -> sender.sendMessage(Utility.colorComponent(prefix + " &aChatGames v" + this.plugin.getDescription().getVersion(), player));
             case TOGGLE -> {
                 final boolean automaticGames = !this.plugin.getConfig().getBoolean("AutomaticGames");
                 this.plugin.getConfig().set("AutomaticGames", automaticGames);
                 this.plugin.saveConfig();
                 gameHandler.setAutomaticGames(automaticGames);
-                sender.sendMessage(Utility.color(prefix + " &aAutomatic games have been " + (automaticGames ? "enabled" : "disabled") + "."));
+                sender.sendMessage(Utility.colorComponent(prefix + " &aAutomatic games have been " + (automaticGames ? "enabled" : "disabled") + ".", player));
             }
         }
 
@@ -104,10 +106,11 @@ public class ChatGameCommand implements CommandExecutor, TabCompleter {
                 .filter(name -> name.toLowerCase().startsWith(args[0].toLowerCase()))
                 .toList();
         }
-        if (args.length == 2 && args[0].equalsIgnoreCase("start")) {
+        if (args.length > 1 && args[0].equalsIgnoreCase("start")) {
+            final String partialGameName = String.join(" ", Arrays.copyOfRange(args, 1, args.length)).toLowerCase();
             return this.plugin.getGameHandler().getGames().stream()
                 .map(game -> game.name)
-                .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
+                .filter(name -> name.toLowerCase().startsWith(partialGameName))
                 .toList();
         }
         return List.of();

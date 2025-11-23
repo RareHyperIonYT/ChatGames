@@ -1,4 +1,5 @@
 name: "Math"
+display-name: "Math Challenge"
 descriptor: "solve"
 timeout: 30
 

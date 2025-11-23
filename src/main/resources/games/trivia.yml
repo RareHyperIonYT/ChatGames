@@ -1,4 +1,5 @@
 name: "Trivia"
+display-name: "Trivia Time"
 descriptor: "answer"
 timeout: 30
 

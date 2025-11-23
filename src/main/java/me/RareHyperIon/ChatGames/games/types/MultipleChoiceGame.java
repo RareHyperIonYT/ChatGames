@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import java.util.AbstractMap;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class MultipleChoiceGame extends Game {
 
@@ -17,8 +18,12 @@ public class MultipleChoiceGame extends Game {
 
     public MultipleChoiceGame(final ChatGames plugin, final GameConfig config, final LanguageHandler language) {
         super(plugin, config, language);
-        final String questionText = config.question + "\n" + String.join("\n", config.answers);
-        this.question = new AbstractMap.SimpleEntry<>(questionText, config.correctAnswer);
+
+        // Get a random question from the list
+        final GameConfig.MultipleChoiceQuestion randomQuestion = config.multipleChoiceQuestions.get(ThreadLocalRandom.current().nextInt(config.multipleChoiceQuestions.size()));
+
+        final String questionText = randomQuestion.question + "\n" + String.join("\n", randomQuestion.answers);
+        this.question = new AbstractMap.SimpleEntry<>(questionText, randomQuestion.correctAnswer);
     }
 
     @Override
@@ -32,7 +37,7 @@ public class MultipleChoiceGame extends Game {
             final String message = this.language.get("GameStart")
                 .replaceAll("\\{prefix}", this.language.get("Prefix"))
                 .replaceAll("\\{player}", player.getName())
-                .replaceAll("\\{name}", this.config.name)
+                .replaceAll("\\{name}", this.config.displayName)
                 .replaceAll("\\{timeout}", String.valueOf(this.config.timeout))
                 .replaceAll("\\{descriptor}", descriptor)
                 .replaceAll("\\{question}", this.question.getKey())
@@ -53,7 +58,7 @@ public class MultipleChoiceGame extends Game {
             final String message = this.language.get("GameWin")
                 .replaceAll("\\{prefix}", this.language.get("Prefix"))
                 .replaceAll("\\{player}", player.getName())
-                .replaceAll("\\{name}", this.config.name)
+                .replaceAll("\\{name}", this.config.displayName)
                 .replaceAll("\\{descriptor}", descriptor)
                 .replaceAll("\\{question}", this.question.getKey())
                 .replaceAll("\\{answer}", this.question.getValue())
@@ -80,7 +85,7 @@ public class MultipleChoiceGame extends Game {
             final String message = this.language.get("GameEnd")
                 .replaceAll("\\{prefix}", this.language.get("Prefix"))
                 .replaceAll("\\{player}", player.getName())
-                .replaceAll("\\{name}", this.config.name)
+                .replaceAll("\\{name}", this.config.displayName)
                 .replaceAll("\\{timeout}", String.valueOf(this.config.timeout))
                 .replaceAll("\\{descriptor}", descriptor)
                 .replaceAll("\\{question}", this.question.getKey())
