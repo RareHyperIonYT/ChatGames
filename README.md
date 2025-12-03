@@ -23,6 +23,39 @@ A Minecraft plugin that adds interactive chat-based minigames to engage your ser
   - VaultUnlocked (or Vault) - For economy rewards
   - PlaceholderAPI - For placeholder support
 
+## Games
+
+ChatGames includes four game types by default:
+
+-   **Trivia**: Players answer trivia questions.
+-   **Math**: Players solve math problems.
+-   **Unscramble**: Players unscramble a given word.
+-   **Reaction**: Players must click a message in chat as fast as possible.
+
+## Commands
+
+The main command is `/chatgames` with aliases `/chatgame` and `/cg`.
+
+| Command            | Permission         | Description                      |
+|--------------------|--------------------|----------------------------------|
+| `/cg reload`       | `chatgames.reload` | Reload all configurations        |
+| `/cg start <game>` | `chatgames.start`  | Manually start a game            |
+| `/cg stop`         | `chatgames.stop`   | Stop the current game            |
+| `/cg list`         | `chatgames.list`   | List all available games         |
+| `/cg info`         | `chatgames.info`   | Show plugin information          |
+| `/cg toggle`       | `chatgames.toggle` | Toggle automatic games on or off |
+
+## Permissions
+
+| Permission         | Description                        |
+|--------------------|------------------------------------| 
+| `chatgames.reload` | Allows reloading the plugin        |
+| `chatgames.start`  | Allows manually starting a game    |
+| `chatgames.stop`   | Allows stopping the current game   |
+| `chatgames.list`   | Allows listing all available games |
+| `chatgames.info`   | Allows viewing plugin information  |
+| `chatgames.toggle` | Allows toggling automatic games    |
+
 ## Configuration
 
 ### Main Config (`config.yml`)
@@ -74,18 +107,6 @@ Customize all plugin messages. Available placeholders:
 - `{answer}` - The correct answer
 - `{timeout}` - Timeout in seconds
 - `\n` - New line
-
-## Commands
-
-| Command             | Permission         | Description               |
-|---------------------|--------------------|---------------------------|
-| `/chatgames reload` | `chatgames.reload` | Reload all configurations |
-| `/chatgames`        | `chatgames.help`   | Show help information     |
-
-## Permissions
-
-- `chatgames.reload` - Allows reloading the plugin
-- `chatgames.help` - Allows viewing help information
 
 ## Setting Up Rewards
 

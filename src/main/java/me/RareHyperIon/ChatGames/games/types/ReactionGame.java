@@ -66,7 +66,7 @@ public class ReactionGame extends Game {
             String message = this.language.get("ReactionStart")
                 .replaceAll("\\{prefix}", this.language.get("Prefix"))
                 .replaceAll("\\{player}", player.getName())
-                .replaceAll("\\{name}", this.config.name)
+                .replaceAll("\\{name}", this.config.displayName)
                 .replaceAll("\\{timeout}", String.valueOf(this.config.timeout))
                 .replaceAll("\\{descriptor}", this.config.descriptor)
                 .replaceAll("\\n", "\n");
@@ -93,7 +93,7 @@ public class ReactionGame extends Game {
             final String message = this.language.get("ReactionWin")
                 .replaceAll("\\{prefix}", this.language.get("Prefix"))
                 .replaceAll("\\{player}", player.getName())
-                .replaceAll("\\{name}", this.config.name)
+                .replaceAll("\\{name}", this.config.displayName)
                 .replaceAll("\\{descriptor}", this.config.descriptor)
                 .replaceAll("\\n", "\n");
 
@@ -117,7 +117,7 @@ public class ReactionGame extends Game {
             final String message = this.language.get("ReactionEnd")
                 .replaceAll("\\{prefix}", this.language.get("Prefix"))
                 .replaceAll("\\{player}", player.getName())
-                .replaceAll("\\{name}", this.config.name)
+                .replaceAll("\\{name}", this.config.displayName)
                 .replaceAll("\\{timeout}", String.valueOf(this.config.timeout))
                 .replaceAll("\\{descriptor}", this.config.descriptor)
                 .replaceAll("\\n", "\n");

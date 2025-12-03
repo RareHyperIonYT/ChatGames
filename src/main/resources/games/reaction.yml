@@ -1,4 +1,5 @@
 name: "Reaction"
+display-name: "Reaction Test"
 descriptor: "click"
 timeout: 10
 
