@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class MathGame extends Game {
@@ -28,12 +29,12 @@ public class MathGame extends Game {
 
         for (final Player player : Bukkit.getOnlinePlayers()) {
             final String message = this.language.get("GameStart")
-                .replaceAll("\\{prefix}", this.language.get("Prefix"))
+                .replaceAll("\\{prefix}", Objects.toString(this.language.get("Prefix"), ""))
                 .replaceAll("\\{player}", player.getName())
-                .replaceAll("\\{name}", this.config.displayName)
+                .replaceAll("\\{name}", Objects.toString(this.config.displayName, ""))
                 .replaceAll("\\{timeout}", String.valueOf(this.config.timeout))
-                .replaceAll("\\{descriptor}", this.config.descriptor)
-                .replaceAll("\\{question}", this.question.getKey())
+                .replaceAll("\\{descriptor}", Objects.toString(this.config.descriptor, ""))
+                .replaceAll("\\{question}", Objects.toString(this.question.getKey(), ""))
                 .replaceAll("\\n", "\n");
 
             player.sendMessage(Utility.colorComponent(message, player));
@@ -48,12 +49,12 @@ public class MathGame extends Game {
 
         for (final Player online : Bukkit.getOnlinePlayers()) {
             final String message = this.language.get("GameWin")
-                .replaceAll("\\{prefix}", this.language.get("Prefix"))
+                .replaceAll("\\{prefix}", Objects.toString(this.language.get("Prefix"), ""))
                 .replaceAll("\\{player}", player.getName())
-                .replaceAll("\\{name}", this.config.displayName)
-                .replaceAll("\\{descriptor}", this.config.descriptor)
-                .replaceAll("\\{question}", this.question.getKey())
-                .replaceAll("\\{answer}", this.question.getValue())
+                .replaceAll("\\{name}", Objects.toString(this.config.displayName, ""))
+                .replaceAll("\\{descriptor}", Objects.toString(this.config.descriptor, ""))
+                .replaceAll("\\{question}", Objects.toString(this.question.getKey(), ""))
+                .replaceAll("\\{answer}", Objects.toString(this.question.getValue(), ""))
                 .replaceAll("\\n", "\n");
 
             online.sendMessage(Utility.colorComponent(message, online));
@@ -74,13 +75,13 @@ public class MathGame extends Game {
 
         for (final Player player : Bukkit.getOnlinePlayers()) {
             final String message = this.language.get("GameEnd")
-                .replaceAll("\\{prefix}", this.language.get("Prefix"))
+                .replaceAll("\\{prefix}", Objects.toString(this.language.get("Prefix"), ""))
                 .replaceAll("\\{player}", player.getName())
-                .replaceAll("\\{name}", this.config.displayName)
+                .replaceAll("\\{name}", Objects.toString(this.config.displayName, ""))
                 .replaceAll("\\{timeout}", String.valueOf(this.config.timeout))
-                .replaceAll("\\{descriptor}", this.config.descriptor)
-                .replaceAll("\\{question}", this.question.getKey())
-                .replaceAll("\\{answer}", this.question.getValue())
+                .replaceAll("\\{descriptor}", Objects.toString(this.config.descriptor, ""))
+                .replaceAll("\\{question}", Objects.toString(this.question.getKey(), ""))
+                .replaceAll("\\{answer}", Objects.toString(this.question.getValue(), ""))
                 .replaceAll("\\n", "\n");
 
             player.sendMessage(Utility.colorComponent(message, player));

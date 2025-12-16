@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import java.util.AbstractMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class MultipleChoiceGame extends Game {
@@ -31,16 +32,15 @@ public class MultipleChoiceGame extends Game {
         if (this.plugin.logFull()) {
             this.plugin.getSLF4JLogger().info("Game \"{}\" has started.", this.config.name);
         }
-
-        final String descriptor = this.config.descriptor == null ? "" : this.config.descriptor;
+        
         for (final Player player : Bukkit.getOnlinePlayers()) {
             final String message = this.language.get("GameStart")
-                .replaceAll("\\{prefix}", this.language.get("Prefix"))
+                .replaceAll("\\{prefix}", Objects.toString(this.language.get("Prefix"), ""))
                 .replaceAll("\\{player}", player.getName())
-                .replaceAll("\\{name}", this.config.displayName)
+                .replaceAll("\\{name}", Objects.toString(this.config.displayName, ""))
                 .replaceAll("\\{timeout}", String.valueOf(this.config.timeout))
-                .replaceAll("\\{descriptor}", descriptor)
-                .replaceAll("\\{question}", this.question.getKey())
+                .replaceAll("\\{descriptor}", Objects.toString(this.config.descriptor, ""))
+                .replaceAll("\\{question}", Objects.toString(this.question.getKey(), ""))
                 .replaceAll("\\n", "\n");
 
             player.sendMessage(Utility.colorComponent(message, player));
@@ -52,16 +52,15 @@ public class MultipleChoiceGame extends Game {
         if (this.plugin.logFull()) {
             this.plugin.getSLF4JLogger().info("Player \"{}\" has won \"{}\"", player.getName(), this.config.name);
         }
-
-        final String descriptor = this.config.descriptor == null ? "" : this.config.descriptor;
+        
         for (final Player online : Bukkit.getOnlinePlayers()) {
             final String message = this.language.get("GameWin")
-                .replaceAll("\\{prefix}", this.language.get("Prefix"))
+                .replaceAll("\\{prefix}", Objects.toString(this.language.get("Prefix"), ""))
                 .replaceAll("\\{player}", player.getName())
-                .replaceAll("\\{name}", this.config.displayName)
-                .replaceAll("\\{descriptor}", descriptor)
-                .replaceAll("\\{question}", this.question.getKey())
-                .replaceAll("\\{answer}", this.question.getValue())
+                .replaceAll("\\{name}", Objects.toString(this.config.displayName, ""))
+                .replaceAll("\\{descriptor}", Objects.toString(this.config.descriptor, ""))
+                .replaceAll("\\{question}", Objects.toString(this.question.getKey(), ""))
+                .replaceAll("\\{answer}", Objects.toString(this.question.getValue(), ""))
                 .replaceAll("\\n", "\n");
 
             online.sendMessage(Utility.colorComponent(message, online));
@@ -79,17 +78,16 @@ public class MultipleChoiceGame extends Game {
         if (this.plugin.logFull()) {
             this.plugin.getSLF4JLogger().info("Game \"{}\" has ended.", this.config.name);
         }
-
-        final String descriptor = this.config.descriptor == null ? "" : this.config.descriptor;
+        
         for (final Player player : Bukkit.getOnlinePlayers()) {
             final String message = this.language.get("GameEnd")
-                .replaceAll("\\{prefix}", this.language.get("Prefix"))
+                .replaceAll("\\{prefix}", Objects.toString(this.language.get("Prefix"), ""))
                 .replaceAll("\\{player}", player.getName())
-                .replaceAll("\\{name}", this.config.displayName)
+                .replaceAll("\\{name}", Objects.toString(this.config.displayName, ""))
                 .replaceAll("\\{timeout}", String.valueOf(this.config.timeout))
-                .replaceAll("\\{descriptor}", descriptor)
-                .replaceAll("\\{question}", this.question.getKey())
-                .replaceAll("\\{answer}", this.question.getValue())
+                .replaceAll("\\{descriptor}", Objects.toString(this.config.descriptor, ""))
+                .replaceAll("\\{question}", Objects.toString(this.question.getKey(), ""))
+                .replaceAll("\\{answer}", Objects.toString(this.question.getValue(), ""))
                 .replaceAll("\\n", "\n");
 
             player.sendMessage(Utility.colorComponent(message, player));

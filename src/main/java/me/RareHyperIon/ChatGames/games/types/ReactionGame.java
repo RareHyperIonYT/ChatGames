@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ReactionGame extends Game {
@@ -64,11 +65,11 @@ public class ReactionGame extends Game {
 
         for (final Player player : Bukkit.getOnlinePlayers()) {
             String message = this.language.get("ReactionStart")
-                .replaceAll("\\{prefix}", this.language.get("Prefix"))
+                .replaceAll("\\{prefix}", Objects.toString(this.language.get("Prefix"), ""))
                 .replaceAll("\\{player}", player.getName())
-                .replaceAll("\\{name}", this.config.displayName)
+                .replaceAll("\\{name}", Objects.toString(this.config.displayName, ""))
                 .replaceAll("\\{timeout}", String.valueOf(this.config.timeout))
-                .replaceAll("\\{descriptor}", this.config.descriptor)
+                .replaceAll("\\{descriptor}", Objects.toString(this.config.descriptor, ""))
                 .replaceAll("\\n", "\n");
 
             // Add variant name placeholder for custom messages
@@ -91,10 +92,10 @@ public class ReactionGame extends Game {
 
         for (final Player online : Bukkit.getOnlinePlayers()) {
             final String message = this.language.get("ReactionWin")
-                .replaceAll("\\{prefix}", this.language.get("Prefix"))
+                .replaceAll("\\{prefix}", Objects.toString(this.language.get("Prefix"), ""))
                 .replaceAll("\\{player}", player.getName())
-                .replaceAll("\\{name}", this.config.displayName)
-                .replaceAll("\\{descriptor}", this.config.descriptor)
+                .replaceAll("\\{name}", Objects.toString(this.config.displayName, ""))
+                .replaceAll("\\{descriptor}", Objects.toString(this.config.descriptor, ""))
                 .replaceAll("\\n", "\n");
 
             online.sendMessage(Utility.colorComponent(message, online));
@@ -115,11 +116,11 @@ public class ReactionGame extends Game {
 
         for (final Player player : Bukkit.getOnlinePlayers()) {
             final String message = this.language.get("ReactionEnd")
-                .replaceAll("\\{prefix}", this.language.get("Prefix"))
+                .replaceAll("\\{prefix}", Objects.toString(this.language.get("Prefix"), ""))
                 .replaceAll("\\{player}", player.getName())
-                .replaceAll("\\{name}", this.config.displayName)
+                .replaceAll("\\{name}", Objects.toString(this.config.displayName, ""))
                 .replaceAll("\\{timeout}", String.valueOf(this.config.timeout))
-                .replaceAll("\\{descriptor}", this.config.descriptor)
+                .replaceAll("\\{descriptor}", Objects.toString(this.config.descriptor, ""))
                 .replaceAll("\\n", "\n");
 
             player.sendMessage(Utility.colorComponent(message, player));
