@@ -1,5 +1,5 @@
 name: ChatGames
-version: '1.3.1'
+version: '1.3.2'
 author: 'RareHyperIon'
 description: 'A plugin aimed to add fun chat based games to your server.'
 main: me.RareHyperIon.ChatGames.ChatGames
