@@ -34,7 +34,11 @@ public class LanguageHandler {
         final File file = new File(plugin.getDataFolder(), "language/" + language + ".yml");
 
         if(!file.exists()) {
-            throw new IllegalStateException("The language \"" + language + "\" doesn't have any translations.");
+            this.saveDefault();
+
+            if(!file.exists()) {
+                throw new IllegalStateException("The language \"" + language + "\" doesn't have any translations.");
+            }
         }
 
         final FileConfiguration lang = YamlConfiguration.loadConfiguration(file);
@@ -52,7 +56,7 @@ public class LanguageHandler {
 
     private void saveDefault() {
         final File folder = new File(this.plugin.getDataFolder(), "language");
-        if(!folder.mkdirs()) throw new IllegalStateException("Failed to create language folder.");
+        if(!folder.exists() && !folder.mkdirs()) throw new IllegalStateException("Failed to create language folder.");
 
         for(final String language : List.of("EN-US.yml")) {
             final File out = new File(folder, language);
