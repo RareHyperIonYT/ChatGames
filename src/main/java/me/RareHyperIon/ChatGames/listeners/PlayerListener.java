@@ -30,12 +30,8 @@ public class PlayerListener implements Listener {
         // Extract plain text from the message component
         final String message = PlainTextComponentSerializer.plainText().serialize(event.message());
 
-        // Strip color codes from the answer for comparison
-        final String answer = Utility.stripColor(question.getValue());
-
-        if (message.equalsIgnoreCase(answer)) {
+        if(this.handler.attemptWin(event.getPlayer(), message)) {
             event.setCancelled(true);
-            this.handler.win(event.getPlayer());
         }
     }
 

@@ -54,6 +54,10 @@ public class LanguageHandler {
         return this.translations.get(key);
     }
 
+    public final String get(final String key, final String def) {
+        return this.translations.getOrDefault(key, def);
+    }
+
     private void saveDefault() {
         final File folder = new File(this.plugin.getDataFolder(), "language");
         if(!folder.exists() && !folder.mkdirs()) throw new IllegalStateException("Failed to create language folder.");

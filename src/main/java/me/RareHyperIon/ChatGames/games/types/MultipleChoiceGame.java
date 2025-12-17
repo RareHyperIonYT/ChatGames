@@ -8,23 +8,40 @@ import me.RareHyperIon.ChatGames.utility.Utility;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.AbstractMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MultipleChoiceGame extends Game {
 
+    private final Pattern pattern = Pattern.compile("^([A-H])\\.");
+
     private final Map.Entry<String, String> question;
+    public final List<String> options = new ArrayList<>();
+    public final int cooldown;
 
     public MultipleChoiceGame(final ChatGames plugin, final GameConfig config, final LanguageHandler language) {
         super(plugin, config, language);
 
-        // Get a random question from the list
-        final GameConfig.MultipleChoiceQuestion randomQuestion = config.multipleChoiceQuestions.get(ThreadLocalRandom.current().nextInt(config.multipleChoiceQuestions.size()));
+        final GameConfig.MultipleChoiceQuestion randomQuestion =
+                config.multipleChoiceQuestions.get(ThreadLocalRandom.current().nextInt(config.multipleChoiceQuestions.size()));
 
         final String questionText = randomQuestion.question + "\n" + String.join("\n", randomQuestion.answers);
+
+        for(final String answer : randomQuestion.answers) {
+            final Matcher matcher = pattern.matcher(answer);
+
+            if(matcher.find()) {
+                final String choice = matcher.group(1);
+                this.options.add(choice.toLowerCase());
+            } else {
+                this.options.add(answer.trim().toLowerCase());
+            }
+        }
+
         this.question = new AbstractMap.SimpleEntry<>(questionText, randomQuestion.correctAnswer);
+        this.cooldown = randomQuestion.cooldown;
     }
 
     @Override

@@ -18,6 +18,7 @@ public class GameConfig {
     public final List<Map.Entry<String, String>> choices;
     public final List<String> words;
     public final List<ReactionVariant> reactionVariants;
+    private final int cooldown;
 
     public GameConfig(final FileConfiguration configuration) {
         this.name = configuration.getString("name");
@@ -25,6 +26,7 @@ public class GameConfig {
         this.displayName = configuration.getString("display-name", this.name);
         this.commands = configuration.getStringList("reward-commands");
         this.timeout = configuration.getInt("timeout");
+        this.cooldown = configuration.getInt("cooldown", 60);
 
         this.multipleChoiceQuestions = this.parseMultipleChoiceQuestions(configuration.getConfigurationSection("questions"));
         this.choices = this.parseChoices(configuration.getList("questions"));
@@ -47,7 +49,7 @@ public class GameConfig {
 
             if (question == null || answers.isEmpty() || correctAnswer == null) continue;
 
-            questions.add(new MultipleChoiceQuestion(question, answers, correctAnswer));
+            questions.add(new MultipleChoiceQuestion(question, answers, correctAnswer, this.cooldown));
         }
 
         return questions;
@@ -89,18 +91,23 @@ public class GameConfig {
     }
 
     public static class MultipleChoiceQuestion {
+
         public final String question;
         public final List<String> answers;
         public final String correctAnswer;
+        public final int cooldown;
 
-        public MultipleChoiceQuestion(final String question, final List<String> answers, final String correctAnswer) {
+        public MultipleChoiceQuestion(final String question, final List<String> answers, final String correctAnswer, final int cooldown) {
             this.question = question;
             this.answers = answers;
             this.correctAnswer = correctAnswer;
+            this.cooldown = cooldown;
         }
+
     }
 
     public static class ReactionVariant {
+
         public final String name;
         public final String challenge;
         public final String answer;
@@ -110,6 +117,7 @@ public class GameConfig {
             this.challenge = challenge;
             this.answer = answer;
         }
+
     }
 
 }

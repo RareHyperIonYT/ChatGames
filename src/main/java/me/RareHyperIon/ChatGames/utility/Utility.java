@@ -1,5 +1,6 @@
 package me.RareHyperIon.ChatGames.utility;
 
+import me.RareHyperIon.ChatGames.handlers.LanguageHandler;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -8,6 +9,7 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public final class Utility {
@@ -66,6 +68,13 @@ public final class Utility {
         // First translate to MiniMessage, then deserialize and serialize to legacy
         String miniMessageString = translateLegacyToMiniMessage(string);
         return LegacyComponentSerializer.legacySection().serialize(MINI_MESSAGE.deserialize(miniMessageString));
+    }
+
+    public static Component placeholders(final String string, final Player player, final LanguageHandler language) {
+        return colorComponent(string
+                .replaceAll("\\{prefix}", Objects.toString(language.get("Prefix"), ""))
+                .replaceAll("\\{player}", player.getName())
+                .replaceAll("\\n", "\n"), player);
     }
 
     public static String stripColor(final String string) {

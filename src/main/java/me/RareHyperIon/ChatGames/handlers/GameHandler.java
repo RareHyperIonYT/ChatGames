@@ -3,6 +3,8 @@ package me.RareHyperIon.ChatGames.handlers;
 import me.RareHyperIon.ChatGames.ChatGames;
 import me.RareHyperIon.ChatGames.games.ActiveGame;
 import me.RareHyperIon.ChatGames.games.GameConfig;
+import me.RareHyperIon.ChatGames.games.types.MultipleChoiceGame;
+import me.RareHyperIon.ChatGames.utility.Utility;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -13,8 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GameHandler {
@@ -30,6 +31,9 @@ public class GameHandler {
 
     private ActiveGame game;
     private BukkitTask gameTask;
+
+    private final Map<UUID, Integer> attemptCooldowns = new HashMap<>();
+    private long answerCooldown = 60;
 
     public GameHandler(final ChatGames plugin, final LanguageHandler language) {
         this.plugin = plugin;
@@ -61,9 +65,9 @@ public class GameHandler {
      * Attempts to win the game by validating the player's answer.
      * If the answer is incorrect, the game continues.
      */
-    public final void attemptWin(final Player player, final String answer) {
+    public final boolean attemptWin(final Player player, final String answer) {
         if (this.game == null) {
-            return;
+            return false;
         }
 
         // Get the expected answer from the game
@@ -71,16 +75,43 @@ public class GameHandler {
         if (questionAnswer == null || questionAnswer.getValue() == null) {
             // No validation needed, accept any answer
             win(player);
-            return;
+            return true;
         }
 
         final String correctAnswer = questionAnswer.getValue();
+        final UUID uid = player.getUniqueId();
 
         // Validate the answer (case-insensitive, strip color codes)
         if (answer.equalsIgnoreCase(correctAnswer)) {
+            if(this.underCooldown(uid)) {
+                player.sendMessage(
+                        Utility.placeholders(
+                                this.language.get("Cooldown", "<red>You cannot answer this question as you've already tried recently.</red>"),
+                                player,
+                                this.language
+                        )
+                );
+
+                return true;
+            }
+
             win(player);
+            return true;
+        } else if(this.game.getGame() instanceof MultipleChoiceGame mc){
+            if(mc.options.contains(answer.toLowerCase())) {
+                this.answerCooldown = mc.cooldown;
+                this.attemptCooldowns.put(uid, Bukkit.getCurrentTick());
+            }
         }
+
         // If incorrect, do nothing (game continues)
+        return false;
+    }
+
+    public boolean underCooldown(final UUID uid) {
+        final int currentTick = Bukkit.getCurrentTick();
+        final int lastAttempt = this.attemptCooldowns.getOrDefault(uid, 0);
+        return currentTick - lastAttempt < this.answerCooldown;
     }
 
     public final ActiveGame getGame() {

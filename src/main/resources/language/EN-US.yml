@@ -14,6 +14,9 @@ GameStart: "\n{prefix} &aStarted game: &b{name}\n&eYou have &c{timeout} seconds 
 GameEnd: "\n{prefix} &cNobody got the answer in time!\n              &eAnswer: &a{answer}\n"
 GameWin: "\n{prefix} &a{player} &ewon the game of &b{name}&e!\n              &eAnswer: &a{answer}\n"
 
+# Multiple choice specific messages.
+Cooldown: "<red>You cannot answer this question as you've already tried recently.</red>"
+
 # Reaction game specific messages (no question/answer)
 ReactionStart: "\n{prefix} &aStarted game: &b{name}\n&eYou have &c{timeout} seconds &eto {descriptor}:\n"
 ReactionEnd: "\n{prefix} &cNobody clicked in time!\n"
