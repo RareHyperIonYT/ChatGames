@@ -4,6 +4,10 @@ descriptor: "type the correct letter"
 timeout: 10
 reward-commands:
   - eco give %player% 100
+
+# Cooldown duration for player attempts, in game ticks (20 ticks = 1 second)
+cooldown: 60
+
 questions:
   '1':
     question: "How much Gunpowder does it take to make TNT?"

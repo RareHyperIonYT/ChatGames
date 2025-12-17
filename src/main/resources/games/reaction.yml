@@ -6,9 +6,6 @@ timeout: 10
 reward-commands:
   - eco give %player% 100
 
-# Cooldown duration for player attempts, in game ticks (20 ticks = 1 second)
-cooldown: 60
-
 # Variants allow you to create multiple types of click-based reaction games
 # Each variant has:
 #   - name: A display name for the variant type
