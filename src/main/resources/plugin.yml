@@ -9,4 +9,4 @@ commands:
   chatgames:
     aliases: [chatgame, cg]
   chatgames-internal-win:
-    permission: chatgames.internal
+    description: "Internal command for the reaction game."

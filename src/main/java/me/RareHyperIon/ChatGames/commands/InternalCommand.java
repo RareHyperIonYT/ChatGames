@@ -1,6 +1,8 @@
 package me.RareHyperIon.ChatGames.commands;
 
 import me.RareHyperIon.ChatGames.ChatGames;
+import me.RareHyperIon.ChatGames.games.Game;
+import me.RareHyperIon.ChatGames.games.types.ReactionGame;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,13 +25,18 @@ public class InternalCommand implements CommandExecutor {
         }
 
         if (this.plugin.getGameHandler().getGame() != null) {
+            final Game game = this.plugin.getGameHandler().getGame().getGame();
+            if(!(game instanceof ReactionGame reactionGame)) return true;
+
             // If arguments are provided, validate the answer
             if (args.length > 0) {
                 final String clickedText = String.join(" ", args);
                 this.plugin.getGameHandler().attemptWin(player, clickedText);
-            } else {
-                // No validation needed (old behavior for backwards compatibility)
-                this.plugin.getGameHandler().win(player);
+            } else if(reactionGame.variant != null) {
+                if(reactionGame.variant.answer.isEmpty()) {
+                    // No validation needed (old behavior for backwards compatibility)
+                    this.plugin.getGameHandler().win(player);
+                }
             }
         }
 

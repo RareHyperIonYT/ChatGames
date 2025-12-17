@@ -17,7 +17,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class ReactionGame extends Game {
 
     private final String word;
-    private final GameConfig.ReactionVariant variant;
+    public final GameConfig.ReactionVariant variant;
     private final boolean useVariants;
 
     public ReactionGame(final ChatGames plugin, final GameConfig config, final LanguageHandler language) {
