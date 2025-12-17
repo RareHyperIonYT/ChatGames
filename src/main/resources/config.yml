@@ -8,6 +8,6 @@ Language: "EN-US"
 # Define how frequently the game events should occur, in seconds.
 GameInterval: 300
 
-# Minim number of players required to start the game.
+# Minimum number of players required to start the game.
 # The game will not start until this number of players have joined.
 MinimumPlayers: 2
