@@ -32,12 +32,12 @@ public class SpigotChatGamesCommand extends ChatGamesCommand implements CommandE
             final List<String> subCommands = Arrays.asList("reload", "start", "stop", "list", "toggle", "info");
 
             return subCommands.stream()
-                    .filter(sub -> sender.hasPermission("chatgames." + sub))
+                    .filter(sub -> sub.equals("info") || sender.hasPermission("chatgames." + sub))
                     .filter(sub -> sub.startsWith(args[0].toLowerCase()))
                     .collect(Collectors.toList());
         }
 
-        if (args.length > 1 && args[0].equalsIgnoreCase("start")) {
+        if (args.length > 1 && args[0].equalsIgnoreCase("start") && sender.hasPermission("chatgames.start")) {
             final String partial = String.join(" ", Arrays.copyOfRange(args, 1, args.length)).toLowerCase();
 
             return this.plugin.getGameRegistry().getAllConfigs().stream()
