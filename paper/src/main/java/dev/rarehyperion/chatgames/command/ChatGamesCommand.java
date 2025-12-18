@@ -10,10 +10,12 @@ import dev.rarehyperion.chatgames.game.GameConfig;
 import dev.rarehyperion.chatgames.util.MessageUtil;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.plugin.configuration.PluginMeta;
 import org.bukkit.command.CommandSender;
 
 import java.util.concurrent.CompletableFuture;
 
+@SuppressWarnings("UnstableApiUsage")
 public class ChatGamesCommand {
 
     private final AbstractChatGames plugin;
@@ -114,9 +116,10 @@ public class ChatGamesCommand {
     private int handleInfo(final CommandContext<CommandSourceStack> ctx) {
         final CommandSender sender = ctx.getSource().getSender();
 
-        final String authors = String.join(", ", this.plugin.getDescription().getAuthors());
+        final PluginMeta meta = this.plugin.getPluginMeta();
+        final String authors = String.join(", ", meta.getAuthors());
 
-        this.plugin.sendMessage(sender, MessageUtil.parse("<gold>ChatGames</gold> <yellow>" + this.plugin.getDescription().getVersion() + "</yellow>"));
+        this.plugin.sendMessage(sender, MessageUtil.parse("<gold>ChatGames</gold> <yellow>" + meta.getVersion() + "</yellow>"));
         this.plugin.sendMessage(sender, MessageUtil.parse("<gray>Platform:</gray> <green>" + this.plugin.getPlatformName() + "</green>"));
         this.plugin.sendMessage(sender, MessageUtil.parse("<gray>Author(s):</gray> <aqua>" + authors + "</aqua>"));
 

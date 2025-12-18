@@ -8,6 +8,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
+@SuppressWarnings("UnstableApiUsage")
 public final class ChatGamesPaper extends AbstractChatGames {
 
     @Override
@@ -24,19 +25,22 @@ public final class ChatGamesPaper extends AbstractChatGames {
         this.getServer().getPluginManager().registerEvents(new PaperChatListener(this.gameManager), this);
     }
 
-
     @Override
     public void registerCommands() {
+        // Papers API genuinely drives me insane... almost as much as Fabric API which says a lot.
+
         final ChatGamesCommand command = new ChatGamesCommand(this);
         final var mainNode = command.build();
-        final var aliasCg = Commands.literal("cg").redirect(mainNode).build();
-        final var aliasChatgame = Commands.literal("chatgame").redirect(mainNode).build();
+
+        // Aliases don't work as expected, so Paper won't have command aliases for now unfortunately.
+//      final var aliasCg = Commands.literal("cg").redirect(mainNode).build();
+//      final var aliasChatgame = Commands.literal("chatgame").redirect(mainNode).build();
 
         this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             commands.register(mainNode);
-            commands.register(aliasCg);
-            commands.register(aliasChatgame);
+//          commands.register(aliasCg);
+//          commands.register(aliasChatgame);
         });
     }
 
