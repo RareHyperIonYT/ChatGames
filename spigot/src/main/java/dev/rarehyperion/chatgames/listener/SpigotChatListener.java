@@ -6,6 +6,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+@SuppressWarnings("ClassCanBeRecord")
 public class SpigotChatListener implements Listener {
 
     private final GameManager gameManager;

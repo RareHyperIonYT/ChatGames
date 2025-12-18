@@ -15,7 +15,7 @@ import org.bukkit.command.CommandSender;
 
 import java.util.concurrent.CompletableFuture;
 
-@SuppressWarnings("UnstableApiUsage")
+@SuppressWarnings({"UnstableApiUsage", "ClassCanBeRecord"})
 public class ChatGamesCommand {
 
     private final AbstractChatGames plugin;

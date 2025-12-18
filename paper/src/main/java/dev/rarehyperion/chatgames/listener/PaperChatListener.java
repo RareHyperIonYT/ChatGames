@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
+@SuppressWarnings("ClassCanBeRecord")
 public class PaperChatListener implements Listener {
 
     private final GameManager gameManager;
