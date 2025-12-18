@@ -1,6 +1,6 @@
 package dev.rarehyperion.chatgames.config;
 
-import dev.rarehyperion.chatgames.AbstractChatGames;
+import dev.rarehyperion.chatgames.platform.Platform;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -13,26 +13,24 @@ import java.util.Map;
 
 public final class ConfigManager {
 
-    private final AbstractChatGames plugin;
+    private final Platform plugin;
     private final Map<String, String> messages = new HashMap<>();
     private PluginSettings settings;
 
-    public ConfigManager(final AbstractChatGames plugin) {
+    public ConfigManager(final Platform plugin) {
         this.plugin = plugin;
     }
 
     public void load() {
-        final FileConfiguration config = this.plugin.getConfig();
-
         this.settings = new PluginSettings(
-                config.getInt("game-interval", 3000),
-                config.getInt("minimum-players", 1),
-                config.getBoolean("automatic-games", true),
-                config.getInt("answer-cooldown-ticks", 60),
-                config.getBoolean("debug", false)
+                this.plugin.getConfigValue("game-interval", Integer.class, 3000),
+                this.plugin.getConfigValue("minimum-players", Integer.class, 1),
+                this.plugin.getConfigValue("automatic-games", Boolean.class, true),
+                this.plugin.getConfigValue("answer-cooldown-ticks", Integer.class, 60),
+                this.plugin.getConfigValue("debug", Boolean.class, false)
         );
 
-        this.loadLanguage(config.getString("languages", "en-us"));
+        this.loadLanguage(this.plugin.getConfigValue("languages", String.class, "en-us"));
     }
 
     private void loadLanguage(final String languageCode) {

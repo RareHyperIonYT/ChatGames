@@ -1,46 +1,29 @@
 package dev.rarehyperion.chatgames;
 
-import dev.rarehyperion.chatgames.command.SpigotChatGamesCommand;
-import dev.rarehyperion.chatgames.listener.SpigotChatListener;
-import dev.rarehyperion.chatgames.util.MessageUtil;
-import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
+import dev.rarehyperion.chatgames.platform.impl.SpigotPlatform;
+import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.Objects;
+public class ChatGamesSpigot extends JavaPlugin {
 
-public class ChatGamesSpigot extends AbstractChatGames {
+    private final ChatGamesCore core;
 
-    @Override
-    public void sendMessage(final CommandSender sender, final Component component) {
-        final String legacyMessage = MessageUtil.serialize(component);
-        sender.sendMessage(legacyMessage);
+    public ChatGamesSpigot() {
+        this.core = new ChatGamesCore(new SpigotPlatform(this));
     }
 
     @Override
-    public void broadcast(final Component component) {
-        final String message = MessageUtil.serialize(component);
-        Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(message));
+    public void onLoad() {
+        this.core.load();
     }
 
     @Override
-    public void registerListeners() {
-        this.getServer().getPluginManager().registerEvents(
-                new SpigotChatListener(this.gameManager),
-                this
-        );
+    public void onEnable() {
+        this.core.enable();
     }
 
     @Override
-    public void registerCommands() {
-        final SpigotChatGamesCommand command = new SpigotChatGamesCommand(this);
-        Objects.requireNonNull(this.getCommand("chatgames")).setExecutor(command);
-        Objects.requireNonNull(this.getCommand("chatgames")).setTabCompleter(command);
-    }
-
-    @Override
-    public String getPlatformName() {
-        return "SPIGOT";
+    public void onDisable() {
+        this.core.disable();
     }
 
 

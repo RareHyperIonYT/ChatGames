@@ -1,7 +1,8 @@
 package dev.rarehyperion.chatgames.command;
 
-import dev.rarehyperion.chatgames.AbstractChatGames;
+import dev.rarehyperion.chatgames.ChatGamesCore;
 import dev.rarehyperion.chatgames.game.GameConfig;
+import dev.rarehyperion.chatgames.platform.PlatformSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,13 +18,14 @@ import java.util.stream.Collectors;
 
 public class SpigotChatGamesCommand extends ChatGamesCommand implements CommandExecutor, TabCompleter {
 
-    public SpigotChatGamesCommand(final AbstractChatGames plugin) {
+    public SpigotChatGamesCommand(final ChatGamesCore plugin) {
         super(plugin);
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-       return this.handleCommand(sender, args);
+    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        final PlatformSender sender = this.plugin.platform().wrapSender(commandSender);
+        return this.handleCommand(sender, args);
     }
 
     @Override
@@ -40,7 +42,7 @@ public class SpigotChatGamesCommand extends ChatGamesCommand implements CommandE
         if (args.length > 1 && args[0].equalsIgnoreCase("start") && sender.hasPermission("chatgames.start")) {
             final String partial = String.join(" ", Arrays.copyOfRange(args, 1, args.length)).toLowerCase();
 
-            return this.plugin.getGameRegistry().getAllConfigs().stream()
+            return this.plugin.gameRegistry().getAllConfigs().stream()
                     .map(GameConfig::getName).filter(Objects::nonNull)
                     .filter(name -> name.toLowerCase().startsWith(partial))
                     .collect(Collectors.toList());

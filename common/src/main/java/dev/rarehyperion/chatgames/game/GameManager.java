@@ -1,11 +1,11 @@
 package dev.rarehyperion.chatgames.game;
 
-import dev.rarehyperion.chatgames.AbstractChatGames;
+import dev.rarehyperion.chatgames.ChatGamesCore;
 import dev.rarehyperion.chatgames.config.ConfigManager;
+import dev.rarehyperion.chatgames.platform.PlatformTask;
 import dev.rarehyperion.chatgames.util.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,17 +13,17 @@ import java.util.UUID;
 
 public final class GameManager {
 
-    private final AbstractChatGames plugin;
+    private final ChatGamesCore plugin;
     private final ConfigManager configManager;
     private final GameRegistry gameRegistry;
 
     private Game activeGame;
-    private BukkitTask gameTimeoutTask;
-    private BukkitTask schedulerTask;
+    private PlatformTask gameTimeoutTask;
+    private PlatformTask schedulerTask;
 
     private final Map<UUID, Long> wrongAnswerCooldowns = new HashMap<>();
 
-    public GameManager(final AbstractChatGames plugin, final ConfigManager configManager, final GameRegistry gameRegistry) {
+    public GameManager(final ChatGamesCore plugin, final ConfigManager configManager, final GameRegistry gameRegistry) {
         this.plugin = plugin;
         this.configManager = configManager;
         this.gameRegistry = gameRegistry;
@@ -34,12 +34,12 @@ public final class GameManager {
             return;
 
         final int intervalTicks = this.configManager.getSettings().gameInterval() * 20;
-        this.schedulerTask = Bukkit.getScheduler().runTaskTimer(plugin, this::tryStartRandomGame, intervalTicks, intervalTicks);
+        this.schedulerTask = this.plugin.platform().runTaskTimer(this::tryStartRandomGame, intervalTicks, intervalTicks);
     }
 
     public void startGame(final GameConfig config) {
         if(this.activeGame != null) {
-            this.plugin.getLogger().warning("Cannot start game - one is already active!");
+            this.plugin.platform().getLogger().warning("Cannot start game - one is already active!");
             return;
         }
 
@@ -49,13 +49,13 @@ public final class GameManager {
 
             // Scheduling a timeout
             final long timeoutTicks = config.getTimeoutSeconds() * 20L;
-            this.gameTimeoutTask = Bukkit.getScheduler().runTaskLater(plugin, this::endGameTimeout, timeoutTicks);
+            this.gameTimeoutTask = this.plugin.platform().runTaskLater(this::endGameTimeout, timeoutTicks);
 
             if(this.configManager.getSettings().debug()) {
-                this.plugin.getLogger().info("Started game: " + config.getName());
+                this.plugin.platform().getLogger().info("Started game: " + config.getName());
             }
         } catch (final Exception exception) {
-            this.plugin.getLogger().severe("Failed to start game: " + config.getName());
+            this.plugin.platform().getLogger().severe("Failed to start game: " + config.getName());
             exception.printStackTrace(System.err);
             this.activeGame = null;
         }
@@ -78,7 +78,7 @@ public final class GameManager {
 
         if(this.activeGame.checkAnswer(answer)) {
             if(this.isOnCooldown(playerId)) {
-                this.plugin.sendMessage(player, MessageUtil.parse(this.configManager.getMessage("cooldown", "<red>You cannot answer this question as you've already tried recently.</red>")));
+                this.plugin.sendMessage(player.getUniqueId(), MessageUtil.parse(this.configManager.getMessage("cooldown", "<red>You cannot answer this question as you've already tried recently.</red>")));
                 return true;
             }
 

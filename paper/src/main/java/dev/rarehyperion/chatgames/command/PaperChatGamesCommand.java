@@ -6,8 +6,9 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import dev.rarehyperion.chatgames.AbstractChatGames;
+import dev.rarehyperion.chatgames.ChatGamesCore;
 import dev.rarehyperion.chatgames.game.GameConfig;
+import dev.rarehyperion.chatgames.platform.PlatformSender;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 
@@ -16,7 +17,7 @@ import java.util.concurrent.CompletableFuture;
 @SuppressWarnings({"UnstableApiUsage"})
 public class PaperChatGamesCommand extends ChatGamesCommand {
 
-    public PaperChatGamesCommand(final AbstractChatGames plugin) {
+    public PaperChatGamesCommand(final ChatGamesCore plugin) {
         super(plugin);
     }
 
@@ -33,7 +34,8 @@ public class PaperChatGamesCommand extends ChatGamesCommand {
     public LiteralCommandNode<CommandSourceStack> build() {
         final LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("chatgames")
                 .executes((ctx) -> {
-                    this.handleCommand(ctx.getSource().getSender(), new String[]{});
+                    final PlatformSender sender = this.plugin.platform().wrapSender(ctx.getSource().getSender());
+                    this.handleCommand(sender, new String[]{});
                     return 1;
                 });
 
@@ -57,13 +59,15 @@ public class PaperChatGamesCommand extends ChatGamesCommand {
                 node.then(Commands.argument("game", StringArgumentType.greedyString())
                         .suggests(this::suggestGameNames)
                         .executes(ctx -> {
+                            final PlatformSender sender = this.plugin.platform().wrapSender(ctx.getSource().getSender());
                             final String game = StringArgumentType.getString(ctx, "game");
-                            this.handleCommand(ctx.getSource().getSender(), new String[]{"start", game});
+                            this.handleCommand(sender, new String[]{"start", game});
                             return 1;
                         }));
             } else {
                 node.executes(ctx -> {
-                    this.handleCommand(ctx.getSource().getSender(), new String[]{name});
+                    final PlatformSender sender = this.plugin.platform().wrapSender(ctx.getSource().getSender());
+                    this.handleCommand(sender, new String[]{name});
                     return 1;
                 });
             }
@@ -75,7 +79,7 @@ public class PaperChatGamesCommand extends ChatGamesCommand {
     }
 
     private CompletableFuture<Suggestions> suggestGameNames(final CommandContext<CommandSourceStack> ctx, final SuggestionsBuilder builder) {
-        for (final GameConfig config : this.plugin.getGameRegistry().getAllConfigs()) {
+        for (final GameConfig config : this.plugin.gameRegistry().getAllConfigs()) {
             builder.suggest(config.getName());
         }
 

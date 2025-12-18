@@ -1,6 +1,6 @@
 package dev.rarehyperion.chatgames.game.types;
 
-import dev.rarehyperion.chatgames.AbstractChatGames;
+import dev.rarehyperion.chatgames.ChatGamesCore;
 import dev.rarehyperion.chatgames.game.AbstractGame;
 import dev.rarehyperion.chatgames.game.GameConfig;
 import dev.rarehyperion.chatgames.game.GameType;
@@ -20,7 +20,7 @@ public class MultipleChoiceGame extends AbstractGame {
     private final GameConfig.MultipleChoiceQuestion question;
     private final List<String> answerOptions;
 
-    public MultipleChoiceGame(final AbstractChatGames plugin, final GameConfig config) {
+    public MultipleChoiceGame(final ChatGamesCore plugin, final GameConfig config) {
         super(plugin, config, GameType.TRIVIA);
         this.question = this.selectRandom(config.getMultipleChoiceQuestions());
         this.answerOptions = extractAnswerOptions(this.question.answers());

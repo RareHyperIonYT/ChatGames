@@ -1,6 +1,6 @@
 package dev.rarehyperion.chatgames.game.types;
 
-import dev.rarehyperion.chatgames.AbstractChatGames;
+import dev.rarehyperion.chatgames.ChatGamesCore;
 import dev.rarehyperion.chatgames.game.AbstractGame;
 import dev.rarehyperion.chatgames.game.GameConfig;
 import dev.rarehyperion.chatgames.game.GameType;
@@ -13,7 +13,7 @@ public class ReactionGame extends AbstractGame {
 
     private final GameConfig.ReactionVariant variant;
 
-    public ReactionGame(final AbstractChatGames plugin, final GameConfig config) {
+    public ReactionGame(final ChatGamesCore plugin, final GameConfig config) {
         super(plugin, config, GameType.TRIVIA);
         this.variant = this.selectRandom(config.getReactionVariants());
     }

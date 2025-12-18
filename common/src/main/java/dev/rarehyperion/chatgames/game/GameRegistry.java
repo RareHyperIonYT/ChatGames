@@ -1,6 +1,6 @@
 package dev.rarehyperion.chatgames.game;
 
-import dev.rarehyperion.chatgames.AbstractChatGames;
+import dev.rarehyperion.chatgames.ChatGamesCore;
 import dev.rarehyperion.chatgames.game.types.*;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -13,11 +13,11 @@ import java.util.function.BiFunction;
 
 public final class GameRegistry {
 
-    private final AbstractChatGames plugin;
-    private final Map<GameType, BiFunction<AbstractChatGames, GameConfig, Game>> factories = new EnumMap<>(GameType.class);
+    private final ChatGamesCore plugin;
+    private final Map<GameType, BiFunction<ChatGamesCore, GameConfig, Game>> factories = new EnumMap<>(GameType.class);
     private final List<GameConfig> gameConfigs = new ArrayList<>();
 
-    public GameRegistry(final AbstractChatGames plugin) {
+    public GameRegistry(final ChatGamesCore plugin) {
         this.plugin = plugin;
     }
 
@@ -29,14 +29,14 @@ public final class GameRegistry {
         this.registerGameType(GameType.MULTIPLE_CHOICE, MultipleChoiceGame::new);
     }
 
-    public void registerGameType(final GameType type, final BiFunction<AbstractChatGames, GameConfig, Game> factory) {
+    public void registerGameType(final GameType type, final BiFunction<ChatGamesCore, GameConfig, Game> factory) {
         this.factories.put(type, factory);
     }
 
     public void loadGames() {
         this.gameConfigs.clear();
 
-        final File gamesFolder = new File(this.plugin.getDataFolder(), "games");
+        final File gamesFolder = new File(this.plugin.platform().getDataFolder(), "games");
 
         if(!gamesFolder.exists()) {
             this.createDefaultGames(gamesFolder);
@@ -45,7 +45,7 @@ public final class GameRegistry {
         final File[] gameFiles = gamesFolder.listFiles((dir, name) -> name.endsWith(".yml"));
 
         if(gameFiles == null || gameFiles.length == 0) {
-            this.plugin.getLogger().warning("No game configurations were found!");
+            this.plugin.platform().getLogger().warning("No game configurations were found!");
             return;
         }
 
@@ -56,19 +56,19 @@ public final class GameRegistry {
                 if(config.getType() != null) {
                     this.gameConfigs.add(config);
                 } else {
-                    this.plugin.getLogger().warning("Invalid game type in: " + file.getName());
+                    this.plugin.platform().getLogger().warning("Invalid game type in: " + file.getName());
                 }
             } catch (final Exception exception) {
-                this.plugin.getLogger().severe("Failed to load game: " + file.getName());
+                this.plugin.platform().getLogger().severe("Failed to load game: " + file.getName());
                 exception.printStackTrace(System.err);
             }
         }
 
-        this.plugin.getLogger().info("Loaded " + this.gameConfigs.size() + " game configuration(s)");
+        this.plugin.platform().getLogger().info("Loaded " + this.gameConfigs.size() + " game configuration(s)");
     }
 
     public Game createGame(final GameConfig config) {
-        final BiFunction<AbstractChatGames, GameConfig, Game> factory = this.factories.get(config.getType());
+        final BiFunction<ChatGamesCore, GameConfig, Game> factory = this.factories.get(config.getType());
 
         if(factory == null) {
             throw new IllegalStateException("No factory registered for game type: " + config.getType());
@@ -108,13 +108,13 @@ public final class GameRegistry {
     }
 
     private void saveResource(final String resourcePath, final File folder) {
-        try (final InputStream stream = this.plugin.getResource(resourcePath)) {
+        try (final InputStream stream = this.plugin.platform().getResource(resourcePath)) {
             if (stream != null) {
                 File output = new File(folder, new File(resourcePath).getName());
                 Files.copy(stream, output.toPath());
             }
         } catch (final IOException e) {
-            this.plugin.getLogger().severe("Failed to save resource: " + resourcePath);
+            this.plugin.platform().getLogger().severe("Failed to save resource: " + resourcePath);
         }
     }
 

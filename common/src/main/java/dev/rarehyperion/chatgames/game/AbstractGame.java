@@ -1,6 +1,6 @@
 package dev.rarehyperion.chatgames.game;
 
-import dev.rarehyperion.chatgames.AbstractChatGames;
+import dev.rarehyperion.chatgames.ChatGamesCore;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
@@ -9,11 +9,11 @@ import java.util.Random;
 
 public abstract class AbstractGame implements Game {
 
-    protected final AbstractChatGames plugin;
+    protected final ChatGamesCore plugin;
     protected final GameConfig config;
     protected final GameType type;
 
-    protected AbstractGame(final AbstractChatGames plugin, final GameConfig config, GameType type) {
+    protected AbstractGame(final ChatGamesCore plugin, final GameConfig config, GameType type) {
         this.plugin = plugin;
         this.config = config;
         this.type = type;
@@ -29,10 +29,11 @@ public abstract class AbstractGame implements Game {
         final Component message = this.config.getWinMessage(winner.getName(), this.getCorrectAnswer().orElse(""));
         this.plugin.broadcast(message);
 
-        this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
+        this.plugin.platform().runTask(() -> {
             for(final String command : this.config.getRewardCommands()) {
                 final String processed = command.replace("{player}", winner.getName());
-                this.plugin.getServer().dispatchCommand(this.plugin.getServer().getConsoleSender(), processed);
+                this.plugin.platform().dispatchCommand(processed);
+//                this.plugin.platform().dispatchCommand(this.plugin.getServer().getConsoleSender(), processed);
             }
         });
     }

@@ -1,51 +1,29 @@
 package dev.rarehyperion.chatgames;
 
-import dev.rarehyperion.chatgames.command.PaperChatGamesCommand;
-import dev.rarehyperion.chatgames.listener.PaperChatListener;
-import io.papermc.paper.command.brigadier.Commands;
-import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
-import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
+import dev.rarehyperion.chatgames.platform.impl.PaperPlatform;
+import org.bukkit.plugin.java.JavaPlugin;
 
-@SuppressWarnings("UnstableApiUsage")
-public final class ChatGamesPaper extends AbstractChatGames {
+public final class ChatGamesPaper extends JavaPlugin {
 
-    @Override
-    public void sendMessage(final CommandSender sender, final Component component) {
-        sender.sendMessage(component);
+    private final ChatGamesCore core;
+
+    public ChatGamesPaper() {
+        this.core = new ChatGamesCore(new PaperPlatform(this));
     }
 
     @Override
-    public void broadcast(final Component component) {
-        Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(component));
-    }
-    @Override
-    public void registerListeners() {
-        this.getServer().getPluginManager().registerEvents(new PaperChatListener(this.gameManager), this);
+    public void onLoad() {
+        this.core.load();
     }
 
     @Override
-    public void registerCommands() {
-        // Papers API genuinely drives me insane... almost as much as Fabric API which says a lot.
-
-        final PaperChatGamesCommand command = new PaperChatGamesCommand(this);
-        final var mainNode = command.build();
-
-        // Aliases don't work as expected, so Paper won't have command aliases for now unfortunately.
-//      final var aliasCg = Commands.literal("cg").redirect(mainNode).build();
-//      final var aliasChatgame = Commands.literal("chatgame").redirect(mainNode).build();
-
-        this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
-            final Commands commands = event.registrar();
-            commands.register(mainNode);
-//          commands.register(aliasCg);
-//          commands.register(aliasChatgame);
-        });
+    public void onEnable() {
+        this.core.enable();
     }
 
     @Override
-    public String getPlatformName() {
-        return "PAPER";
+    public void onDisable() {
+        this.core.disable();
     }
+
 }
