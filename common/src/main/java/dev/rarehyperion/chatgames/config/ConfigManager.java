@@ -1,6 +1,6 @@
 package dev.rarehyperion.chatgames.config;
 
-import dev.rarehyperion.chatgames.platform.ChatGamesPlugin;
+import dev.rarehyperion.chatgames.AbstractChatGames;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -13,11 +13,11 @@ import java.util.Map;
 
 public final class ConfigManager {
 
-    private final ChatGamesPlugin plugin;
+    private final AbstractChatGames plugin;
     private final Map<String, String> messages = new HashMap<>();
     private PluginSettings settings;
 
-    public ConfigManager(final ChatGamesPlugin plugin) {
+    public ConfigManager(final AbstractChatGames plugin) {
         this.plugin = plugin;
     }
 

@@ -1,9 +1,9 @@
 package dev.rarehyperion.chatgames.game.types;
 
+import dev.rarehyperion.chatgames.AbstractChatGames;
 import dev.rarehyperion.chatgames.game.AbstractGame;
 import dev.rarehyperion.chatgames.game.GameConfig;
 import dev.rarehyperion.chatgames.game.GameType;
-import dev.rarehyperion.chatgames.platform.ChatGamesPlugin;
 import dev.rarehyperion.chatgames.util.MessageUtil;
 import net.kyori.adventure.text.Component;
 
@@ -13,7 +13,7 @@ public class MathGame extends AbstractGame {
 
     private final GameConfig.QuestionAnswer question;
 
-    public MathGame(final ChatGamesPlugin plugin, final GameConfig config) {
+    public MathGame(final AbstractChatGames plugin, final GameConfig config) {
         super(plugin, config, GameType.MATH);
         this.question = this.selectRandom(config.getQuestions());
     }

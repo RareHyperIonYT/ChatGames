@@ -5,8 +5,8 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
+import dev.rarehyperion.chatgames.AbstractChatGames;
 import dev.rarehyperion.chatgames.game.GameConfig;
-import dev.rarehyperion.chatgames.platform.ChatGamesPlugin;
 import dev.rarehyperion.chatgames.util.MessageUtil;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
@@ -16,9 +16,9 @@ import java.util.concurrent.CompletableFuture;
 
 public class ChatGamesCommand {
 
-    private final ChatGamesPlugin plugin;
+    private final AbstractChatGames plugin;
 
-    public ChatGamesCommand(final ChatGamesPlugin plugin) {
+    public ChatGamesCommand(final AbstractChatGames plugin) {
         this.plugin = plugin;
     }
 

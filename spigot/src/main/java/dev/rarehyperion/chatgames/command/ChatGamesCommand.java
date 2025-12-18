@@ -1,7 +1,7 @@
 package dev.rarehyperion.chatgames.command;
 
+import dev.rarehyperion.chatgames.AbstractChatGames;
 import dev.rarehyperion.chatgames.game.GameConfig;
-import dev.rarehyperion.chatgames.platform.ChatGamesPlugin;
 import dev.rarehyperion.chatgames.util.MessageUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,9 +18,9 @@ import java.util.stream.Collectors;
 
 public class ChatGamesCommand implements CommandExecutor, TabCompleter {
 
-    private final ChatGamesPlugin plugin;
+    private final AbstractChatGames plugin;
 
-    public ChatGamesCommand(final ChatGamesPlugin plugin) {
+    public ChatGamesCommand(final AbstractChatGames plugin) {
         this.plugin = plugin;
     }
 

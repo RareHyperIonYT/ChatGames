@@ -12,7 +12,6 @@
     <artifactId>chatgames-paper</artifactId>
 
     <dependencies>
-        <!-- Common module (contains all shared code) -->
         <dependency>
             <groupId>dev.rarehyperion.chatgames</groupId>
             <artifactId>chatgames-common</artifactId>
@@ -20,7 +19,6 @@
             <scope>compile</scope>
         </dependency>
 
-        <!-- Paper API -->
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>

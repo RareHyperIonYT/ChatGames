@@ -1,6 +1,6 @@
 package dev.rarehyperion.chatgames.game;
 
-import dev.rarehyperion.chatgames.platform.ChatGamesPlugin;
+import dev.rarehyperion.chatgames.AbstractChatGames;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
@@ -9,11 +9,11 @@ import java.util.Random;
 
 public abstract class AbstractGame implements Game {
 
-    protected final ChatGamesPlugin plugin;
+    protected final AbstractChatGames plugin;
     protected final GameConfig config;
     protected final GameType type;
 
-    protected AbstractGame(final ChatGamesPlugin plugin, final GameConfig config, GameType type) {
+    protected AbstractGame(final AbstractChatGames plugin, final GameConfig config, GameType type) {
         this.plugin = plugin;
         this.config = config;
         this.type = type;

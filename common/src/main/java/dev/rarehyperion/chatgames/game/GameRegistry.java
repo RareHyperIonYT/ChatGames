@@ -1,7 +1,7 @@
 package dev.rarehyperion.chatgames.game;
 
+import dev.rarehyperion.chatgames.AbstractChatGames;
 import dev.rarehyperion.chatgames.game.types.*;
-import dev.rarehyperion.chatgames.platform.ChatGamesPlugin;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -13,11 +13,11 @@ import java.util.function.BiFunction;
 
 public final class GameRegistry {
 
-    private final ChatGamesPlugin plugin;
-    private final Map<GameType, BiFunction<ChatGamesPlugin, GameConfig, Game>> factories = new EnumMap<>(GameType.class);
+    private final AbstractChatGames plugin;
+    private final Map<GameType, BiFunction<AbstractChatGames, GameConfig, Game>> factories = new EnumMap<>(GameType.class);
     private final List<GameConfig> gameConfigs = new ArrayList<>();
 
-    public GameRegistry(final ChatGamesPlugin plugin) {
+    public GameRegistry(final AbstractChatGames plugin) {
         this.plugin = plugin;
     }
 
@@ -29,7 +29,7 @@ public final class GameRegistry {
         this.registerGameType(GameType.MULTIPLE_CHOICE, MultipleChoiceGame::new);
     }
 
-    public void registerGameType(final GameType type, final BiFunction<ChatGamesPlugin, GameConfig, Game> factory) {
+    public void registerGameType(final GameType type, final BiFunction<AbstractChatGames, GameConfig, Game> factory) {
         this.factories.put(type, factory);
     }
 
@@ -68,7 +68,7 @@ public final class GameRegistry {
     }
 
     public Game createGame(final GameConfig config) {
-        final BiFunction<ChatGamesPlugin, GameConfig, Game> factory = this.factories.get(config.getType());
+        final BiFunction<AbstractChatGames, GameConfig, Game> factory = this.factories.get(config.getType());
 
         if(factory == null) {
             throw new IllegalStateException("No factory registered for game type: " + config.getType());

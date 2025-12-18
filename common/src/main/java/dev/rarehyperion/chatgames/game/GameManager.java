@@ -1,7 +1,7 @@
 package dev.rarehyperion.chatgames.game;
 
+import dev.rarehyperion.chatgames.AbstractChatGames;
 import dev.rarehyperion.chatgames.config.ConfigManager;
-import dev.rarehyperion.chatgames.platform.ChatGamesPlugin;
 import dev.rarehyperion.chatgames.util.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public final class GameManager {
 
-    private final ChatGamesPlugin plugin;
+    private final AbstractChatGames plugin;
     private final ConfigManager configManager;
     private final GameRegistry gameRegistry;
 
@@ -23,7 +23,7 @@ public final class GameManager {
 
     private final Map<UUID, Long> wrongAnswerCooldowns = new HashMap<>();
 
-    public GameManager(final ChatGamesPlugin plugin, final ConfigManager configManager, final GameRegistry gameRegistry) {
+    public GameManager(final AbstractChatGames plugin, final ConfigManager configManager, final GameRegistry gameRegistry) {
         this.plugin = plugin;
         this.configManager = configManager;
         this.gameRegistry = gameRegistry;
