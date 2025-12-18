@@ -5,6 +5,7 @@ import io.papermc.paper.plugin.configuration.PluginMeta;
 
 import java.util.List;
 
+@SuppressWarnings({"UnstableApiUsage", "ClassCanBeRecord"})
 public class PaperPluginMeta implements PlatformPluginMeta {
 
     private final PluginMeta meta;

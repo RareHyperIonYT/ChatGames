@@ -1,11 +1,11 @@
 package dev.rarehyperion.chatgames.platform.impl;
 
 import dev.rarehyperion.chatgames.platform.PlatformSender;
-import dev.rarehyperion.chatgames.util.MessageUtil;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 
+@SuppressWarnings("ClassCanBeRecord")
 public class PaperPlatformSender implements PlatformSender {
 
     private final CommandSender sender;

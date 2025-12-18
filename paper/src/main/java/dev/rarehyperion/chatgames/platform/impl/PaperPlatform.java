@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+@SuppressWarnings({"UnstableApiUsage", "ClassCanBeRecord"})
 public class PaperPlatform implements Platform {
 
     private final JavaPlugin plugin;
