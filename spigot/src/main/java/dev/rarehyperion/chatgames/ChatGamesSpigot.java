@@ -1,6 +1,6 @@
 package dev.rarehyperion.chatgames;
 
-import dev.rarehyperion.chatgames.command.ChatGamesCommand;
+import dev.rarehyperion.chatgames.command.SpigotChatGamesCommand;
 import dev.rarehyperion.chatgames.listener.SpigotChatListener;
 import dev.rarehyperion.chatgames.util.MessageUtil;
 import net.kyori.adventure.text.Component;
@@ -33,7 +33,7 @@ public class ChatGamesSpigot extends AbstractChatGames {
 
     @Override
     public void registerCommands() {
-        final ChatGamesCommand command = new ChatGamesCommand(this);
+        final SpigotChatGamesCommand command = new SpigotChatGamesCommand(this);
         Objects.requireNonNull(this.getCommand("chatgames")).setExecutor(command);
         Objects.requireNonNull(this.getCommand("chatgames")).setTabCompleter(command);
     }

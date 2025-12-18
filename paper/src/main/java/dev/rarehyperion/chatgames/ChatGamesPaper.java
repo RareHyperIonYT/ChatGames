@@ -1,6 +1,6 @@
 package dev.rarehyperion.chatgames;
 
-import dev.rarehyperion.chatgames.command.ChatGamesCommand;
+import dev.rarehyperion.chatgames.command.PaperChatGamesCommand;
 import dev.rarehyperion.chatgames.listener.PaperChatListener;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -29,7 +29,7 @@ public final class ChatGamesPaper extends AbstractChatGames {
     public void registerCommands() {
         // Papers API genuinely drives me insane... almost as much as Fabric API which says a lot.
 
-        final ChatGamesCommand command = new ChatGamesCommand(this);
+        final PaperChatGamesCommand command = new PaperChatGamesCommand(this);
         final var mainNode = command.build();
 
         // Aliases don't work as expected, so Paper won't have command aliases for now unfortunately.
