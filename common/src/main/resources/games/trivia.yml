@@ -1,0 +1,36 @@
+# Trivia Game Configuration
+
+name: trivia
+display-name: "<aqua>Trivia Time</aqua>"
+type: trivia
+timeout: 45
+
+reward-commands:
+  - "give {player} emerald 2"
+
+messages:
+  start: |
+    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+    <aqua><bold>TRIVIA TIME</bold></aqua>
+    <gray>Answer the question below!</gray>
+    <gray>Timeout: <yellow>{timeout}s</yellow></gray>
+    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+  win: |
+    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+    <green><bold>✓</bold> <yellow>{player}</yellow> got it right!</green>
+    <gray>Answer: <white>{answer}</white></gray>
+    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+  timeout: |
+    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+    <red><bold>✗</bold> Nobody got it!</red>
+    <gray>Answer: <white>{answer}</white></gray>
+    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+
+questions:
+  - ["<yellow>What is the capital of France?</yellow>", "Paris"]
+  - ["<yellow>How many continents are there?</yellow>", "7"]
+  - ["<yellow>What year did the Titanic sink?</yellow>", "1912"]
+  - ["<yellow>What is the largest ocean?</yellow>", "Pacific"]
+  - ["<yellow>Who painted the Mona Lisa?</yellow>", "Leonardo da Vinci"]
+  - ["<yellow>What is the speed of light?</yellow>", "299792458"]
+  - ["<yellow>What is H2O commonly known as?</yellow>", "Water"]

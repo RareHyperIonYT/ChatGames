@@ -1,0 +1,7 @@
+# ChatGames Language File - English (US)
+
+# Plugin prefix used in messages
+prefix: "<dark_gray>[<gold>ChatGames</gold>]</dark_gray> "
+
+# Cooldown message when player tries to answer too quickly after wrong answer
+cooldown: "<red>You must wait before answering again!</red>"

@@ -1,0 +1,65 @@
+# Multiple Choice Game Configuration
+
+name: multiple choice
+display-name: "<green>Multiple Choice</green>"
+type: multiple-choice
+timeout: 45
+cooldown: 60  # Ticks to wait after wrong answer (60 ticks = 3 seconds)
+
+reward-commands:
+  - "give {player} emerald 3"
+
+messages:
+  start: |
+    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+    <green><bold>MULTIPLE CHOICE</bold></green>
+    <gray>Type the correct letter!</gray>
+    <gray>Timeout: <yellow>{timeout}s</yellow></gray>
+    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+  win: |
+    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+    <green><bold>✓</bold> <yellow>{player}</yellow> chose correctly!</green>
+    <gray>Answer: <white>{answer}</white></gray>
+    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+  timeout: |
+    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+    <red><bold>✗</bold> Nobody answered!</red>
+    <gray>Correct: <white>{answer}</white></gray>
+    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+
+questions:
+  q1:
+    question: "<yellow>What is the largest planet in our solar system?</yellow>"
+    answers:
+      - "A. Earth"
+      - "B. Jupiter"
+      - "C. Saturn"
+      - "D. Mars"
+    correct-answer: "B"
+
+  q2:
+    question: "<yellow>Which programming language is Minecraft written in?</yellow>"
+    answers:
+      - "A. Python"
+      - "B. C++"
+      - "C. Java"
+      - "D. JavaScript"
+    correct-answer: "C"
+
+  q3:
+    question: "<yellow>What is 2 + 2 × 2?</yellow>"
+    answers:
+      - "A. 6"
+      - "B. 8"
+      - "C. 4"
+      - "D. 10"
+    correct-answer: "A"
+
+  q4:
+    question: "<yellow>Which mob drops blaze rods?</yellow>"
+    answers:
+      - "A. Ghast"
+      - "B. Blaze"
+      - "C. Wither Skeleton"
+      - "D. Magma Cube"
+    correct-answer: "B"
