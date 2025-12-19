@@ -21,6 +21,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.InputStream;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -171,6 +172,11 @@ public class PaperPlatform implements Platform {
     @Override
     public InputStream getResource(final String resourcePath) {
         return this.plugin.getResource(resourcePath);
+    }
+
+    @Override
+    public String playerName(final UUID uuid) {
+        return Objects.requireNonNull(Bukkit.getPlayer(uuid)).getName();
     }
 
     @Override

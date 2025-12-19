@@ -1,0 +1,50 @@
+package dev.rarehyperion.chatgames.platform.impl;
+
+import dev.rarehyperion.chatgames.platform.PlatformSender;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.Component;
+import org.spongepowered.api.SystemSubject;
+import org.spongepowered.api.entity.living.player.server.ServerPlayer;
+
+public class SpongePlatformSender implements PlatformSender {
+
+    private final Object source; // ServerPlayer, SystemSubject, Audience, etc.
+
+    public SpongePlatformSender(final Object source) {
+        this.source = source;
+    }
+
+    @Override
+    public void sendMessage(final Component component) {
+        if(this.source instanceof ServerPlayer serverPlayer) {
+            serverPlayer.sendMessage(component);
+        } else if(this.source instanceof SystemSubject systemSubject) {
+            systemSubject.sendMessage(component);
+        } else if(this.source instanceof Audience audience) {
+            audience.sendMessage(component);
+        } else {
+            throw new IllegalArgumentException("Invalid argument passed: " + this.source);
+        }
+    }
+
+    @Override
+    public boolean hasPermission(final String permission) {
+        if(this.source instanceof ServerPlayer serverPlayer) {
+            return serverPlayer.hasPermission(permission);
+        } else if(this.source instanceof SystemSubject systemSubject) {
+            return systemSubject.hasPermission(permission);
+        } else {
+            throw new IllegalArgumentException("Invalid argument passed: " + this.source);
+        }
+    }
+
+    @Override
+    public boolean isConsole() {
+        return source instanceof SystemSubject;
+    }
+
+    public Object unwrap() {
+        return this.source;
+    }
+
+}

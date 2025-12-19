@@ -4,8 +4,6 @@ import dev.rarehyperion.chatgames.ChatGamesCore;
 import dev.rarehyperion.chatgames.config.ConfigManager;
 import dev.rarehyperion.chatgames.platform.PlatformTask;
 import dev.rarehyperion.chatgames.util.MessageUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -69,20 +67,18 @@ public final class GameManager {
         }
     }
 
-    public boolean processAnswer(final Player player, final String answer) {
+    public boolean processAnswer(final UUID uuid, final String answer) {
         if(this.activeGame == null) {
             return false;
         }
 
-        final UUID playerId = player.getUniqueId();
-
         if(this.activeGame.checkAnswer(answer)) {
-            if(this.isOnCooldown(playerId)) {
-                this.plugin.sendMessage(player.getUniqueId(), MessageUtil.parse(this.configManager.getMessage("cooldown", "<red>You cannot answer this question as you've already tried recently.</red>")));
+            if(this.isOnCooldown(uuid)) {
+                this.plugin.sendMessage(uuid, MessageUtil.parse(this.configManager.getMessage("cooldown", "<red>You cannot answer this question as you've already tried recently.</red>")));
                 return true;
             }
 
-            this.endGameWin(player);
+            this.endGameWin(uuid);
             return true;
         }
 
@@ -90,7 +86,7 @@ public final class GameManager {
             final String lowerAnswer = answer.toLowerCase();
 
             if(this.activeGame.getAnswerOptions().contains(lowerAnswer)) {
-                this.wrongAnswerCooldowns.put(playerId, System.currentTimeMillis());
+                this.wrongAnswerCooldowns.put(uuid, System.currentTimeMillis());
                 return true;
             }
 
@@ -121,13 +117,13 @@ public final class GameManager {
     private void tryStartRandomGame() {
         if(this.activeGame != null) return;
 
-        final int onlinePlayers = Bukkit.getOnlinePlayers().size();
+        final int onlinePlayers = this.plugin.platform().getOnlinePlayers().size();
         if(onlinePlayers < this.configManager.getSettings().minimumPlayers()) return;
 
         this.gameRegistry.getRandomConfig().ifPresent(this::startGame);
     }
 
-    private void endGameWin(final Player winner) {
+    private void endGameWin(final UUID winner) {
         if(this.activeGame == null) {
             return;
         }

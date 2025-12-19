@@ -19,7 +19,7 @@ public class SpigotChatListener implements Listener {
     public void onPlayerChat(final AsyncPlayerChatEvent event) {
         if(this.gameManager.getActiveGame() == null) return;
 
-        if(this.gameManager.processAnswer(event.getPlayer(), event.getMessage())) {
+        if(this.gameManager.processAnswer(event.getPlayer().getUniqueId(), event.getMessage())) {
             event.setCancelled(true);
         }
     }

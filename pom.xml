@@ -14,6 +14,7 @@
         <module>common</module>
         <module>spigot</module>
         <module>paper</module>
+        <module>sponge</module>
     </modules>
 
 
@@ -34,6 +35,11 @@
         <repository>
             <id>papermc</id>
             <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
+        <repository>
+            <id>sponge-repo</id>
+            <name>Sponge Maven Repository</name>
+            <url>https://repo.spongepowered.org/repository/maven-public/</url>
         </repository>
         <repository>
             <id>placeholderapi</id>

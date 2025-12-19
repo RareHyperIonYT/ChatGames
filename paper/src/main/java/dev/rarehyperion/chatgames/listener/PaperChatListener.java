@@ -22,7 +22,7 @@ public class PaperChatListener implements Listener {
 
         final String message = MessageUtil.plainText(event.message());
 
-        if (this.gameManager.processAnswer(event.getPlayer(), message)) {
+        if (this.gameManager.processAnswer(event.getPlayer().getUniqueId(), message)) {
             event.setCancelled(true);
         }
     }

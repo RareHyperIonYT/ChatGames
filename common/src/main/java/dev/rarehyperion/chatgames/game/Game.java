@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface Game {
 
@@ -14,7 +15,7 @@ public interface Game {
 
     boolean checkAnswer(final String answer);
 
-    void onWin(final Player winner);
+    void onWin(final UUID winner);
     void onTimeout();
 
     Component getQuestion();

@@ -42,6 +42,8 @@ public interface Platform {
     File getDataFolder();
     InputStream getResource(final String resourcePath);
 
+    String playerName(final UUID uuid);
+
     default void onLoad() {}
     default void onEnable() {}
     default void onDisable() {}

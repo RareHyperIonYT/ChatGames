@@ -123,7 +123,7 @@ public class SpigotPlatform implements Platform {
     }
 
     @Override
-    public <T> T getConfigValue(String path, Class<T> type, T defaultValue) {
+    public <T> T getConfigValue(final String path, final Class<T> type, final T defaultValue) {
         if (!this.plugin.getConfig().contains(path)) {
             return defaultValue;
         }
@@ -161,6 +161,10 @@ public class SpigotPlatform implements Platform {
         return this.plugin.getResource(resourcePath);
     }
 
+    @Override
+    public String playerName(final UUID uuid) {
+        return Objects.requireNonNull(Bukkit.getPlayer(uuid)).getName();
+    }
 
     @Override
     public Logger getLogger() {

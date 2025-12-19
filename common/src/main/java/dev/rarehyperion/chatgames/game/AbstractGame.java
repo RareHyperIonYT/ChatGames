@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 public abstract class AbstractGame implements Game {
 
@@ -25,13 +26,15 @@ public abstract class AbstractGame implements Game {
     }
 
     @Override
-    public void onWin(final Player winner) {
-        final Component message = this.config.getWinMessage(winner.getName(), this.getCorrectAnswer().orElse(""));
+    public void onWin(final UUID winner) {
+        final String winnerName = this.plugin.platform().playerName(winner);
+
+        final Component message = this.config.getWinMessage(winnerName, this.getCorrectAnswer().orElse(""));
         this.plugin.broadcast(message);
 
         this.plugin.platform().runTask(() -> {
             for(final String command : this.config.getRewardCommands()) {
-                final String processed = command.replace("{player}", winner.getName());
+                final String processed = command.replace("{player}", winnerName);
                 this.plugin.platform().dispatchCommand(processed);
 //                this.plugin.platform().dispatchCommand(this.plugin.getServer().getConsoleSender(), processed);
             }
