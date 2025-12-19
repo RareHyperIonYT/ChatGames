@@ -1,5 +1,6 @@
 package dev.rarehyperion.chatgames.config;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.List;
@@ -50,7 +51,9 @@ public final class SpigotConfig implements Config {
 
     @Override
     public Config getConfigurationSection(final String path) {
-        return new SpigotConfigSection(this.delegate.getConfigurationSection(path));
+        final ConfigurationSection section = this.delegate.getConfigurationSection(path);
+        if(section == null) return null;
+        return new SpigotConfigSection(section);
     }
 
 }

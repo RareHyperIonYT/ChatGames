@@ -50,7 +50,9 @@ public final class PaperConfigSection implements Config {
 
     @Override
     public Config getConfigurationSection(final String path) {
-        return new PaperConfigSection(this.delegate.getConfigurationSection(path));
+        final ConfigurationSection section = this.delegate.getConfigurationSection(path);
+        if(section == null) return null;
+        return new PaperConfigSection(section);
     }
 
 }
