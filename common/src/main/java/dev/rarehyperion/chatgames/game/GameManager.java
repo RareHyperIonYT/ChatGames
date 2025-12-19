@@ -89,11 +89,13 @@ public final class GameManager {
             final String lowerAnswer = answer.toLowerCase();
 
             if(this.activeGame.getAnswerOptions().contains(lowerAnswer)) {
+                if(this.wrongAnswerCooldowns.containsKey(uuid)) {
+                    player.sendMessage(MessageUtil.parse(this.configManager.getMessage("cooldown", "<red>You cannot answer this question as you've already tried recently.</red>")));
+                }
+
                 this.wrongAnswerCooldowns.put(uuid, System.currentTimeMillis());
                 return true;
             }
-
-
         }
 
         return false;

@@ -1,31 +1,28 @@
-# Multiple Choice Game Configuration
-
 name: multiple choice
 display-name: "<green>Multiple Choice</green>"
 type: multiple-choice
 timeout: 45
-cooldown: 60  # Ticks to wait after wrong answer (60 ticks = 3 seconds)
+cooldown: 60 # Ticks to wait after wrong answer (60 ticks = 3 seconds)
 
 reward-commands:
   - "give {player} emerald 3"
 
 messages:
   start: |
-    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+    
     <green><bold>MULTIPLE CHOICE</bold></green>
     <gray>Type the correct letter!</gray>
-    <gray>Timeout: <yellow>{timeout}s</yellow></gray>
-    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+
   win: |
-    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+
     <green><bold>✓</bold> <yellow>{player}</yellow> chose correctly!</green>
     <gray>Answer: <white>{answer}</white></gray>
-    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+
   timeout: |
-    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+
     <red><bold>✗</bold> Nobody answered!</red>
     <gray>Correct: <white>{answer}</white></gray>
-    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+
 
 questions:
   q1:

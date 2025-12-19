@@ -1,6 +1,7 @@
 package dev.rarehyperion.chatgames.command;
 
 import dev.rarehyperion.chatgames.ChatGamesCore;
+import dev.rarehyperion.chatgames.config.ConfigManager;
 import dev.rarehyperion.chatgames.game.GameConfig;
 import dev.rarehyperion.chatgames.platform.PlatformSender;
 import dev.rarehyperion.chatgames.util.MessageUtil;
@@ -10,9 +11,11 @@ import java.util.Arrays;
 public class ChatGamesCommand {
 
     protected final ChatGamesCore plugin;
+    protected final ConfigManager configManager;
 
     public ChatGamesCommand(final ChatGamesCore plugin) {
         this.plugin = plugin;
+        this.configManager = plugin.configManager();
     }
 
     public boolean handleCommand(final PlatformSender sender, final String[] args) {
@@ -40,18 +43,26 @@ public class ChatGamesCommand {
 
     private boolean handleReload(final PlatformSender sender) {
         if(!sender.hasPermission("Chatgames.reload")) {
-            sender.sendMessage(MessageUtil.parse("<red>You don't have permission to use this command.</red>"));
+            sender.sendMessage(MessageUtil.parse(
+                    this.configManager.getMessage("permission", "<red>You don't have permission to use this command.</red>")
+            ));
             return true;
         }
 
         this.plugin.reload();
-        sender.sendMessage(MessageUtil.parse("<green>Successfully reloaded ChatGames!</green>"));
+
+        sender.sendMessage(MessageUtil.parse(
+                this.configManager.getMessage("reload", "<green>Successfully reloaded ChatGames!</green>")
+        ));
+
         return true;
     }
 
     private boolean handleStart(final PlatformSender sender, final String[] args) {
         if(!sender.hasPermission("Chatgames.reload")) {
-            sender.sendMessage(MessageUtil.parse("<red>You don't have permission to use this command.</red>"));
+            sender.sendMessage(MessageUtil.parse(
+                    this.configManager.getMessage("permission", "<red>You don't have permission to use this command.</red>")
+            ));
             return true;
         }
 
@@ -74,7 +85,9 @@ public class ChatGamesCommand {
 
     private boolean handleStop(final PlatformSender sender) {
         if (!sender.hasPermission("chatgames.stop")) {
-            sender.sendMessage(MessageUtil.parse("<red>You don't have permission to use this command.</red>"));
+            sender.sendMessage(MessageUtil.parse(
+                    this.configManager.getMessage("permission", "<red>You don't have permission to use this command.</red>")
+            ));
             return true;
         }
 
@@ -85,7 +98,9 @@ public class ChatGamesCommand {
 
     private boolean handleList(final PlatformSender sender) {
         if (!sender.hasPermission("chatgames.list")) {
-            sender.sendMessage(MessageUtil.parse("<red>You don't have permission to use this command.</red>"));
+            sender.sendMessage(MessageUtil.parse(
+                    this.configManager.getMessage("permission", "<red>You don't have permission to use this command.</red>")
+            ));
             return true;
         }
 
@@ -109,7 +124,9 @@ public class ChatGamesCommand {
 
     private boolean handleToggle(final PlatformSender sender) {
         if (!sender.hasPermission("chatgames.toggle")) {
-            sender.sendMessage(MessageUtil.parse("<red>You don't have permission to use this command.</red>"));
+            sender.sendMessage(MessageUtil.parse(
+                    this.configManager.getMessage("permission", "<red>You don't have permission to use this command.</red>")
+            ));
             return true;
         }
 

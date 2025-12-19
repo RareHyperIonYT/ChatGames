@@ -1,5 +1,3 @@
-# Unscramble Game Configuration
-
 name: unscramble
 display-name: "<light_purple>Word Scramble</light_purple>"
 type: unscramble
@@ -10,21 +8,18 @@ reward-commands:
 
 messages:
   start: |
-    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
     <light_purple><bold>WORD SCRAMBLE</bold></light_purple>
     <gray>Unscramble the word!</gray>
-    <gray>Timeout: <yellow>{timeout}s</yellow></gray>
-    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+
   win: |
-    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+
     <green><bold>✓</bold> <yellow>{player}</yellow> unscrambled it!</green>
     <gray>Word: <white>{answer}</white></gray>
-    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+
   timeout: |
-    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+
     <red><bold>✗</bold> Time ran out!</red>
     <gray>Word: <white>{answer}</white></gray>
-    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
 
 questions:
   - ["<yellow>TANESRIPHO</yellow>", "SMARTPHONE"]

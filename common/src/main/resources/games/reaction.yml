@@ -1,5 +1,3 @@
-# Reaction Game Configuration
-
 name: reaction
 display-name: "<red>Reaction Test</red>"
 type: reaction
@@ -10,19 +8,18 @@ reward-commands:
 
 messages:
   start: |
-    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+    
     <red><bold>REACTION TEST</bold></red>
     <gray>Be the first to respond!</gray>
-    <gray>Timeout: <yellow>{timeout}s</yellow></gray>
-    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+
   win: |
-    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+
     <green><bold>✓</bold> <yellow>{player}</yellow> was fastest!</green>
-    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+
   timeout: |
-    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+
     <red><bold>✗</bold> Nobody reacted in time!</red>
-    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+    
 
 # Variants allow different reaction challenges
 # If answer is empty string "", any message wins (fastest typer)

@@ -1,35 +1,28 @@
-# Math Game Configuration
-
 name: math
 display-name: "<gold>Math Wizard</gold>"
 type: math
 timeout: 60
 
-# Commands to execute when someone wins (use {player} as placeholder)
 reward-commands:
   - "give {player} diamond 1"
-  - "broadcast &6{player} solved the math problem!"
 
-# Game messages (supports MiniMessage and legacy color codes)
 messages:
   start: |
-    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+
     <gold><bold>MATH WIZARD</bold></gold>
     <gray>Solve the equation below!</gray>
-    <gray>Timeout: <yellow>{timeout}s</yellow></gray>
-    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+
   win: |
-    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+
     <green><bold>✓</bold> <yellow>{player}</yellow> solved it!</green>
     <gray>Answer: <white>{answer}</white></gray>
-    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+
   timeout: |
-    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
+
     <red><bold>✗</bold> Time's up!</red>
     <gray>Answer: <white>{answer}</white></gray>
-    <dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</dark_gray>
 
-# Questions format: [question, answer]
+
 questions:
   - ["<yellow>12 + 8 = ?</yellow>", "20"]
   - ["<yellow>25 - 7 = ?</yellow>", "18"]

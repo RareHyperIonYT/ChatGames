@@ -33,7 +33,6 @@ public abstract class AbstractGame implements Game {
             for(final String command : this.config.getRewardCommands()) {
                 final String processed = command.replace("{player}", winner.name());
                 this.plugin.platform().dispatchCommand(processed);
-//                this.plugin.platform().dispatchCommand(this.plugin.getServer().getConsoleSender(), processed);
             }
         });
     }
