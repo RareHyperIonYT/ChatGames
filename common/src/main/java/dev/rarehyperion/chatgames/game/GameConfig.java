@@ -82,7 +82,6 @@ public final class GameConfig {
 
         for(final String key : section.getKeys(false)) {
             final Config questionSection = section.getConfigurationSection(key);
-            System.out.println("KEY: " + key);
             if(questionSection == null) continue;
 
             result.add(new MultipleChoiceQuestion(

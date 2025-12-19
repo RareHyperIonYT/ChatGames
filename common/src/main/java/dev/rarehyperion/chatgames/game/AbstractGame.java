@@ -54,7 +54,6 @@ public abstract class AbstractGame implements Game {
     }
 
     protected <T> T selectRandom(final List<T> list) {
-        this.plugin.platform().getLogger().info("Size: " + list.size() + ", Contents: " + list);
         return list.get(new Random().nextInt(list.size()));
     }
 
