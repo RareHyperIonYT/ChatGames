@@ -9,10 +9,7 @@ import org.spongepowered.api.command.Command;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.lifecycle.RegisterCommandEvent;
-import org.spongepowered.api.event.lifecycle.StartedEngineEvent;
-import org.spongepowered.api.event.lifecycle.StartingEngineEvent;
-import org.spongepowered.api.event.lifecycle.StoppingEngineEvent;
+import org.spongepowered.api.event.lifecycle.*;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.loader.ConfigurationLoader;
 import org.spongepowered.plugin.PluginContainer;
@@ -37,14 +34,18 @@ public class ChatGamesSponge {
     private ChatGamesCore core;
 
     @Listener
-    public void onServerLoad(final StartingEngineEvent<Server> event) {
+    public void onConstruct(final ConstructPluginEvent event) {
         this.core = new ChatGamesCore(new SpongePlatform(this.container, this.logger, this.configPath, this.configLoader, this.privateConfigDir));
+    }
+
+    @Listener
+    public void onServerLoad(final StartingEngineEvent<Server> event) {
         this.core.load();
     }
 
     @Listener
     public void onRegisterCommands(final RegisterCommandEvent<Command.Parameterized> event) {
-        event.register(this.container, new SpongeChatGamesCommand(core).build(), "chatgames", "chatgame", "cg");
+        event.register(this.container, new SpongeChatGamesCommand(this.core).build(), "chatgames", "chatgame", "cg");
     }
 
     @Listener

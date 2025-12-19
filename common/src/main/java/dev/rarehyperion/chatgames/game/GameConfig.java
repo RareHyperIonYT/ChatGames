@@ -1,9 +1,8 @@
 package dev.rarehyperion.chatgames.game;
 
+import dev.rarehyperion.chatgames.config.Config;
 import dev.rarehyperion.chatgames.util.MessageUtil;
 import net.kyori.adventure.text.Component;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +24,7 @@ public final class GameConfig {
     private final List<ReactionVariant> reactionVariants;
     private final List<MultipleChoiceQuestion> multipleChoiceQuestions;
 
-    public GameConfig(final FileConfiguration configuration) {
+    public GameConfig(final Config configuration) {
         this.name = configuration.getString("name", "Unknown");
         this.displayName = configuration.getString("display-name", this.name);
 
@@ -77,12 +76,13 @@ public final class GameConfig {
         return result;
     }
 
-    private List<MultipleChoiceQuestion> loadMultipleChoiceQuestions(final ConfigurationSection section) {
+    private List<MultipleChoiceQuestion> loadMultipleChoiceQuestions(final Config section) {
         final List<MultipleChoiceQuestion> result = new ArrayList<>();
         if(section == null) return result;
 
         for(final String key : section.getKeys(false)) {
-            final ConfigurationSection questionSection = section.getConfigurationSection(key);
+            final Config questionSection = section.getConfigurationSection(key);
+            System.out.println("KEY: " + key);
             if(questionSection == null) continue;
 
             result.add(new MultipleChoiceQuestion(

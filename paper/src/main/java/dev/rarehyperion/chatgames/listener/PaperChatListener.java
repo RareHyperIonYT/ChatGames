@@ -1,6 +1,7 @@
 package dev.rarehyperion.chatgames.listener;
 
 import dev.rarehyperion.chatgames.game.GameManager;
+import dev.rarehyperion.chatgames.platform.impl.PaperPlatformPlayer;
 import dev.rarehyperion.chatgames.util.MessageUtil;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import org.bukkit.event.EventHandler;
@@ -22,7 +23,7 @@ public class PaperChatListener implements Listener {
 
         final String message = MessageUtil.plainText(event.message());
 
-        if (this.gameManager.processAnswer(event.getPlayer().getUniqueId(), message)) {
+        if (this.gameManager.processAnswer(new PaperPlatformPlayer(event.getPlayer()), message)) {
             event.setCancelled(true);
         }
     }

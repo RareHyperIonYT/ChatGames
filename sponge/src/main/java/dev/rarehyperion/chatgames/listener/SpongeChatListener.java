@@ -1,8 +1,11 @@
 package dev.rarehyperion.chatgames.listener;
 
 import dev.rarehyperion.chatgames.game.GameManager;
+import dev.rarehyperion.chatgames.platform.impl.SpongePlatformPlayer;
 import dev.rarehyperion.chatgames.util.MessageUtil;
+import net.kyori.adventure.text.Component;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.event.Cancellable;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.event.message.PlayerChatEvent;
@@ -21,8 +24,14 @@ public class SpongeChatListener {
 
         final String message = MessageUtil.plainText(event.message());
 
-        if(this.gameManager.processAnswer(player.uniqueId(), message)) {
-            event.setCancelled(true);
+        if(this.gameManager.processAnswer(new SpongePlatformPlayer(player), message)) {
+            // On the server version I was testing the plugin on, the event isn't cancellable.
+            // I am on the latest API Version from Maven. Sponge is... special.
+            // I've never seen something so dysfunctional, and awful to work with.
+            // spongevanilla-1.21.10-17.0.0-RC2468-universal
+            if(event instanceof Cancellable cancellable) {
+                cancellable.setCancelled(true);
+            }
         }
     }
 

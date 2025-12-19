@@ -1,7 +1,8 @@
 package dev.rarehyperion.chatgames.platform.impl;
 
 import dev.rarehyperion.chatgames.ChatGamesCore;
-import dev.rarehyperion.chatgames.command.SpongeChatGamesCommand;
+import dev.rarehyperion.chatgames.config.Config;
+import dev.rarehyperion.chatgames.config.SpongeConfig;
 import dev.rarehyperion.chatgames.listener.SpongeChatListener;
 import dev.rarehyperion.chatgames.platform.Platform;
 import dev.rarehyperion.chatgames.platform.PlatformPluginMeta;
@@ -13,8 +14,12 @@ import org.spongepowered.api.Sponge;
 import org.spongepowered.api.scheduler.ScheduledTask;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.util.Identifiable;
+import org.spongepowered.api.util.Ticks;
 import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.spongepowered.configurate.ConfigurateException;
+import org.spongepowered.configurate.ConfigurationOptions;
 import org.spongepowered.configurate.loader.ConfigurationLoader;
+import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 import org.spongepowered.plugin.PluginContainer;
 
 import java.io.File;
@@ -23,9 +28,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.EventListener;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 public class SpongePlatform implements Platform {
 
@@ -60,17 +63,9 @@ public class SpongePlatform implements Platform {
     }
 
     @Override
-    public void sendMessage(final UUID recipientUuid, final Component component) {
-        Sponge.server().player(recipientUuid).ifPresent(player -> player.sendMessage(component));
-    }
-
-    @Override
     public void broadcast(final Component component) {
         Sponge.server().onlinePlayers().forEach(player -> player.sendMessage(component));
     }
-
-    @Override
-    public void sendConsole(final Component component) {}
 
     @Override
     public void dispatchCommand(final String command) {
@@ -97,9 +92,10 @@ public class SpongePlatform implements Platform {
     }
 
     @Override
-    public PlatformTask runTask(Runnable runnable) {
+    public PlatformTask runTask(final Runnable runnable) {
         final ScheduledTask scheduledTask = Sponge.server().scheduler().submit(
                 Task.builder()
+                        .plugin(this.container)
                         .execute(runnable)
                         .build()
         );
@@ -107,33 +103,25 @@ public class SpongePlatform implements Platform {
     }
 
     @Override
-    public PlatformTask runTaskLater(Runnable runnable, long delay) {
+    public PlatformTask runTaskLater(final Runnable runnable, final long delay) {
         final ScheduledTask scheduledTask = Sponge.server().scheduler().submit(
                 Task.builder()
+                        .plugin(this.container)
                         .execute(runnable)
-                        .delay(delay, TimeUnit.MILLISECONDS)
+                        .delay(Ticks.of(delay)) // must use ticks, otherwise timing is incorrect for some reason.
                         .build()
         );
         return new SpongePlatformTask(scheduledTask);
     }
 
     @Override
-    public PlatformTask runTaskTimer(Runnable runnable, long initialDelay, long periodTicks) {
+    public PlatformTask runTaskTimer(final Runnable runnable, final long initialDelay, final long periodTicks) {
         final ScheduledTask scheduledTask = Sponge.server().scheduler().submit(
                 Task.builder()
+                        .plugin(this.container)
                         .execute(runnable)
-                        .delay(initialDelay, TimeUnit.MILLISECONDS)
-                        .interval(periodTicks, TimeUnit.MILLISECONDS)
-                        .build()
-        );
-        return new SpongePlatformTask(scheduledTask);
-    }
-
-    @Override
-    public PlatformTask runTaskAsync(Runnable runnable) {
-        final ScheduledTask scheduledTask = Sponge.server().scheduler().submit(
-                Task.builder()
-                        .execute(runnable)
+                        .delay(Ticks.of(initialDelay)) // must use ticks, otherwise timing is incorrect for some reason.
+                        .interval(Ticks.of(periodTicks)) // must use ticks, otherwise timing is incorrect for some reason.
                         .build()
         );
         return new SpongePlatformTask(scheduledTask);
@@ -155,7 +143,7 @@ public class SpongePlatform implements Platform {
                 }
             }
 
-            this.configLoader.load();
+            this.rootNode = this.configLoader.load();
         } catch (final IOException exception) {
             this.logger.warn("Failed to save/load default config", exception);
         }
@@ -210,6 +198,16 @@ public class SpongePlatform implements Platform {
     }
 
     @Override
+    public Config loadConfig(final File file) {
+        try {
+            final CommentedConfigurationNode node = YamlConfigurationLoader.builder().file(file).build().load(ConfigurationOptions.defaults());
+            return new SpongeConfig(node);
+        } catch (final ConfigurateException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
+    @Override
     public File getDataFolder() {
         try {
             Files.createDirectories(this.privateConfigDir);
@@ -225,11 +223,6 @@ public class SpongePlatform implements Platform {
         final InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourcePath);
         if (inputStream == null) this.logger.warn("Resource {} not found in JAR", resourcePath);
         return inputStream;
-    }
-
-    @Override
-    public String playerName(UUID uuid) {
-        return Sponge.server().player(uuid).get().name();
     }
 
     @Override

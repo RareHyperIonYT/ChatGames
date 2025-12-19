@@ -1,14 +1,19 @@
 package dev.rarehyperion.chatgames.command;
 
 import dev.rarehyperion.chatgames.ChatGamesCore;
+import dev.rarehyperion.chatgames.game.GameConfig;
 import dev.rarehyperion.chatgames.platform.PlatformSender;
 import net.kyori.adventure.text.Component;
 import org.spongepowered.api.command.Command;
+import org.spongepowered.api.command.CommandCompletion;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.parameter.Parameter;
 import org.spongepowered.api.entity.living.player.Player;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class SpongeChatGamesCommand extends ChatGamesCommand {
 
@@ -43,7 +48,22 @@ public class SpongeChatGamesCommand extends ChatGamesCommand {
     }
 
     private Command.Parameterized startCommand() {
-        Parameter.Value<String> gameParam = Parameter.string().key("game").build();
+        Parameter.Value<String> gameParam = Parameter.remainingJoinedStrings()
+                .key("game")
+                .completer((context, string) -> {
+                    if (context.hasPermission("chatgames.start")) {
+                        final String partial = string.toLowerCase();
+
+                        return this.plugin.gameRegistry().getAllConfigs().stream()
+                                .map(GameConfig::getName).filter(Objects::nonNull)
+                                .filter(name -> name.toLowerCase().startsWith(partial))
+                                .map(CommandCompletion::of)
+                                .collect(Collectors.toList());
+                    }
+
+                    return List.of();
+                })
+                .build();
 
         return Command.builder()
                 .addParameter(gameParam)

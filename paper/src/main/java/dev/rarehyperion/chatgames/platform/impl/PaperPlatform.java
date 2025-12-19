@@ -3,6 +3,8 @@ package dev.rarehyperion.chatgames.platform.impl;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import dev.rarehyperion.chatgames.ChatGamesCore;
 import dev.rarehyperion.chatgames.command.PaperChatGamesCommand;
+import dev.rarehyperion.chatgames.config.Config;
+import dev.rarehyperion.chatgames.config.PaperConfig;
 import dev.rarehyperion.chatgames.listener.PaperChatListener;
 import dev.rarehyperion.chatgames.platform.Platform;
 import dev.rarehyperion.chatgames.platform.PlatformSender;
@@ -14,6 +16,7 @@ import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -21,7 +24,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.InputStream;
 import java.util.Collection;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -45,19 +47,9 @@ public class PaperPlatform implements Platform {
     }
 
     @Override
-    public void sendMessage(final UUID recipientUuid, final Component component) {
-        final Player player = this.plugin.getServer().getPlayer(recipientUuid);
-        if(player == null) throw new IllegalStateException("Unable to find player matching uuid: " + recipientUuid);
-        player.sendMessage(component);
-    }
-
-    @Override
     public void broadcast(final Component component) {
         Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(component));
     }
-
-    @Override
-    public void sendConsole(Component component) {}
 
     @Override
     public void dispatchCommand(final String command) {
@@ -102,11 +94,6 @@ public class PaperPlatform implements Platform {
     }
 
     @Override
-    public PlatformTask runTaskAsync(final Runnable task) {
-        return new PaperPlatformTask(Bukkit.getScheduler().runTaskAsynchronously(this.plugin, task));
-    }
-
-    @Override
     public PlatformTask runTaskLater(final Runnable task, final long ticks) {
         return new PaperPlatformTask(Bukkit.getScheduler().runTaskLater(this.plugin, task, ticks));
     }
@@ -136,7 +123,7 @@ public class PaperPlatform implements Platform {
     }
 
     @Override
-    public <T> T getConfigValue(String path, Class<T> type, T defaultValue) {
+    public <T> T getConfigValue(final String path, final Class<T> type, final T defaultValue) {
         if (!this.plugin.getConfig().contains(path)) {
             return defaultValue;
         }
@@ -160,6 +147,11 @@ public class PaperPlatform implements Platform {
     }
 
     @Override
+    public Config loadConfig(final File file) {
+        return new PaperConfig(YamlConfiguration.loadConfiguration(file));
+    }
+
+    @Override
     public void saveConfig() {
         this.plugin.saveConfig();
     }
@@ -172,11 +164,6 @@ public class PaperPlatform implements Platform {
     @Override
     public InputStream getResource(final String resourcePath) {
         return this.plugin.getResource(resourcePath);
-    }
-
-    @Override
-    public String playerName(final UUID uuid) {
-        return Objects.requireNonNull(Bukkit.getPlayer(uuid)).getName();
     }
 
     @Override

@@ -1,12 +1,11 @@
 package dev.rarehyperion.chatgames.game;
 
 import dev.rarehyperion.chatgames.ChatGamesCore;
+import dev.rarehyperion.chatgames.platform.PlatformPlayer;
 import net.kyori.adventure.text.Component;
-import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
 public abstract class AbstractGame implements Game {
 
@@ -26,15 +25,13 @@ public abstract class AbstractGame implements Game {
     }
 
     @Override
-    public void onWin(final UUID winner) {
-        final String winnerName = this.plugin.platform().playerName(winner);
-
-        final Component message = this.config.getWinMessage(winnerName, this.getCorrectAnswer().orElse(""));
+    public void onWin(final PlatformPlayer winner) {
+        final Component message = this.config.getWinMessage(winner.name(), this.getCorrectAnswer().orElse(""));
         this.plugin.broadcast(message);
 
         this.plugin.platform().runTask(() -> {
             for(final String command : this.config.getRewardCommands()) {
-                final String processed = command.replace("{player}", winnerName);
+                final String processed = command.replace("{player}", winner.name());
                 this.plugin.platform().dispatchCommand(processed);
 //                this.plugin.platform().dispatchCommand(this.plugin.getServer().getConsoleSender(), processed);
             }
@@ -56,7 +53,8 @@ public abstract class AbstractGame implements Game {
         return this.config.getStartMessage(this.getQuestion());
     }
 
-    protected  <T> T selectRandom(List<T> list) {
+    protected <T> T selectRandom(final List<T> list) {
+        this.plugin.platform().getLogger().info("Size: " + list.size() + ", Contents: " + list);
         return list.get(new Random().nextInt(list.size()));
     }
 

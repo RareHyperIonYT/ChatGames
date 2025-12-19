@@ -2,6 +2,7 @@ package dev.rarehyperion.chatgames.game;
 
 import dev.rarehyperion.chatgames.ChatGamesCore;
 import dev.rarehyperion.chatgames.config.ConfigManager;
+import dev.rarehyperion.chatgames.platform.PlatformPlayer;
 import dev.rarehyperion.chatgames.platform.PlatformTask;
 import dev.rarehyperion.chatgames.util.MessageUtil;
 
@@ -67,18 +68,20 @@ public final class GameManager {
         }
     }
 
-    public boolean processAnswer(final UUID uuid, final String answer) {
+    public boolean processAnswer(final PlatformPlayer player, final String answer) {
         if(this.activeGame == null) {
             return false;
         }
 
+        final UUID uuid = player.id();
+
         if(this.activeGame.checkAnswer(answer)) {
             if(this.isOnCooldown(uuid)) {
-                this.plugin.sendMessage(uuid, MessageUtil.parse(this.configManager.getMessage("cooldown", "<red>You cannot answer this question as you've already tried recently.</red>")));
+                player.sendMessage(MessageUtil.parse(this.configManager.getMessage("cooldown", "<red>You cannot answer this question as you've already tried recently.</red>")));
                 return true;
             }
 
-            this.endGameWin(uuid);
+            this.endGameWin(player);
             return true;
         }
 
@@ -123,7 +126,7 @@ public final class GameManager {
         this.gameRegistry.getRandomConfig().ifPresent(this::startGame);
     }
 
-    private void endGameWin(final UUID winner) {
+    private void endGameWin(final PlatformPlayer winner) {
         if(this.activeGame == null) {
             return;
         }

@@ -59,10 +59,6 @@ public final class ChatGamesCore {
         this.platform.getLogger().info("ChatGames reloaded successfully");
     }
 
-    public void sendMessage(final UUID uuid, final Component component) {
-        this.platform.sendMessage(uuid, component);
-    }
-
     public void broadcast(final Component component) {
         this.platform.broadcast(component);
     }

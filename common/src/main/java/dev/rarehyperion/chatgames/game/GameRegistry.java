@@ -2,7 +2,6 @@ package dev.rarehyperion.chatgames.game;
 
 import dev.rarehyperion.chatgames.ChatGamesCore;
 import dev.rarehyperion.chatgames.game.types.*;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,7 +50,7 @@ public final class GameRegistry {
 
         for(final File file : gameFiles) {
             try {
-                final GameConfig config = new GameConfig(YamlConfiguration.loadConfiguration(file));
+                final GameConfig config = new GameConfig(this.plugin.platform().loadConfig(file));
 
                 if(config.getType() != null) {
                     this.gameConfigs.add(config);

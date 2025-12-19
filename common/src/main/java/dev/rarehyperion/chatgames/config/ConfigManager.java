@@ -1,8 +1,6 @@
 package dev.rarehyperion.chatgames.config;
 
 import dev.rarehyperion.chatgames.platform.Platform;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,10 +50,10 @@ public final class ConfigManager {
             }
         }
 
-        final FileConfiguration langConfig = YamlConfiguration.loadConfiguration(languageFile);
+        final Config langConfig = this.plugin.loadConfig(languageFile);
 
         for(final String key : langConfig.getKeys(false)) {
-            this.messages.put(key, langConfig.getString(key));
+            this.messages.put(key, langConfig.getString(key, "<red>Failed to fetch message from language!</red>"));
         }
 
         this.plugin.getLogger().info("Loaded language: " + languageCode.toUpperCase());

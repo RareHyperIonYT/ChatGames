@@ -1,11 +1,10 @@
 package dev.rarehyperion.chatgames.game;
 
+import dev.rarehyperion.chatgames.platform.PlatformPlayer;
 import net.kyori.adventure.text.Component;
-import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 public interface Game {
 
@@ -15,7 +14,7 @@ public interface Game {
 
     boolean checkAnswer(final String answer);
 
-    void onWin(final UUID winner);
+    void onWin(final PlatformPlayer winner);
     void onTimeout();
 
     Component getQuestion();

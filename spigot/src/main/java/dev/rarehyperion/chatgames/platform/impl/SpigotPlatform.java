@@ -2,6 +2,8 @@ package dev.rarehyperion.chatgames.platform.impl;
 
 import dev.rarehyperion.chatgames.ChatGamesCore;
 import dev.rarehyperion.chatgames.command.SpigotChatGamesCommand;
+import dev.rarehyperion.chatgames.config.Config;
+import dev.rarehyperion.chatgames.config.SpigotConfig;
 import dev.rarehyperion.chatgames.listener.SpigotChatListener;
 import dev.rarehyperion.chatgames.platform.Platform;
 import dev.rarehyperion.chatgames.platform.PlatformPluginMeta;
@@ -11,8 +13,8 @@ import dev.rarehyperion.chatgames.util.MessageUtil;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -41,21 +43,10 @@ public class SpigotPlatform implements Platform {
     }
 
     @Override
-    public void sendMessage(final UUID recipientUuid, final Component component) {
-        final String legacy = MessageUtil.serialize(component);
-        final Player player = this.plugin.getServer().getPlayer(recipientUuid);
-        if(player == null) throw new IllegalStateException("Unable to find player matching uuid: " + recipientUuid);
-        player.sendMessage(legacy);
-    }
-
-    @Override
     public void broadcast(final Component component) {
         final String legacy = MessageUtil.serialize(component);
         Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(legacy));
     }
-
-    @Override
-    public void sendConsole(final Component component) {}
 
     @Override
     public void dispatchCommand(String command) {}
@@ -86,11 +77,6 @@ public class SpigotPlatform implements Platform {
     @Override
     public PlatformTask runTask(final Runnable task) {
         return new SpigotPlatformTask(Bukkit.getScheduler().runTask(this.plugin, task));
-    }
-
-    @Override
-    public PlatformTask runTaskAsync(final Runnable task) {
-        return new SpigotPlatformTask(Bukkit.getScheduler().runTaskAsynchronously(this.plugin, task));
     }
 
     @Override
@@ -147,6 +133,11 @@ public class SpigotPlatform implements Platform {
     }
 
     @Override
+    public Config loadConfig(final File file) {
+        return new SpigotConfig(YamlConfiguration.loadConfiguration(file));
+    }
+
+    @Override
     public void saveConfig() {
         this.plugin.saveConfig();
     }
@@ -159,11 +150,6 @@ public class SpigotPlatform implements Platform {
     @Override
     public InputStream getResource(final String resourcePath) {
         return this.plugin.getResource(resourcePath);
-    }
-
-    @Override
-    public String playerName(final UUID uuid) {
-        return Objects.requireNonNull(Bukkit.getPlayer(uuid)).getName();
     }
 
     @Override

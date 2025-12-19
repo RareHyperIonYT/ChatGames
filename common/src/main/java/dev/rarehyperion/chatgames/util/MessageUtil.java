@@ -1,12 +1,11 @@
 package dev.rarehyperion.chatgames.util;
 
+import dev.rarehyperion.chatgames.platform.PlatformPlayer;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 import java.util.regex.Pattern;
 
@@ -16,7 +15,7 @@ public final class MessageUtil {
     private static final PlainTextComponentSerializer PLAIN_SERIALIZER = PlainTextComponentSerializer.plainText();
     private static final LegacyComponentSerializer LEGACY_SERIALIZER = LegacyComponentSerializer.legacySection();
 
-    private static final boolean PLACEHOLDER_API_ENABLED = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
+//    private static final boolean PLACEHOLDER_API_ENABLED = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
 
     private static final Pattern HEX_PATTERN = Pattern.compile("&#([0-9a-fA-F]{6})");
 
@@ -26,12 +25,12 @@ public final class MessageUtil {
         return parse(text, null);
     }
 
-    public static Component parse(final String text, final Player player) {
+    public static Component parse(final String text, final PlatformPlayer player) {
         String processed = text;
 
-        if(PLACEHOLDER_API_ENABLED && player != null) {
-            processed = PlaceholderAPI.setPlaceholders(player, processed);
-        }
+//        if(PLACEHOLDER_API_ENABLED && player != null) {
+//            processed = PlaceholderAPI.setPlaceholders(player, processed);
+//        }
 
         processed = convertLegacyToMiniMessage(processed);
 
