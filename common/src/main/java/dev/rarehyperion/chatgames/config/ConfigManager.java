@@ -71,7 +71,7 @@ public final class ConfigManager {
                 Files.copy(stream, output.toPath());
             }
         } catch (final IOException e) {
-            this.plugin.getLogger().severe("Failed to save resource: " + resourcePath);
+            this.plugin.getLogger().error("Failed to save resource: " + resourcePath);
         }
     }
 

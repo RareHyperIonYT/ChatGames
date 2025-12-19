@@ -44,7 +44,7 @@ public final class GameRegistry {
         final File[] gameFiles = gamesFolder.listFiles((dir, name) -> name.endsWith(".yml"));
 
         if(gameFiles == null || gameFiles.length == 0) {
-            this.plugin.platform().getLogger().warning("No game configurations were found!");
+            this.plugin.platform().getLogger().warn("No game configurations were found!");
             return;
         }
 
@@ -55,10 +55,10 @@ public final class GameRegistry {
                 if(config.getType() != null) {
                     this.gameConfigs.add(config);
                 } else {
-                    this.plugin.platform().getLogger().warning("Invalid game type in: " + file.getName());
+                    this.plugin.platform().getLogger().warn("Invalid game type in: " + file.getName());
                 }
             } catch (final Exception exception) {
-                this.plugin.platform().getLogger().severe("Failed to load game: " + file.getName());
+                this.plugin.platform().getLogger().error("Failed to load game: " + file.getName());
                 exception.printStackTrace(System.err);
             }
         }
@@ -113,7 +113,7 @@ public final class GameRegistry {
                 Files.copy(stream, output.toPath());
             }
         } catch (final IOException e) {
-            this.plugin.platform().getLogger().severe("Failed to save resource: " + resourcePath);
+            this.plugin.platform().getLogger().error("Failed to save resource: " + resourcePath);
         }
     }
 

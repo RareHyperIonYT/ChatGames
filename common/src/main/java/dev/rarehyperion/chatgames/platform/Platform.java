@@ -46,6 +46,6 @@ public interface Platform {
     default void onEnable() {}
     default void onDisable() {}
 
-    Logger getLogger();
+    PlatformLogger getLogger();
 
 }

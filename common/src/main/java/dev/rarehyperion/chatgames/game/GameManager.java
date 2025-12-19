@@ -38,7 +38,7 @@ public final class GameManager {
 
     public void startGame(final GameConfig config) {
         if(this.activeGame != null) {
-            this.plugin.platform().getLogger().warning("Cannot start game - one is already active!");
+            this.plugin.platform().getLogger().warn("Cannot start game - one is already active!");
             return;
         }
 
@@ -54,7 +54,7 @@ public final class GameManager {
                 this.plugin.platform().getLogger().info("Started game: " + config.getName());
             }
         } catch (final Exception exception) {
-            this.plugin.platform().getLogger().severe("Failed to start game: " + config.getName());
+            this.plugin.platform().getLogger().error("Failed to start game: " + config.getName());
             exception.printStackTrace(System.err);
             this.activeGame = null;
         }

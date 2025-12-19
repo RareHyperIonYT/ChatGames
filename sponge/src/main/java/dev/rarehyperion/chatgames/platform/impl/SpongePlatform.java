@@ -4,10 +4,7 @@ import dev.rarehyperion.chatgames.ChatGamesCore;
 import dev.rarehyperion.chatgames.config.Config;
 import dev.rarehyperion.chatgames.config.SpongeConfig;
 import dev.rarehyperion.chatgames.listener.SpongeChatListener;
-import dev.rarehyperion.chatgames.platform.Platform;
-import dev.rarehyperion.chatgames.platform.PlatformPluginMeta;
-import dev.rarehyperion.chatgames.platform.PlatformSender;
-import dev.rarehyperion.chatgames.platform.PlatformTask;
+import dev.rarehyperion.chatgames.platform.*;
 import net.kyori.adventure.text.Component;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.api.Sponge;
@@ -33,7 +30,7 @@ import java.util.UUID;
 public class SpongePlatform implements Platform {
 
     private final PluginContainer container;
-    private final Logger logger;
+    private final PlatformLogger logger;
     private final PlatformPluginMeta meta;
 
     private final Path defaultConfigPath;
@@ -44,7 +41,7 @@ public class SpongePlatform implements Platform {
 
     public SpongePlatform(final PluginContainer container, final Logger logger, final Path defaultConfigPath, final ConfigurationLoader<CommentedConfigurationNode> configLoader, final Path privateConfigDir) {
         this.container = container;
-        this.logger = logger;
+        this.logger = new SpongePlatformLogger(logger);
         this.meta = new SpongePluginMeta(container.metadata());
 
         this.defaultConfigPath = defaultConfigPath;
@@ -72,7 +69,7 @@ public class SpongePlatform implements Platform {
         try {
             Sponge.server().commandManager().process(command);
         } catch (final Exception exception) {
-            this.logger.warn("Failed to dispatch command '{}': {}", command, exception.getMessage());
+            this.logger.warn("Failed to dispatch command: '" + command + "': " + exception.getMessage());
         }
     }
 
@@ -136,7 +133,7 @@ public class SpongePlatform implements Platform {
                 try (final InputStream in = getClass().getClassLoader().getResourceAsStream("config.yml")) {
                     if (in != null) {
                         Files.copy(in, this.defaultConfigPath);
-                        this.logger.info("Default config.yml copied to {}", this.defaultConfigPath);
+                        this.logger.info("Default config.yml copied to " + this.defaultConfigPath);
                     } else {
                         this.logger.warn("config.yml not found in JAR!");
                     }
@@ -145,7 +142,8 @@ public class SpongePlatform implements Platform {
 
             this.rootNode = this.configLoader.load();
         } catch (final IOException exception) {
-            this.logger.warn("Failed to save/load default config", exception);
+            this.logger.warn("Failed to save/load default config");
+            exception.printStackTrace(System.err);
         }
     }
 
@@ -157,8 +155,9 @@ public class SpongePlatform implements Platform {
             }
 
             this.rootNode = this.configLoader.load();
-        } catch (IOException e) {
-            logger.warn("Failed to reload config", e);
+        } catch (final IOException exception) {
+            this.logger.warn("Failed to reload config");
+            exception.printStackTrace(System.err);
         }
     }
 
@@ -174,7 +173,7 @@ public class SpongePlatform implements Platform {
             final T value = this.rootNode.node(nodes).get(type, defaultValue);
             return value != null ? value : defaultValue;
         } catch (final Exception exception) {
-            this.logger.warn("Failed to read config value at {}: {}", path, exception.getMessage());
+            this.logger.warn("Failed to read config value at '" + path + "': " + exception.getMessage());
             return defaultValue;
         }
     }
@@ -184,7 +183,7 @@ public class SpongePlatform implements Platform {
         try {
             this.rootNode.node((Object[]) path.split("\\.")).set(value);
         } catch (final Exception exception) {
-            this.logger.warn("Failed to set config value: {}: {}", path, exception.getMessage());
+            this.logger.warn("Failed to set config value: '" + path + "': " + exception.getMessage());
         }
     }
 
@@ -193,7 +192,7 @@ public class SpongePlatform implements Platform {
         try {
             this.configLoader.save(this.rootNode);
         } catch (final Exception exception) {
-            this.logger.warn("Failed to save config: {}", exception.getMessage());
+            this.logger.warn("Failed to save config: " + exception.getMessage());
         }
     }
 
@@ -212,7 +211,8 @@ public class SpongePlatform implements Platform {
         try {
             Files.createDirectories(this.privateConfigDir);
         } catch (final IOException exception) {
-            this.logger.warn("Failed to create data folder: {}", this.privateConfigDir, exception);
+            this.logger.warn("Failed to create data folder: " + this.privateConfigDir);
+            exception.printStackTrace(System.err);
         }
 
         return this.privateConfigDir.toFile();
@@ -221,12 +221,12 @@ public class SpongePlatform implements Platform {
     @Override
     public InputStream getResource(final String resourcePath) {
         final InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourcePath);
-        if (inputStream == null) this.logger.warn("Resource {} not found in JAR", resourcePath);
+        if (inputStream == null) this.logger.warn("Resource '" + resourcePath + "' not found in JAR");
         return inputStream;
     }
 
     @Override
-    public java.util.logging.Logger getLogger() {
-        return java.util.logging.Logger.getLogger(this.meta.getName());
+    public PlatformLogger getLogger() {
+        return this.logger;
     }
 }

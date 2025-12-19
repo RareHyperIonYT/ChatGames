@@ -6,10 +6,7 @@ import dev.rarehyperion.chatgames.command.PaperChatGamesCommand;
 import dev.rarehyperion.chatgames.config.Config;
 import dev.rarehyperion.chatgames.config.PaperConfig;
 import dev.rarehyperion.chatgames.listener.PaperChatListener;
-import dev.rarehyperion.chatgames.platform.Platform;
-import dev.rarehyperion.chatgames.platform.PlatformSender;
-import dev.rarehyperion.chatgames.platform.PlatformPluginMeta;
-import dev.rarehyperion.chatgames.platform.PlatformTask;
+import dev.rarehyperion.chatgames.platform.*;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -18,22 +15,22 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.UUID;
-import java.util.logging.Logger;
 
-@SuppressWarnings({"UnstableApiUsage", "ClassCanBeRecord"})
+@SuppressWarnings({"UnstableApiUsage"})
 public class PaperPlatform implements Platform {
 
     private final JavaPlugin plugin;
+    private final PlatformLogger logger;
 
     public PaperPlatform(final JavaPlugin plugin) {
         this.plugin = plugin;
+        this.logger = new PaperPlatformLogger(this.plugin.getLogger());
     }
 
     @Override
@@ -167,8 +164,8 @@ public class PaperPlatform implements Platform {
     }
 
     @Override
-    public Logger getLogger() {
-        return this.plugin.getLogger();
+    public PlatformLogger getLogger() {
+        return this.logger;
     }
 
 }

@@ -5,10 +5,7 @@ import dev.rarehyperion.chatgames.command.SpigotChatGamesCommand;
 import dev.rarehyperion.chatgames.config.Config;
 import dev.rarehyperion.chatgames.config.SpigotConfig;
 import dev.rarehyperion.chatgames.listener.SpigotChatListener;
-import dev.rarehyperion.chatgames.platform.Platform;
-import dev.rarehyperion.chatgames.platform.PlatformPluginMeta;
-import dev.rarehyperion.chatgames.platform.PlatformSender;
-import dev.rarehyperion.chatgames.platform.PlatformTask;
+import dev.rarehyperion.chatgames.platform.*;
 import dev.rarehyperion.chatgames.util.MessageUtil;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -27,9 +24,11 @@ import java.util.logging.Logger;
 public class SpigotPlatform implements Platform {
 
     private final JavaPlugin plugin;
+    private final PlatformLogger logger;
 
     public SpigotPlatform(final JavaPlugin plugin) {
         this.plugin = plugin;
+        this.logger = new SpigotPlatformLogger(this.plugin.getLogger());
     }
 
     @Override
@@ -153,8 +152,8 @@ public class SpigotPlatform implements Platform {
     }
 
     @Override
-    public Logger getLogger() {
-        return this.plugin.getLogger();
+    public PlatformLogger getLogger() {
+        return this.logger;
     }
 
 }
