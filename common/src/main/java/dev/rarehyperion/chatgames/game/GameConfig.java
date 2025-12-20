@@ -48,11 +48,15 @@ public final class GameConfig {
         if(list == null) return result;
 
         for(final Object obj : list) {
-            if(obj instanceof List<?> pair && pair.size() >= 2) {
-                result.add(new QuestionAnswer(
-                        pair.get(0).toString(),
-                        pair.get(1).toString()
-                ));
+            if(obj instanceof List<?>) {
+                final List<?> pair = (List<?>) obj;
+
+                if(pair.size() >= 2) {
+                    result.add(new QuestionAnswer(
+                            pair.get(0).toString(),
+                            pair.get(1).toString()
+                    ));
+                }
             }
         }
 
@@ -64,7 +68,9 @@ public final class GameConfig {
         if(list == null) return result;
 
         for(final Object obj : list) {
-            if(obj instanceof Map<?,?> map) {
+            if(obj instanceof Map<?,?>) {
+                final Map<?, ?> map = (Map<?, ?>) obj;
+
                 result.add(new ReactionVariant(
                         String.valueOf(map.get("name")),
                         String.valueOf(map.get("challenge")),
@@ -152,14 +158,76 @@ public final class GameConfig {
         return this.multipleChoiceQuestions;
     }
 
-    public record QuestionAnswer(String question, String answer) {}
+    public static final class QuestionAnswer {
 
-    public record ReactionVariant(String name, String challenge, String answer) {}
+        private final String question;
+        private final String answer;
 
-    public record MultipleChoiceQuestion(
-            String question,
-            List<String> answers,
-            String correctAnswer
-    ) {}
+        public QuestionAnswer(String question, String answer) {
+            this.question = question;
+            this.answer = answer;
+        }
+
+        public String question() {
+            return this.question;
+        }
+
+        public String answer() {
+            return this.answer;
+        }
+
+    }
+
+    public static final class ReactionVariant {
+
+        private final String name;
+        private final String challenge;
+        private final String answer;
+
+        public ReactionVariant(String name, String challenge, String answer) {
+            this.name = name;
+            this.challenge = challenge;
+            this.answer = answer;
+        }
+
+        public String name() {
+            return this.name;
+        }
+
+        public String challenge() {
+            return this.challenge;
+        }
+
+        public String answer() {
+            return this.answer;
+        }
+
+    }
+
+    public static final class MultipleChoiceQuestion {
+
+        private final String question;
+        private final List<String> answers;
+        private final String correctAnswer;
+
+        public MultipleChoiceQuestion(String question, List<String> answers, String correctAnswer) {
+            this.question = question;
+            this.answers = answers;
+            this.correctAnswer = correctAnswer;
+        }
+
+        public String question() {
+            return this.question;
+        }
+
+        public List<String> answers() {
+            return this.answers;
+        }
+
+        public String correctAnswer() {
+            return this.correctAnswer;
+        }
+
+    }
 
 }

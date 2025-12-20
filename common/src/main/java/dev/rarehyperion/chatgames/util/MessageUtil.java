@@ -45,7 +45,7 @@ public final class MessageUtil {
         final Matcher matcher = RAND_PATTERN.matcher(processed);
         final Random random = new Random();
 
-        final StringBuilder buffer = new StringBuilder();
+        final StringBuffer buffer = new StringBuffer();
 
         while(matcher.find()) {
             int min = Integer.parseInt(matcher.group(1));

@@ -5,6 +5,7 @@ import dev.rarehyperion.chatgames.platform.PlatformPlayer;
 import dev.rarehyperion.chatgames.util.MessageUtil;
 import net.kyori.adventure.text.Component;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -47,7 +48,7 @@ public abstract class AbstractGame implements Game {
 
     @Override
     public List<String> getAnswerOptions() {
-        return List.of();
+        return Collections.emptyList();
     }
 
     protected Component createStartMessage() {

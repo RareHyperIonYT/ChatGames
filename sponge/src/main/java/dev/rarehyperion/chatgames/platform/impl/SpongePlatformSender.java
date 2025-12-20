@@ -17,11 +17,14 @@ public class SpongePlatformSender implements PlatformSender {
 
     @Override
     public void sendMessage(final Component component) {
-        if(this.source instanceof ServerPlayer serverPlayer) {
+        if(this.source instanceof ServerPlayer) {
+            final ServerPlayer serverPlayer = (ServerPlayer) this.source;
             serverPlayer.sendMessage(component);
-        } else if(this.source instanceof SystemSubject systemSubject) {
+        } else if(this.source instanceof SystemSubject) {
+            final SystemSubject systemSubject = (SystemSubject) this.source;
             systemSubject.sendMessage(component);
-        } else if(this.source instanceof Audience audience) {
+        } else if(this.source instanceof Audience) {
+            final Audience audience = (Audience) this.source;
             audience.sendMessage(component);
         } else {
             throw new IllegalArgumentException("Invalid argument passed: " + this.source);
@@ -30,9 +33,11 @@ public class SpongePlatformSender implements PlatformSender {
 
     @Override
     public boolean hasPermission(final String permission) {
-        if(this.source instanceof ServerPlayer serverPlayer) {
+        if(this.source instanceof ServerPlayer) {
+            final ServerPlayer serverPlayer = (ServerPlayer) this.source;
             return serverPlayer.hasPermission(permission);
-        } else if(this.source instanceof SystemSubject systemSubject) {
+        } else if(this.source instanceof SystemSubject) {
+            final SystemSubject systemSubject = (SystemSubject) this.source;
             return systemSubject.hasPermission(permission);
         } else {
             throw new IllegalArgumentException("Invalid argument passed: " + this.source);
@@ -46,7 +51,8 @@ public class SpongePlatformSender implements PlatformSender {
 
     @Override
     public PlatformPlayer player() {
-        if(this.source instanceof ServerPlayer serverPlayer) {
+        if(this.source instanceof ServerPlayer) {
+            final ServerPlayer serverPlayer = (ServerPlayer) this.source;
             return new SpongePlatformPlayer(serverPlayer);
         }
 

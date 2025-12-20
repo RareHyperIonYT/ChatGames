@@ -9,6 +9,7 @@ import dev.rarehyperion.chatgames.platform.PlatformSender;
 import dev.rarehyperion.chatgames.util.MessageUtil;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 public class ChatGamesCommand {
 
@@ -29,16 +30,34 @@ public class ChatGamesCommand {
         final String subCommand = args[0].toLowerCase();
 
         switch (subCommand) {
-            case "reload" -> this.handleReload(sender);
-            case "start"  -> this.handleStart(sender, args);
-            case "stop"   -> this.handleStop(sender);
-            case "list"   -> this.handleList(sender);
-            case "info"   -> this.handleInfo(sender);
-            case "toggle" -> this.handleToggle(sender);
-            case "answer" -> this.handleAnswer(sender, args);
-            case "help"   -> this.sendHelp(sender);
-            default -> sender.sendMessage(MessageUtil.parse("<red>Unknown command. Type /chatgames for help.</red>"));
-        };
+            case "reload":
+                this.handleReload(sender);
+                break;
+            case "start":
+                this.handleStart(sender, args);
+                break;
+            case "stop":
+                this.handleStop(sender);
+                break;
+            case "list":
+                this.handleList(sender);
+                break;
+            case "info":
+                this.handleInfo(sender);
+                break;
+            case "toggle":
+                this.handleToggle(sender);
+                break;
+            case "answer":
+                this.handleAnswer(sender, args);
+                break;
+            case "help":
+                this.sendHelp(sender);
+                break;
+            default:
+                sender.sendMessage(MessageUtil.parse("<red>Unknown command. Type /chatgames for help.</red>"));
+                break;
+        }
 
         return true;
     }
@@ -73,12 +92,14 @@ public class ChatGamesCommand {
 
         final String gameName = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
 
-        this.plugin.gameRegistry().getConfigByName(gameName).ifPresentOrElse(
-                config -> {
-                    this.plugin.gameManager().startGame(config);
-                },
-                () -> sender.sendMessage(MessageUtil.parse("<red>Unknown game: " + gameName + "</red>"))
-        );
+        final Optional<GameConfig> optionalConfig = this.plugin.gameRegistry().getConfigByName(gameName);
+
+        if(optionalConfig.isPresent()) {
+            final GameConfig config = optionalConfig.get();
+            this.plugin.gameManager().startGame(config);
+        } else {
+            sender.sendMessage(MessageUtil.parse("<red>Unknown game: " + gameName + "</red>"));
+        }
     }
 
     private void handleStop(final PlatformSender sender) {
@@ -111,9 +132,10 @@ public class ChatGamesCommand {
     private void handleInfo(final PlatformSender sender) {
         final String authors = String.join(", and ", this.plugin.platform().pluginMeta().getAuthors());
 
-        final String response = """
-        <gold>ChatGames <white>•</white> <yellow>%s</yellow></gold>
-        <green>A simple plugin that adds chat-based games by <aqua>%s</aqua></green>""";
+        final String response =
+                "<gold>ChatGames <white>•</white> <yellow>%s</yellow></gold>\n" +
+                "<green>A simple plugin that adds chat-based games by <aqua>%s</aqua></green>";
+
 
         sender.sendMessage(MessageUtil.parse(
                 String.format(response, this.plugin.platform().pluginMeta().getVersion(), authors)

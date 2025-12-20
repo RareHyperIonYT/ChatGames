@@ -3,7 +3,7 @@ version: ${project.version}
 author: 'RareHyperIon'
 description: 'A plugin aimed to add fun chat based games to your server.'
 main: dev.rarehyperion.chatgames.ChatGamesSpigot
-api-version: '1.21'
+api-version: '1.13'
 softdepend: [PlaceholderAPI]
 
 commands:

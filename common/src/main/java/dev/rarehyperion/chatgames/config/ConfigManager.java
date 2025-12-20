@@ -83,12 +83,42 @@ public final class ConfigManager {
         return this.settings;
     }
 
-    public record PluginSettings(
-            int gameInterval,
-            int minimumPlayers,
-            boolean automaticGames,
-            int answerCooldownTicks,
-            boolean debug
-    ) {}
+    public final class PluginSettings {
+
+        private final int gameInterval;
+        private final int minimumPlayers;
+        private final boolean automaticGames;
+        private final int answerCooldownTicks;
+        private final boolean debug;
+
+        public PluginSettings(int gameInterval, int minimumPlayers, boolean automaticGames, int answerCooldownTicks, boolean debug) {
+            this.gameInterval = gameInterval;
+            this.minimumPlayers = minimumPlayers;
+            this.automaticGames = automaticGames;
+            this.answerCooldownTicks = answerCooldownTicks;
+            this.debug = debug;
+        }
+
+        public int gameInterval() {
+            return this.gameInterval;
+        }
+
+        public int minimumPlayers() {
+            return this.minimumPlayers;
+        }
+
+        public boolean automaticGames() {
+            return this.automaticGames;
+        }
+
+        public int answerCooldownTicks() {
+            return this.answerCooldownTicks;
+        }
+
+        public boolean debug() {
+            return this.debug;
+        }
+
+    }
 
 }

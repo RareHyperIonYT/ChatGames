@@ -3,6 +3,7 @@ package dev.rarehyperion.chatgames.platform.impl;
 import dev.rarehyperion.chatgames.platform.PlatformPluginMeta;
 import org.spongepowered.plugin.metadata.PluginMetadata;
 
+import java.util.Collections;
 import java.util.List;
 
 public class SpongePluginMeta implements PlatformPluginMeta {
@@ -25,7 +26,7 @@ public class SpongePluginMeta implements PlatformPluginMeta {
 
     @Override
     public List<String> getAuthors() {
-        return List.of("RareHyperIon");
+        return Collections.singletonList("RareHyperIon");
     }
 
 }

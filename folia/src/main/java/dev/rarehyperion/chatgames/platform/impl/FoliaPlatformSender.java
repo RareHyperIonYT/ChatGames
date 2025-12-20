@@ -33,7 +33,8 @@ public class FoliaPlatformSender implements PlatformSender {
 
     @Override
     public PlatformPlayer player() {
-        if(this.sender instanceof Player player) {
+        if(this.sender instanceof Player) {
+            final Player player = (Player) this.sender;
             return new FoliaPlatformPlayer(player);
         }
 

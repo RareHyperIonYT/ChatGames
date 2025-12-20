@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @SuppressWarnings({"UnstableApiUsage"})
 public class PaperPlatform implements Platform {
@@ -82,7 +83,7 @@ public class PaperPlatform implements Platform {
         return Bukkit.getOnlinePlayers()
                 .stream()
                 .map(Entity::getUniqueId)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -112,7 +113,8 @@ public class PaperPlatform implements Platform {
 
     @Override
     public PlatformSender wrapSender(final Object sender) {
-        if(sender instanceof CommandSender commandSender) {
+        if(sender instanceof CommandSender) {
+            final CommandSender commandSender = (CommandSender) sender;
             return new PaperPlatformSender(commandSender);
         }
 

@@ -10,6 +10,7 @@ import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.parameter.Parameter;
 import org.spongepowered.api.entity.living.player.Player;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -62,7 +63,7 @@ public class SpongeChatGamesCommand extends ChatGamesCommand {
                                 .collect(Collectors.toList());
                     }
 
-                    return List.of();
+                    return Collections.emptyList();
                 })
                 .build();
 

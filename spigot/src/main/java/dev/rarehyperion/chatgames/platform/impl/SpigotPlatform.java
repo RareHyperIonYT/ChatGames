@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class SpigotPlatform implements Platform {
 
@@ -70,7 +71,7 @@ public class SpigotPlatform implements Platform {
         return Bukkit.getOnlinePlayers()
                 .stream()
                 .map(Entity::getUniqueId)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -100,7 +101,8 @@ public class SpigotPlatform implements Platform {
 
     @Override
     public PlatformSender wrapSender(final Object sender) {
-        if(sender instanceof CommandSender commandSender) {
+        if(sender instanceof CommandSender) {
+            final CommandSender commandSender = (CommandSender) sender;
             return new SpigotPlatformSender(commandSender);
         }
 

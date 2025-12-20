@@ -29,7 +29,8 @@ public class SpongeChatListener {
             // I am on the latest API Version from Maven. Sponge is... special.
             // I've never seen something so dysfunctional, and awful to work with.
             // spongevanilla-1.21.10-17.0.0-RC2468-universal
-            if(event instanceof Cancellable cancellable) {
+            if(event instanceof Cancellable) {
+                final Cancellable cancellable = (Cancellable) event;
                 cancellable.setCancelled(true);
             }
         }

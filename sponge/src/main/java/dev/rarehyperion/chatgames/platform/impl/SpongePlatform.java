@@ -26,6 +26,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class SpongePlatform implements Platform {
 
@@ -85,7 +86,7 @@ public class SpongePlatform implements Platform {
     public Collection<UUID> getOnlinePlayers() {
         return Sponge.server().onlinePlayers().stream()
                 .map(Identifiable::uniqueId)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -15,7 +15,7 @@ public class SpongeConfig implements Config {
     }
 
     private CommentedConfigurationNode node(final String path) {
-        if (path == null || path.isBlank()) return this.root;
+        if (path == null || path.trim().isEmpty()) return this.root;
         final String[] parts = path.split("\\.");
         return this.root.node((Object[]) parts);
     }
@@ -49,12 +49,15 @@ public class SpongeConfig implements Config {
     public List<?> getList(final String path) {
         final Object raw = this.node(path).raw();
 
-        return switch (raw) {
-            case List<?> list -> list;
-            case Map<?, ?> map -> new ArrayList<>(map.values());
-            case null -> null;
-            default -> Collections.emptyList();
-        };
+        if (raw instanceof List<?>) {
+            return (List<?>) raw;
+        } else if (raw instanceof Map<?, ?>) {
+            return new ArrayList<>(((Map<?, ?>) raw).values());
+        } else if (raw == null) {
+            return null;
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     @Override
