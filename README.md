@@ -2,6 +2,13 @@
 
 A Minecraft plugin that adds interactive chat-based minigames to engage your server's players with trivia, math challenges, word scrambles, and reaction games.
 
+## Why use Chatgames?
+
+- Instant, lightweight chat minigames that keep your chat active.
+- Multi-platform: same core works across Spigot, Paper, Folia, and Sponge via a platform abstraction layer.
+- Fully configurable games, schedules, messages and reward commands.
+- Small, well-documented, and easy to extend.
+
 ## Features
 
 - **Multiple Game Types:**
@@ -10,40 +17,328 @@ A Minecraft plugin that adds interactive chat-based minigames to engage your ser
   - **Unscramble** - Unscramble words
   - **Reaction** - Click buttons quickly (with customizable variants)
 
+
 - **Automatic Game Scheduling** - Games start automatically at configurable intervals
 - **Customizable Rewards** - Configure commands to run when players win (economy rewards, items, etc.)
-- **Fully Configurable** - Customize questions, timeouts, rewards, and messages
-- **PlaceholderAPI Support** - Use placeholders in messages
-- **Multi-language Support** - Customize all messages in `language.yml`
 
-## Requirements
+## Quick Install
 
-- **Minecraft Server:** Paper/Spigot 1.16+
-- **Optional Dependencies:**
-  - VaultUnlocked (or Vault) - For economy rewards
-  - PlaceholderAPI - For placeholder support
+1. Drop the plugin `.jar` into your server's `plugins/` folder.
+2. Start the server once to generate default configurations.
+3. Edit `config.yml`, `en-us.yml`, and the individual game files.
 
-## Games
+## Configuration
 
-ChatGames includes four game types by default:
+### Main Configuration
 
--   **Trivia**: Players answer trivia questions.
--   **Math**: Players solve math problems.
--   **Unscramble**: Players unscramble a given word.
--   **Reaction**: Players must click a message in chat as fast as possible.
+<details>
+  <summary>config.yml</summary>
+
+  ```yml
+# ChatGames Configuration
+# https://github.com/RareHyperIon/ChatGames
+
+# Available: en-us
+language: en-us
+
+# Interval between automatic games (in seconds)
+game-interval: 300
+
+# Minimum players online to start automatic games
+minimum-players: 1
+
+# Whether to automatically start games at intervals
+automatic-games: true
+
+# Cooldown after wrong answer in multiple choice (in ticks, 20 ticks = 1 second)
+answer-cooldown-ticks: 60
+
+# Enable debug logging
+debug: false
+  ```
+</details>
+
+<details>
+  <summary>language/en-us.yml</summary>
+
+  ```yml
+# ChatGames Language File - English (US)
+
+# Message shown when a player tries to use a command they don't have access to
+permission: "<red>You don't have permission to use this command.</red>"
+
+# Message shown when ChatGames has been successfully reloaded
+reload: "<green>Successfully reloaded ChatGames!</green>"
+
+# Cooldown message when player tries to answer too quickly after wrong answer
+cooldown: "<red>You cannot answer this question as you've already tried recently.</red>"
+  ```
+</details>
+
+### Game Configuration
+
+<details>
+  <summary>games/math.yml</summary>
+
+  ```yml
+name: math
+display-name: "<gold>Math Wizard</gold>"
+type: math
+timeout: 60
+
+reward-commands:
+  - "give {player} diamond {rand:1-3}"
+
+messages:
+  start: |
+
+    <gold><bold>MATH WIZARD</bold></gold>
+    <gray>Solve the equation below!</gray>
+
+  win: |
+
+    <green><bold>✓</bold> <yellow>{player}</yellow> solved it!</green>
+    <gray>Answer: <white>{answer}</white></gray>
+
+  timeout: |
+
+    <red><bold>✗</bold> Time's up!</red>
+    <gray>Answer: <white>{answer}</white></gray>
+
+
+questions:
+  - ["<yellow>12 + 8 = ?</yellow>", "20"]
+  - ["<yellow>25 - 7 = ?</yellow>", "18"]
+  - ["<yellow>6 × 7 = ?</yellow>", "42"]
+  - ["<yellow>144 ÷ 12 = ?</yellow>", "12"]
+  - ["<yellow>15 + 23 = ?</yellow>", "38"]
+  - ["<yellow>50 - 18 = ?</yellow>", "32"]
+  - ["<yellow>9 × 8 = ?</yellow>", "72"]
+  - ["<yellow>100 ÷ 5 = ?</yellow>", "20"]
+  ```
+</details>
+
+<details>
+  <summary>games/multiple-choice.yml</summary>
+
+  ```yml
+name: multiple choice
+display-name: "<green>Multiple Choice</green>"
+type: multiple-choice
+timeout: 45
+cooldown: 60 # Ticks to wait after wrong answer (60 ticks = 3 seconds)
+
+reward-commands:
+  - "give {player} emerald {rand:1-3}"
+
+messages:
+  start: |
+
+    <green><bold>MULTIPLE CHOICE</bold></green>
+    <gray>Type the correct letter!</gray>
+
+  win: |
+
+    <green><bold>✓</bold> <yellow>{player}</yellow> chose correctly!</green>
+    <gray>Answer: <white>{answer}</white></gray>
+
+  timeout: |
+
+    <red><bold>✗</bold> Nobody answered!</red>
+    <gray>Correct: <white>{answer}</white></gray>
+
+
+questions:
+  q1:
+    question: "<yellow>What is the largest planet in our solar system?</yellow>"
+    answers:
+      - "A. Earth"
+      - "B. Jupiter"
+      - "C. Saturn"
+      - "D. Mars"
+    correct-answer: "B"
+
+  q2:
+    question: "<yellow>Which programming language is Minecraft written in?</yellow>"
+    answers:
+      - "A. Python"
+      - "B. C++"
+      - "C. Java"
+      - "D. JavaScript"
+    correct-answer: "C"
+
+  q3:
+    question: "<yellow>What is 2 + 2 × 2?</yellow>"
+    answers:
+      - "A. 6"
+      - "B. 8"
+      - "C. 4"
+      - "D. 10"
+    correct-answer: "A"
+
+  q4:
+    question: "<yellow>Which mob drops blaze rods?</yellow>"
+    answers:
+      - "A. Ghast"
+      - "B. Blaze"
+      - "C. Wither Skeleton"
+      - "D. Magma Cube"
+    correct-answer: "B"
+  ```
+</details>
+
+<details>
+  <summary>games/reaction.yml</summary>
+
+  ```yml
+name: reaction
+display-name: "<red>Reaction Test</red>"
+type: reaction
+timeout: 30
+
+reward-commands:
+  - "give {player} diamond {rand:1-3}"
+
+messages:
+  start: |
+    
+    <red><bold>REACTION TEST</bold></red>
+    <gray>Be the first to respond!</gray>
+
+  win: |
+
+    <green><bold>✓</bold> <yellow>{player}</yellow> was fastest!</green>
+
+  timeout: |
+
+    <red><bold>✗</bold> Nobody reacted in time!</red>
+    
+
+# Variants allow different reaction challenges
+# If answer is empty string "", any message wins (fastest typer)
+# If answer is specified, must type that exact word
+# If answer is "CLICK", then it will be clickable.
+#   - Optional: Add hover="Your text" for custom hover message
+#   - Example: <button hover='Click me!'>Press here</button>
+#   - Without hover attribute, no hover text will be shown
+#   - You can include colors in the hover attribute.
+variants:
+  - name: "Type Fast"
+    challenge: "<gold><bold>Type: <yellow>MINECRAFT</yellow></bold></gold>"
+    answer: "MINECRAFT"
+
+  - name: "First Word"
+    challenge: "<gold><bold>Type any word now!</bold></gold>"
+    answer: ""
+
+  - name: "Click Fast"
+    challenge: "<button hover='Click to win!'><gold><bold>Click me to win!</bold></gold></button>"
+    answer: "CLICK"
+
+  - name: "Color"
+    challenge: "<gold><bold>Type: <yellow>RED</yellow></bold></gold>"
+    answer: "RED"
+  ```
+</details>
+
+<details>
+  <summary>games/trivia.yml</summary>
+
+  ```yml
+name: trivia
+display-name: "<aqua>Trivia Time</aqua>"
+type: trivia
+timeout: 45
+
+reward-commands:
+  - "give {player} emerald {rand:1-3}"
+
+messages:
+  start: |
+
+    <aqua><bold>TRIVIA TIME</bold></aqua>
+    <gray>Answer the question below!</gray>
+
+  win: |
+
+    <green><bold>✓</bold> <yellow>{player}</yellow> got it right!</green>
+    <gray>Answer: <white>{answer}</white></gray>
+
+  timeout: |
+
+    <red><bold>✗</bold> Nobody got it!</red>
+    <gray>Answer: <white>{answer}</white></gray>
+
+
+questions:
+  - ["<yellow>What is the capital of France?</yellow>", "Paris"]
+  - ["<yellow>How many continents are there?</yellow>", "7"]
+  - ["<yellow>What year did the Titanic sink?</yellow>", "1912"]
+  - ["<yellow>What is the largest ocean?</yellow>", "Pacific"]
+  - ["<yellow>Who painted the Mona Lisa?</yellow>", "Leonardo da Vinci"]
+  - ["<yellow>What is the speed of light?</yellow>", "299792458"]
+  - ["<yellow>What is H2O commonly known as?</yellow>", "Water"]
+  ```
+</details>
+
+<details>
+  <summary>games/unscramble.yml</summary>
+
+  ```yml
+name: unscramble
+display-name: "<light_purple>Word Scramble</light_purple>"
+type: unscramble
+timeout: 60
+
+reward-commands:
+  - "give {player} gold_ingot {rand:1-5}"
+
+messages:
+  start: |
+    <light_purple><bold>WORD SCRAMBLE</bold></light_purple>
+    <gray>Unscramble the word!</gray>
+
+  win: |
+
+    <green><bold>✓</bold> <yellow>{player}</yellow> unscrambled it!</green>
+    <gray>Word: <white>{answer}</white></gray>
+
+  timeout: |
+
+    <red><bold>✗</bold> Time ran out!</red>
+    <gray>Word: <white>{answer}</white></gray>
+
+questions:
+  - ["<yellow>TANESRIPHO</yellow>", "SMARTPHONE"]
+  - ["<yellow>TMUPOECR</yellow>", "COMPUTER"]
+  - ["<yellow>YGAMINL</yellow>", "GAMING"]
+  - ["<yellow>EATKBOY</yellow>", "KEYBOARD"]
+  - ["<yellow>IAMFRENTC</yellow>", "MINECRAFT"]
+  - ["<yellow>DAMONDI</yellow>", "DIAMOND"]
+  - ["<yellow>NTDAUEERV</yellow>", "ADVENTURE"]
+  ```
+</details>
+
+## Supported Platforms & Versions
+
+| Platform | Supported Versions |
+|----------|--------------------|
+| Spigot   | 1.13 – 1.21.x      |
+| Paper    | 1.20.6 – 1.21.x    |
+| Folia    | 1.20.6 – 1.21.x    |
+| Sponge   | 1.21.x             |
 
 ## Commands
 
-The main command is `/chatgames` with aliases `/chatgame` and `/cg`.
+| Command                   | Permission         | Description                      |
+|---------------------------|--------------------|----------------------------------|
+| `/chatgames reload`       | `chatgames.reload` | Reload all configurations        |
+| `/chatgames start <game>` | `chatgames.start`  | Manually start a game            |
+| `/chatgames stop`         | `chatgames.stop`   | Stop the current game            |
+| `/chatgames list`         | `chatgames.list`   | List all available games         |
+| `/chatgames info`         | `chatgames.info`   | Show plugin information          |
+| `/chatgames toggle`       | `chatgames.toggle` | Toggle automatic games on or off |
 
-| Command            | Permission         | Description                      |
-|--------------------|--------------------|----------------------------------|
-| `/cg reload`       | `chatgames.reload` | Reload all configurations        |
-| `/cg start <game>` | `chatgames.start`  | Manually start a game            |
-| `/cg stop`         | `chatgames.stop`   | Stop the current game            |
-| `/cg list`         | `chatgames.list`   | List all available games         |
-| `/cg info`         | `chatgames.info`   | Show plugin information          |
-| `/cg toggle`       | `chatgames.toggle` | Toggle automatic games on or off |
 
 ## Permissions
 
@@ -56,169 +351,16 @@ The main command is `/chatgames` with aliases `/chatgame` and `/cg`.
 | `chatgames.info`   | Allows viewing plugin information  |
 | `chatgames.toggle` | Allows toggling automatic games    |
 
-## Configuration
-
-### Main Config (`config.yml`)
-
-```yaml
-# Game control settings
-min-players: 1          # Minimum players online to start games
-game-interval: 300      # Seconds between games (300 = 5 minutes)
-logging: "FULL"         # Log level: FULL, PARTIAL, NONE
-```
-
-### Game Configuration
-
-Each game has its own config file in `plugins/ChatGames/games/`:
-
-- `trivia.yml` - Trivia questions and answers
-- `math.yml` - Math problems
-- `unscramble.yml` - Words to scramble
-- `reaction.yml` - Clickable button variants
-
-**Example game config structure:**
-
-```yaml
-name: "Math"
-descriptor: "solve"
-timeout: 30
-
-reward-commands:
-  - eco give %player% 250
-  - give %player% diamond 1
-
-questions:
-  - ["What is 1+4", "5"]
-  - ["What is 10 + 12", "22"]
-```
-
-**Placeholders in rewards:**
-- `%player%` - Winner's username
-- `{player}` - Winner's username (alternative format)
-
-### Language Configuration (`language.yml`)
-
-Customize all plugin messages. Available placeholders:
-- `{prefix}` - Plugin prefix
-- `{player}` - Player name
-- `{name}` - Game name
-- `{descriptor}` - Game descriptor (e.g., "solve", "unscramble")
-- `{question}` - The question/challenge
-- `{answer}` - The correct answer
-- `{timeout}` - Timeout in seconds
-- `\n` - New line
-
-## Setting Up Rewards
-
-### With VaultUnlocked (or Vault)
-
-```yaml
-reward-commands:
-  - eco give %player% 250
-```
-
-### With Items
-
-```yaml
-reward-commands:
-  - give %player% diamond 5
-  - give %player% emerald 10
-```
-
-### Multiple Commands
-
-You can run multiple commands per win:
-
-```yaml
-reward-commands:
-  - eco give %player% 500
-  - give %player% golden_apple 3
-  - lp user %player% permission set special.perk true
-```
-
-## Adding Custom Questions
-
-### Trivia Game
-
-Edit `games/trivia.yml`:
-
-```yaml
-questions:
-  - ["What is the capital of France?", "Paris"]
-  - ["What year did WW2 end?", "1945"]
-```
-
-### Math Game
-
-Edit `games/math.yml`:
-
-```yaml
-questions:
-  - ["What is 15 + 27?", "42"]
-  - ["If x + 5 = 12, what is x?", "7"]
-```
-
-### Unscramble Game
-
-Edit `games/unscramble.yml`:
-
-```yaml
-words:
-  - "minecraft"
-  - "diamond"
-  - "adventure"
-```
-
-### Reaction Game
-
-Edit `games/reaction.yml`:
-
-The Reaction game supports **multiple variants** - each with its own clickable button text. Players compete to click the correct button!
-
-```yaml
-variants:
-  # Simple click game - click anywhere to win
-  - name: "Click Game"
-    challenge: "&a&lClick Me!"
-    answer: ""
-
-  # Button challenge - players must click the correct button
-  - name: "Color Game"
-    challenge: "&c[Red] &a[Green] &d[Purple] &7- Click the &aGreen &7button"
-    answer: "[Green]"
-
-  - name: "Number Game"
-    challenge: "&e[1] &e[2] &e[3] &e[4] &e[5] &7- Click number &e3"
-    answer: "[3]"
-
-  - name: "Direction"
-    challenge: "&f[North] &f[South] &f[East] &f[West] &7- Click &fNorth"
-    answer: "[North]"
-```
-
-**Variant fields:**
-- `name` - Display name for the variant type
-- `challenge` - The text shown to players. Text in `[brackets]` becomes clickable buttons
-- `answer` - The correct button to click (e.g., `"[Green]"`). Leave empty `""` for games where any click wins
-
-**Creating button challenges:**
-- Put button text in `[brackets]` to make them clickable
-- Use color codes before brackets to color the buttons (e.g., `&c[Red]`)
-- Set the `answer` field to the exact button text that should win (e.g., `"[Green]"`)
-- Players who click the wrong button will not win
-
-When a Reaction game starts, the plugin randomly selects one variant. Add as many custom variants as you want!
 
 ## Troubleshooting
 
 **Games not starting:**
-- Check `min-players` setting in `config.yml`
+- Check `minimum-players` setting in `config.yml`
 - Verify enough players are online
 - Check console for errors
 
 **Rewards not working:**
-- Ensure VaultUnlocked (or Vault) is installed for economy commands
-- Verify placeholder format is `%player%` or `{player}`
+- Verify placeholder format is `{player}`
 - Check console for command errors
 
 **Questions not loading:**
