@@ -1,12 +1,13 @@
 package dev.rarehyperion.chatgames.util;
 
 import dev.rarehyperion.chatgames.platform.PlatformPlayer;
-import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
+import java.util.Random;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class MessageUtil {
@@ -18,6 +19,7 @@ public final class MessageUtil {
 //    private static final boolean PLACEHOLDER_API_ENABLED = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
 
     private static final Pattern HEX_PATTERN = Pattern.compile("&#([0-9a-fA-F]{6})");
+    private static final Pattern RAND_PATTERN = Pattern.compile("\\{rand:(\\d+)-(\\d+)}");
 
     private MessageUtil() { /* no-op */ }
 
@@ -35,6 +37,26 @@ public final class MessageUtil {
         processed = convertLegacyToMiniMessage(processed);
 
         return MINI_MESSAGE.deserialize(processed);
+    }
+
+    public static String process(final String text, final PlatformPlayer player) {
+        String processed = text.replace("{player}", player.name());
+
+        final Matcher matcher = RAND_PATTERN.matcher(processed);
+        final Random random = new Random();
+
+        final StringBuilder buffer = new StringBuilder();
+
+        while(matcher.find()) {
+            int min = Integer.parseInt(matcher.group(1));
+            int max = Integer.parseInt(matcher.group(2));
+            int value = random.nextInt(max - min + 1) + min;
+            matcher.appendReplacement(buffer, String.valueOf(value));
+        }
+
+        matcher.appendTail(buffer);
+
+        return buffer.toString();
     }
 
     public static String plainText(final Component component) {

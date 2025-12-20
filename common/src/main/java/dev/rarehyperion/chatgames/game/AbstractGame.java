@@ -2,6 +2,7 @@ package dev.rarehyperion.chatgames.game;
 
 import dev.rarehyperion.chatgames.ChatGamesCore;
 import dev.rarehyperion.chatgames.platform.PlatformPlayer;
+import dev.rarehyperion.chatgames.util.MessageUtil;
 import net.kyori.adventure.text.Component;
 
 import java.util.List;
@@ -26,12 +27,13 @@ public abstract class AbstractGame implements Game {
 
     @Override
     public void onWin(final PlatformPlayer winner) {
-        final Component message = this.config.getWinMessage(winner.name(), this.getCorrectAnswer().orElse(""));
+        final Component message = this.config.getWinMessage(winner.name(), this.getCorrectAnswer().orElse("Unknown"));
+
         this.plugin.broadcast(message);
 
         this.plugin.platform().runTask(() -> {
             for(final String command : this.config.getRewardCommands()) {
-                final String processed = command.replace("{player}", winner.name());
+                final String processed = MessageUtil.process(command, winner);
                 this.plugin.platform().dispatchCommand(processed);
             }
         });
@@ -39,7 +41,7 @@ public abstract class AbstractGame implements Game {
 
     @Override
     public void onTimeout() {
-        final Component message = this.config.getTimeoutMessage(this.getCorrectAnswer().orElse(""));
+        final Component message = this.config.getTimeoutMessage(this.getCorrectAnswer().orElse("Unknown"));
         this.plugin.broadcast(message);
     }
 

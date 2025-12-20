@@ -4,7 +4,7 @@ type: unscramble
 timeout: 60
 
 reward-commands:
-  - "give {player} gold_ingot 5"
+  - "give {player} gold_ingot {rand:1-5}"
 
 messages:
   start: |

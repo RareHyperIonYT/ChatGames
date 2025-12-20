@@ -4,7 +4,7 @@ type: trivia
 timeout: 45
 
 reward-commands:
-  - "give {player} emerald 2"
+  - "give {player} emerald {rand:1-3}"
 
 messages:
   start: |
