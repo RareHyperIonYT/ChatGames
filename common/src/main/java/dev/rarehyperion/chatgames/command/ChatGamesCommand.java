@@ -110,8 +110,7 @@ public class ChatGamesCommand {
 
         final String response = """
         <gold>ChatGames <white>•</white> <yellow>%s</yellow></gold>
-        <green>A simple plugin that adds chat-based games <aqua>by %s</aqua></green>
-        """;
+        <green>A simple plugin that adds chat-based games by <aqua>%s</aqua></green>""";
 
         sender.sendMessage(MessageUtil.parse(
                 String.format(response, this.plugin.platform().pluginMeta().getVersion(), authors)
