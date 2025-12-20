@@ -8,6 +8,7 @@ reward-commands:
 
 messages:
   start: |
+    
     <light_purple><bold>WORD SCRAMBLE</bold></light_purple>
     <gray>Unscramble the word!</gray>
 
