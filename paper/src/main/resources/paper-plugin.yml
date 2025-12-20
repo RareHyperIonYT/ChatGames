@@ -1,0 +1,12 @@
+name: ChatGames
+version: ${project.version}
+author: 'RareHyperIon'
+description: 'A plugin aimed to add fun chat based games to your server.'
+main: dev.rarehyperion.chatgames.ChatGamesPaper
+api-version: '1.21'
+
+dependencies:
+  server:
+    PlaceholderAPI:
+      load: BEFORE
+      required: false

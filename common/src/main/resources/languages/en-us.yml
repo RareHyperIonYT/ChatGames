@@ -1,0 +1,10 @@
+# ChatGames Language File - English (Simplified)
+
+# Message shown when a player tries to use a command they don't have access to
+permission: "<red>You don't have permission to use this command.</red>"
+
+# Message shown when ChatGames has been successfully reloaded
+reload: "<green>Successfully reloaded ChatGames!</green>"
+
+# Cooldown message when player tries to answer too quickly after wrong answer
+cooldown: "<red>You cannot answer this question as you've already tried recently.</red>"

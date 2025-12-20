@@ -1,0 +1,31 @@
+name: unscramble
+display-name: "<light_purple>Word Scramble</light_purple>"
+type: unscramble
+timeout: 60
+
+reward-commands:
+  - "give {player} gold_ingot {rand:1-5}"
+
+messages:
+  start: |
+    <light_purple><bold>WORD SCRAMBLE</bold></light_purple>
+    <gray>Unscramble the word!</gray>
+
+  win: |
+
+    <green><bold>✓</bold> <yellow>{player}</yellow> unscrambled it!</green>
+    <gray>Word: <white>{answer}</white></gray>
+
+  timeout: |
+
+    <red><bold>✗</bold> Time ran out!</red>
+    <gray>Word: <white>{answer}</white></gray>
+
+questions:
+  - ["<yellow>TANESRIPHO</yellow>", "SMARTPHONE"]
+  - ["<yellow>TMUPOECR</yellow>", "COMPUTER"]
+  - ["<yellow>YGAMINL</yellow>", "GAMING"]
+  - ["<yellow>EATKBOY</yellow>", "KEYBOARD"]
+  - ["<yellow>IAMFRENTC</yellow>", "MINECRAFT"]
+  - ["<yellow>DAMONDI</yellow>", "DIAMOND"]
+  - ["<yellow>NTDAUEERV</yellow>", "ADVENTURE"]

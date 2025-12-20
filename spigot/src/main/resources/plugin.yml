@@ -1,0 +1,39 @@
+name: ChatGames
+version: ${project.version}
+author: 'RareHyperIon'
+description: 'A plugin aimed to add fun chat based games to your server.'
+main: dev.rarehyperion.chatgames.ChatGamesSpigot
+api-version: '1.13'
+softdepend: [PlaceholderAPI]
+
+commands:
+  chatgames:
+    description: "Manage chatgames."
+    usage: "/chatgames <subcommand>"
+    aliases: [chatgame, cg]
+
+permissions:
+  chatgames.reload:
+    description: "Allows the use of '/chatgames reload'"
+    default: op
+  chatgames.start:
+    description: "Allows the use of '/chatgames start <game>'"
+    default: op
+  chatgames.stop:
+    description: "Allows the use of '/chatgames stop'"
+    default: op
+  chatgames.list:
+    description: "Allows the use of '/chatgames list'"
+    default: op
+  chatgames.toggle:
+    description: "Allows the use of '/chatgames toggle'"
+    default: op
+  chatgames.help:
+    description: "Allows the use of '/chatgames help'"
+    default: op
+  chatgames.answer:
+    description: "Allows the use of '/chatgames answer <token>'"
+    default: true
+  chatgames.info:
+    description: "Allows the use of '/chatgames info'"
+    default: true

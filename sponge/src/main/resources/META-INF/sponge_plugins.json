@@ -1,0 +1,31 @@
+{
+  "loader": {
+    "name": "java_plain",
+    "version": "1.0"
+  },
+  "license": "MIT",
+  "global": {
+    "version": "8.0.0",
+    "contributors": [
+      {
+        "name": "RareHyperIon",
+        "description": "Author"
+      }
+    ],
+    "dependencies": [
+      {
+        "id": "spongeapi",
+        "version": "8.0.0"
+      }
+    ]
+  },
+  "plugins": [
+    {
+      "id": "chatgames",
+      "name": "ChatGames",
+      "version": "${project.version}",
+      "entrypoint": "dev.rarehyperion.chatgames.ChatGamesSponge",
+      "description": "A plugin aimed to add fun chat based games to your server."
+    }
+  ]
+}

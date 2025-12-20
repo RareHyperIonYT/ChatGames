@@ -1,0 +1,34 @@
+name: math
+display-name: "<gold>Math Wizard</gold>"
+type: math
+timeout: 60
+
+reward-commands:
+  - "give {player} diamond {rand:1-3}"
+
+messages:
+  start: |
+
+    <gold><bold>MATH WIZARD</bold></gold>
+    <gray>Solve the equation below!</gray>
+
+  win: |
+
+    <green><bold>✓</bold> <yellow>{player}</yellow> solved it!</green>
+    <gray>Answer: <white>{answer}</white></gray>
+
+  timeout: |
+
+    <red><bold>✗</bold> Time's up!</red>
+    <gray>Answer: <white>{answer}</white></gray>
+
+
+questions:
+  - ["<yellow>12 + 8 = ?</yellow>", "20"]
+  - ["<yellow>25 - 7 = ?</yellow>", "18"]
+  - ["<yellow>6 × 7 = ?</yellow>", "42"]
+  - ["<yellow>144 ÷ 12 = ?</yellow>", "12"]
+  - ["<yellow>15 + 23 = ?</yellow>", "38"]
+  - ["<yellow>50 - 18 = ?</yellow>", "32"]
+  - ["<yellow>9 × 8 = ?</yellow>", "72"]
+  - ["<yellow>100 ÷ 5 = ?</yellow>", "20"]

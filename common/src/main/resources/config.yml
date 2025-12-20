@@ -1,0 +1,20 @@
+# ChatGames Configuration
+# https://github.com/RareHyperIon/ChatGames
+
+# Available: en-us
+language: en-us
+
+# Interval between automatic games (in seconds)
+game-interval: 300
+
+# Minimum players online to start automatic games
+minimum-players: 1
+
+# Whether to automatically start games at intervals
+automatic-games: true
+
+# Cooldown after wrong answer in multiple choice (in ticks, 20 ticks = 1 second)
+answer-cooldown-ticks: 60
+
+# Enable debug logging
+debug: false
