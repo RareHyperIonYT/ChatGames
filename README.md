@@ -15,7 +15,8 @@ A Minecraft plugin that adds interactive chat-based minigames to engage your ser
   - **Trivia** - Answer trivia questions correctly
   - **Math** - Solve math problems
   - **Unscramble** - Unscramble words
-  - **Reaction** - Click buttons quickly (with customizable variants)
+  - **Multiple Choice** - Pick the correct answer from several options
+  - **Reaction** - Respond quickly
 
 
 - **Automatic Game Scheduling** - Games start automatically at configurable intervals
