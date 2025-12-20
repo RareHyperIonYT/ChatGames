@@ -323,7 +323,7 @@ questions:
 
 | Platform | Supported Versions |
 |----------|--------------------|
-| Spigot   | 1.13 – 1.21.x      |
+| Spigot   | 1.13.x – 1.21.x    |
 | Paper    | 1.20.6 – 1.21.x    |
 | Folia    | 1.20.6 – 1.21.x    |
 | Sponge   | 1.21.x             |
