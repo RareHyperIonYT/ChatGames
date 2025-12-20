@@ -26,27 +26,26 @@ public class ChatGamesCommand {
 
         final String subCommand = args[0].toLowerCase();
 
-        return switch (subCommand) {
+        switch (subCommand) {
             case "reload" -> this.handleReload(sender);
             case "start"  -> this.handleStart(sender, args);
             case "stop"   -> this.handleStop(sender);
             case "list"   -> this.handleList(sender);
             case "info"   -> this.handleInfo(sender);
             case "toggle" -> this.handleToggle(sender);
-
-            default -> {
-                sender.sendMessage(MessageUtil.parse("<red>Unknown command. Type /chatgames for help.</red>"));
-                yield true;
-            }
+            case "help"   -> this.sendHelp(sender);
+            default -> sender.sendMessage(MessageUtil.parse("<red>Unknown command. Type /chatgames for help.</red>"));
         };
+
+        return true;
     }
 
-    private boolean handleReload(final PlatformSender sender) {
+    private void handleReload(final PlatformSender sender) {
         if(!sender.hasPermission("Chatgames.reload")) {
             sender.sendMessage(MessageUtil.parse(
                     this.configManager.getMessage("permission", "<red>You don't have permission to use this command.</red>")
             ));
-            return true;
+            return;
         }
 
         this.plugin.reload();
@@ -54,21 +53,19 @@ public class ChatGamesCommand {
         sender.sendMessage(MessageUtil.parse(
                 this.configManager.getMessage("reload", "<green>Successfully reloaded ChatGames!</green>")
         ));
-
-        return true;
     }
 
-    private boolean handleStart(final PlatformSender sender, final String[] args) {
+    private void handleStart(final PlatformSender sender, final String[] args) {
         if(!sender.hasPermission("Chatgames.reload")) {
             sender.sendMessage(MessageUtil.parse(
                     this.configManager.getMessage("permission", "<red>You don't have permission to use this command.</red>")
             ));
-            return true;
+            return;
         }
 
         if (args.length < 2) {
             sender.sendMessage(MessageUtil.parse("<red>Incorrect usage. Usage: /chatgames start <game></red>"));
-            return true;
+            return;
         }
 
         final String gameName = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
@@ -79,29 +76,26 @@ public class ChatGamesCommand {
                 },
                 () -> sender.sendMessage(MessageUtil.parse("<red>Unknown game: " + gameName + "</red>"))
         );
-
-        return true;
     }
 
-    private boolean handleStop(final PlatformSender sender) {
+    private void handleStop(final PlatformSender sender) {
         if (!sender.hasPermission("chatgames.stop")) {
             sender.sendMessage(MessageUtil.parse(
                     this.configManager.getMessage("permission", "<red>You don't have permission to use this command.</red>")
             ));
-            return true;
+            return;
         }
 
         this.plugin.gameManager().stopGame();
         sender.sendMessage(MessageUtil.parse("<green>Game stopped</green>"));
-        return true;
     }
 
-    private boolean handleList(final PlatformSender sender) {
+    private void handleList(final PlatformSender sender) {
         if (!sender.hasPermission("chatgames.list")) {
             sender.sendMessage(MessageUtil.parse(
                     this.configManager.getMessage("permission", "<red>You don't have permission to use this command.</red>")
             ));
-            return true;
+            return;
         }
 
         sender.sendMessage(MessageUtil.parse("<aqua><bold>Available Games:</bold></aqua>"));
@@ -109,25 +103,27 @@ public class ChatGamesCommand {
         for (final GameConfig config : plugin.gameRegistry().getAllConfigs()) {
             sender.sendMessage(MessageUtil.parse("<gray>-</gray> <green>" + config.getDisplayName() + "</green>"));
         }
-
-        return true;
     }
 
-    private boolean handleInfo(final PlatformSender sender) {
-        final String authors = String.join(", ", this.plugin.platform().pluginMeta().getAuthors());
+    private void handleInfo(final PlatformSender sender) {
+        final String authors = String.join(", and ", this.plugin.platform().pluginMeta().getAuthors());
 
-        sender.sendMessage(MessageUtil.parse("<gold>ChatGames</gold> <yellow>" + this.plugin.platform().pluginMeta().getVersion() + "</yellow>"));
-        sender.sendMessage(MessageUtil.parse("<gray>Platform:</gray> <green>" + this.plugin.platform().name() + "</green>"));
-        sender.sendMessage(MessageUtil.parse("<gray>Author(s):</gray> <aqua>" + authors + "</aqua>"));
-        return true;
+        final String response = """
+        <gold>ChatGames <white>•</white> <yellow>%s</yellow></gold>
+        <green>A simple plugin that adds chat-based games <aqua>by %s</aqua></green>
+        """;
+
+        sender.sendMessage(MessageUtil.parse(
+                String.format(response, this.plugin.platform().pluginMeta().getVersion(), authors)
+        ));
     }
 
-    private boolean handleToggle(final PlatformSender sender) {
+    private void handleToggle(final PlatformSender sender) {
         if (!sender.hasPermission("chatgames.toggle")) {
             sender.sendMessage(MessageUtil.parse(
                     this.configManager.getMessage("permission", "<red>You don't have permission to use this command.</red>")
             ));
-            return true;
+            return;
         }
 
         boolean current = this.plugin.platform().getConfigValue("automatic-games", Boolean.class, true);
@@ -144,8 +140,6 @@ public class ChatGamesCommand {
             this.plugin.gameManager().shutdown();
             sender.sendMessage(MessageUtil.parse("<red>Automatic games disabled!</red>"));
         }
-
-        return true;
     }
 
     private void sendHelp(final PlatformSender sender) {

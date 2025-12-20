@@ -45,6 +45,7 @@ public class FoliaChatGamesCommand extends ChatGamesCommand {
                 {"stop", "chatgames.stop"},
                 {"list", "chatgames.list"},
                 {"toggle", "chatgames.toggle"},
+                {"help", "chatgames.help"},
                 {"info", null} // We want info to be accessed by anyone.
         };
 

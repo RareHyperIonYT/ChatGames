@@ -23,7 +23,7 @@
     {
       "id": "chatgames",
       "name": "ChatGames",
-      "version": "1.0.0",
+      "version": "${project.version}",
       "entrypoint": "dev.rarehyperion.chatgames.ChatGamesSponge",
       "description": "A plugin aimed to add fun chat based games to your server."
     }

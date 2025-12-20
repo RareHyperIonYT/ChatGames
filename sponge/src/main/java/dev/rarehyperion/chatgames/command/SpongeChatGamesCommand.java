@@ -10,7 +10,6 @@ import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.parameter.Parameter;
 import org.spongepowered.api.entity.living.player.Player;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -24,8 +23,8 @@ public class SpongeChatGamesCommand extends ChatGamesCommand {
     public Command.Parameterized build() {
         return Command.builder()
                 .executor(context -> {
-                    PlatformSender sender = this.plugin.platform().wrapSender(context.cause().first(Player.class).orElse(context.cause().first(Player.class).orElse(null)));
-                    handleCommand(sender, new String[]{});
+                    final PlatformSender sender = this.plugin.platform().wrapSender(context.cause().first(Player.class).orElse(context.cause().first(Player.class).orElse(null)));
+                    this.handleCommand(sender, new String[]{});
                     return CommandResult.success();
                 })
                 .addChild(reloadCommand(), "reload")
@@ -34,13 +33,14 @@ public class SpongeChatGamesCommand extends ChatGamesCommand {
                 .addChild(listCommand(), "list")
                 .addChild(toggleCommand(), "toggle")
                 .addChild(infoCommand(), "info")
+                .addChild(helpCommand(), "help")
                 .build();
     }
 
     private Command.Parameterized reloadCommand() {
         return Command.builder()
                 .executor(ctx -> {
-                    PlatformSender sender = plugin.platform().wrapSender(ctx.cause().first(Player.class).orElse(null));
+                    PlatformSender sender = this.plugin.platform().wrapSender(ctx.cause().first(Player.class).orElse(null));
                     handleCommand(sender, new String[]{"reload"});
                     return CommandResult.success();
                 })
@@ -68,7 +68,7 @@ public class SpongeChatGamesCommand extends ChatGamesCommand {
         return Command.builder()
                 .addParameter(gameParam)
                 .executor(ctx -> {
-                    PlatformSender sender = plugin.platform().wrapSender(ctx.cause().first(Player.class).orElse(null));
+                    PlatformSender sender = this.plugin.platform().wrapSender(ctx.cause().first(Player.class).orElse(null));
                     String game = ctx.requireOne(gameParam);
                     handleCommand(sender, new String[]{"start", game});
                     return CommandResult.success();
@@ -79,7 +79,7 @@ public class SpongeChatGamesCommand extends ChatGamesCommand {
     private Command.Parameterized stopCommand() {
         return Command.builder()
                 .executor(ctx -> {
-                    PlatformSender sender = plugin.platform().wrapSender(ctx.cause().first(Player.class).orElse(null));
+                    PlatformSender sender = this.plugin.platform().wrapSender(ctx.cause().first(Player.class).orElse(null));
                     handleCommand(sender, new String[]{"stop"});
                     return CommandResult.success();
                 })
@@ -89,7 +89,7 @@ public class SpongeChatGamesCommand extends ChatGamesCommand {
     private Command.Parameterized listCommand() {
         return Command.builder()
                 .executor(ctx -> {
-                    PlatformSender sender = plugin.platform().wrapSender(ctx.cause().first(Player.class).orElse(null));
+                    PlatformSender sender = this.plugin.platform().wrapSender(ctx.cause().first(Player.class).orElse(null));
                     handleCommand(sender, new String[]{"list"});
                     return CommandResult.success();
                 })
@@ -99,7 +99,7 @@ public class SpongeChatGamesCommand extends ChatGamesCommand {
     private Command.Parameterized toggleCommand() {
         return Command.builder()
                 .executor(ctx -> {
-                    PlatformSender sender = plugin.platform().wrapSender(ctx.cause().first(Player.class).orElse(null));
+                    PlatformSender sender = this.plugin.platform().wrapSender(ctx.cause().first(Player.class).orElse(null));
                     handleCommand(sender, new String[]{"toggle"});
                     return CommandResult.success();
                 })
@@ -109,10 +109,21 @@ public class SpongeChatGamesCommand extends ChatGamesCommand {
     private Command.Parameterized infoCommand() {
         return Command.builder()
                 .executor(ctx -> {
-                    PlatformSender sender = plugin.platform().wrapSender(ctx.cause().first(Player.class).orElse(null));
+                    PlatformSender sender = this.plugin.platform().wrapSender(ctx.cause().first(Player.class).orElse(null));
                     handleCommand(sender, new String[]{"info"});
                     return CommandResult.success();
                 })
                 .build();
     }
+
+    private Command.Parameterized helpCommand() {
+        return Command.builder()
+                .executor(ctx -> {
+                    PlatformSender sender = this.plugin.platform().wrapSender(ctx.cause().first(Player.class).orElse(null));
+                    handleCommand(sender, new String[]{});
+                    return CommandResult.success();
+                })
+                .build();
+    }
+
 }
