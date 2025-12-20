@@ -19,7 +19,6 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class SpigotPlatform implements Platform {

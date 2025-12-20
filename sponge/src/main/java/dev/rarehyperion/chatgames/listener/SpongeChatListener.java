@@ -3,7 +3,6 @@ package dev.rarehyperion.chatgames.listener;
 import dev.rarehyperion.chatgames.game.GameManager;
 import dev.rarehyperion.chatgames.platform.impl.SpongePlatformPlayer;
 import dev.rarehyperion.chatgames.util.MessageUtil;
-import net.kyori.adventure.text.Component;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Cancellable;
 import org.spongepowered.api.event.Listener;

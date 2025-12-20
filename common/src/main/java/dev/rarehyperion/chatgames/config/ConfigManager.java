@@ -83,7 +83,7 @@ public final class ConfigManager {
         return this.settings;
     }
 
-    public final class PluginSettings {
+    public static final class PluginSettings {
 
         private final int gameInterval;
         private final int minimumPlayers;

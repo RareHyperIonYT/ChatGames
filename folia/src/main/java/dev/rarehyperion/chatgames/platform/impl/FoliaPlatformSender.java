@@ -7,7 +7,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-@SuppressWarnings("ClassCanBeRecord")
 public class FoliaPlatformSender implements PlatformSender {
 
     private final CommandSender sender;

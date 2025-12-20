@@ -1,4 +1,4 @@
-# ChatGames Language File - English (US)
+# ChatGames Language File - English (Simplified)
 
 # Message shown when a player tries to use a command they don't have access to
 permission: "<red>You don't have permission to use this command.</red>"

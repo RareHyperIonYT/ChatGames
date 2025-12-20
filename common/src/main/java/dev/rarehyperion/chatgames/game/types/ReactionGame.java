@@ -8,8 +8,6 @@ import dev.rarehyperion.chatgames.util.MessageUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.event.HoverEvent;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import java.util.Optional;
 import java.util.UUID;

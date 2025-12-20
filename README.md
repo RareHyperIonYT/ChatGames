@@ -2,7 +2,7 @@
 
 A Minecraft plugin that adds interactive chat-based minigames to engage your server's players with trivia, math challenges, word scrambles, and reaction games.
 
-## Why use Chatgames?
+## Why use ChatGames?
 
 - Instant, lightweight chat minigames that keep your chat active.
 - Multi-platform: same core works across Spigot, Paper, Folia, and Sponge via a platform abstraction layer.

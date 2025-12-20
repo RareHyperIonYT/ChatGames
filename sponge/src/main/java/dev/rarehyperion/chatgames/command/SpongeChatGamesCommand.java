@@ -3,7 +3,6 @@ package dev.rarehyperion.chatgames.command;
 import dev.rarehyperion.chatgames.ChatGamesCore;
 import dev.rarehyperion.chatgames.game.GameConfig;
 import dev.rarehyperion.chatgames.platform.PlatformSender;
-import net.kyori.adventure.text.Component;
 import org.spongepowered.api.command.Command;
 import org.spongepowered.api.command.CommandCompletion;
 import org.spongepowered.api.command.CommandResult;
@@ -11,7 +10,6 @@ import org.spongepowered.api.command.parameter.Parameter;
 import org.spongepowered.api.entity.living.player.Player;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 

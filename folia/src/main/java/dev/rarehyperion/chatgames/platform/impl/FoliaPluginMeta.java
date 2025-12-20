@@ -5,7 +5,7 @@ import io.papermc.paper.plugin.configuration.PluginMeta;
 
 import java.util.List;
 
-@SuppressWarnings({"UnstableApiUsage", "ClassCanBeRecord"})
+@SuppressWarnings("UnstableApiUsage")
 public class FoliaPluginMeta implements PlatformPluginMeta {
 
     private final PluginMeta meta;
