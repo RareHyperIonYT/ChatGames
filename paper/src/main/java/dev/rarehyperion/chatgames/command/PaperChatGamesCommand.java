@@ -1,6 +1,8 @@
 package dev.rarehyperion.chatgames.command;
 
+import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.Suggestions;
@@ -46,6 +48,7 @@ public class PaperChatGamesCommand extends ChatGamesCommand {
                 {"list", "chatgames.list"},
                 {"toggle", "chatgames.toggle"},
                 {"help", "chatgames.help"},
+                {"answer", null},
                 {"info", null} // We want info to be accessed by anyone.
         };
 
@@ -57,14 +60,9 @@ public class PaperChatGamesCommand extends ChatGamesCommand {
             if(permission != null) node.requires(ctx -> ctx.getSender().hasPermission(permission));
 
             if("start".equals(name)) {
-                node.then(Commands.argument("game", StringArgumentType.greedyString())
-                        .suggests(this::suggestGameNames)
-                        .executes(ctx -> {
-                            final PlatformSender sender = this.plugin.platform().wrapSender(ctx.getSource().getSender());
-                            final String game = StringArgumentType.getString(ctx, "game");
-                            this.handleCommand(sender, new String[]{"start", game});
-                            return 1;
-                        }));
+                node.then(this.createArgumentNode(name, "game", StringArgumentType.greedyString()));
+            } else if("answer".equals(name)) {
+                node.then(this.createArgumentNode(name, "token", StringArgumentType.string()));
             } else {
                 node.executes(ctx -> {
                     final PlatformSender sender = this.plugin.platform().wrapSender(ctx.getSource().getSender());
@@ -77,6 +75,17 @@ public class PaperChatGamesCommand extends ChatGamesCommand {
         }
 
         return root.build();
+    }
+
+    private ArgumentBuilder<CommandSourceStack, ?> createArgumentNode(final String command, final String argName, final ArgumentType<?> argType) {
+        return Commands.argument(argName, argType)
+                .suggests("start".equals(command) ? this::suggestGameNames : (ctx, builder) -> builder.buildFuture())
+                .executes(ctx -> {
+                    final PlatformSender sender = this.plugin.platform().wrapSender(ctx.getSource().getSender());
+                    final String arg = StringArgumentType.getString(ctx, argName);
+                    this.handleCommand(sender, new String[]{command, arg});
+                    return 1;
+                });
     }
 
     private CompletableFuture<Suggestions> suggestGameNames(final CommandContext<CommandSourceStack> ctx, final SuggestionsBuilder builder) {

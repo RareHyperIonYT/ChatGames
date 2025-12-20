@@ -33,6 +33,7 @@ public class SpongeChatGamesCommand extends ChatGamesCommand {
                 .addChild(listCommand(), "list")
                 .addChild(toggleCommand(), "toggle")
                 .addChild(infoCommand(), "info")
+                .addChild(answerCommand(), "answer")
                 .addChild(helpCommand(), "help")
                 .build();
     }
@@ -111,6 +112,22 @@ public class SpongeChatGamesCommand extends ChatGamesCommand {
                 .executor(ctx -> {
                     PlatformSender sender = this.plugin.platform().wrapSender(ctx.cause().first(Player.class).orElse(null));
                     handleCommand(sender, new String[]{"info"});
+                    return CommandResult.success();
+                })
+                .build();
+    }
+
+    private Command.Parameterized answerCommand() {
+        Parameter.Value<String> tokenParam = Parameter.string()
+                .key("token")
+                .build();
+
+        return Command.builder()
+                .addParameter(tokenParam)
+                .executor(ctx -> {
+                    PlatformSender sender = this.plugin.platform().wrapSender(ctx.cause().first(Player.class).orElse(null));
+                    String token = ctx.requireOne(tokenParam);
+                    handleCommand(sender, new String[]{"answer", token});
                     return CommandResult.success();
                 })
                 .build();

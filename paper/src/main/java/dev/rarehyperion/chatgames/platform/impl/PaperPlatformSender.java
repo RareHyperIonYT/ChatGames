@@ -1,9 +1,11 @@
 package dev.rarehyperion.chatgames.platform.impl;
 
+import dev.rarehyperion.chatgames.platform.PlatformPlayer;
 import dev.rarehyperion.chatgames.platform.PlatformSender;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 
 @SuppressWarnings("ClassCanBeRecord")
 public class PaperPlatformSender implements PlatformSender {
@@ -27,6 +29,15 @@ public class PaperPlatformSender implements PlatformSender {
     @Override
     public boolean isConsole() {
         return this.sender instanceof ConsoleCommandSender;
+    }
+
+    @Override
+    public PlatformPlayer player() {
+        if(this.sender instanceof Player player) {
+            return new PaperPlatformPlayer(player);
+        }
+
+        throw new IllegalStateException("Sender is not a player");
     }
 
     // Will probably forever remain unused for this project.

@@ -1,5 +1,6 @@
 package dev.rarehyperion.chatgames.platform.impl;
 
+import dev.rarehyperion.chatgames.platform.PlatformPlayer;
 import dev.rarehyperion.chatgames.platform.PlatformSender;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
@@ -40,7 +41,16 @@ public class SpongePlatformSender implements PlatformSender {
 
     @Override
     public boolean isConsole() {
-        return source instanceof SystemSubject;
+        return this.source instanceof SystemSubject;
+    }
+
+    @Override
+    public PlatformPlayer player() {
+        if(this.source instanceof ServerPlayer serverPlayer) {
+            return new SpongePlatformPlayer(serverPlayer);
+        }
+
+        throw new IllegalStateException("Sender is not a player");
     }
 
     public Object unwrap() {

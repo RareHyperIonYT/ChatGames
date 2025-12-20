@@ -8,6 +8,6 @@ public interface PlatformSender {
     boolean hasPermission(final String permission);
     boolean isConsole();
 
-
+    PlatformPlayer player();
 
 }

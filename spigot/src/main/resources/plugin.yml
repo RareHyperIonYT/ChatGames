@@ -31,6 +31,9 @@ permissions:
   chatgames.help:
     description: "Allows the use of '/chatgames help'"
     default: op
+  chatgames.answer:
+    description: "Allows the use of '/chatgames answer <token>'"
+    default: true
   chatgames.info:
     description: "Allows the use of '/chatgames info'"
     default: true

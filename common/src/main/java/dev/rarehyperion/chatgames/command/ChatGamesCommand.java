@@ -2,7 +2,9 @@ package dev.rarehyperion.chatgames.command;
 
 import dev.rarehyperion.chatgames.ChatGamesCore;
 import dev.rarehyperion.chatgames.config.ConfigManager;
+import dev.rarehyperion.chatgames.game.Game;
 import dev.rarehyperion.chatgames.game.GameConfig;
+import dev.rarehyperion.chatgames.game.types.ReactionGame;
 import dev.rarehyperion.chatgames.platform.PlatformSender;
 import dev.rarehyperion.chatgames.util.MessageUtil;
 
@@ -33,6 +35,7 @@ public class ChatGamesCommand {
             case "list"   -> this.handleList(sender);
             case "info"   -> this.handleInfo(sender);
             case "toggle" -> this.handleToggle(sender);
+            case "answer" -> this.handleAnswer(sender, args);
             case "help"   -> this.sendHelp(sender);
             default -> sender.sendMessage(MessageUtil.parse("<red>Unknown command. Type /chatgames for help.</red>"));
         };
@@ -139,6 +142,15 @@ public class ChatGamesCommand {
             this.plugin.gameManager().shutdown();
             sender.sendMessage(MessageUtil.parse("<red>Automatic games disabled!</red>"));
         }
+    }
+
+    private void handleAnswer(final PlatformSender sender, final String[] args) {
+        final Game game = this.plugin.gameManager().getActiveGame();
+        if(sender.isConsole()) return;
+        if(!(game instanceof ReactionGame)) return;
+        if (args.length < 2) return;
+
+        this.plugin.gameManager().processAnswer(sender.player(), args[1]);
     }
 
     private void sendHelp(final PlatformSender sender) {

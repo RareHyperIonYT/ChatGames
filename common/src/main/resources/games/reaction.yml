@@ -24,6 +24,11 @@ messages:
 # Variants allow different reaction challenges
 # If answer is empty string "", any message wins (fastest typer)
 # If answer is specified, must type that exact word
+# If answer is "CLICK", then it will be clickable.
+#   - Optional: Add hover="Your text" for custom hover message
+#   - Example: <button hover='Click me!'>Press here</button>
+#   - Without hover attribute, no hover text will be shown
+#   - You can include colors in the hover attribute.
 variants:
   - name: "Type Fast"
     challenge: "<gold><bold>Type: <yellow>MINECRAFT</yellow></bold></gold>"
@@ -33,9 +38,9 @@ variants:
     challenge: "<gold><bold>Type any word now!</bold></gold>"
     answer: ""
 
-  - name: "Math Quick"
-    challenge: "<gold><bold>Type: <yellow>5+5</yellow></bold></gold>"
-    answer: "10"
+  - name: "Click Fast"
+    challenge: "<button hover='Click to win!'><gold><bold>Click me to win!</bold></gold></button>"
+    answer: "CLICK"
 
   - name: "Color"
     challenge: "<gold><bold>Type: <yellow>RED</yellow></bold></gold>"
