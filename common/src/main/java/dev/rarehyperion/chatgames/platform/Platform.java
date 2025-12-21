@@ -156,10 +156,6 @@ public interface Platform {
      */
     InputStream getResource(final String resourcePath);
 
-    default void onLoad() {}
-    default void onEnable() {}
-    default void onDisable() {}
-
     /**
      * Returns the platform's logger for outputting messages.
      * @return The platform logger.
