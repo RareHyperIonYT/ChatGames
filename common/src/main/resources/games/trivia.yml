@@ -1,7 +1,6 @@
 name: trivia
 display-name: "<aqua>Trivia Time</aqua>"
-type: trivia
-timeout: 45
+timeout: 45 # The time players have to win the game. (in seconds)
 
 reward-commands:
   - "give {player} emerald {rand:1-3}"

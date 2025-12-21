@@ -84,8 +84,7 @@ cooldown: "<red>You cannot answer this question as you've already tried recently
   ```yml
 name: math
 display-name: "<gold>Math Wizard</gold>"
-type: math
-timeout: 60
+timeout: 60 # The time players have to win the game. (in seconds)
 
 reward-commands:
   - "give {player} diamond {rand:1-3}"
@@ -125,8 +124,7 @@ questions:
   ```yml
 name: multiple choice
 display-name: "<green>Multiple Choice</green>"
-type: multiple-choice
-timeout: 45
+timeout: 45 # The time players have to win the game. (in seconds)
 cooldown: 60 # Ticks to wait after wrong answer (60 ticks = 3 seconds)
 
 reward-commands:
@@ -194,15 +192,14 @@ questions:
   ```yml
 name: reaction
 display-name: "<red>Reaction Test</red>"
-type: reaction
-timeout: 30
+timeout: 30 # The time players have to win the game. (in seconds)
 
 reward-commands:
   - "give {player} diamond {rand:1-3}"
 
 messages:
   start: |
-    
+
     <red><bold>REACTION TEST</bold></red>
     <gray>Be the first to respond!</gray>
 
@@ -213,7 +210,7 @@ messages:
   timeout: |
 
     <red><bold>✗</bold> Nobody reacted in time!</red>
-    
+
 
 # Variants allow different reaction challenges
 # If answer is empty string "", any message wins (fastest typer)
@@ -248,8 +245,7 @@ variants:
   ```yml
 name: trivia
 display-name: "<aqua>Trivia Time</aqua>"
-type: trivia
-timeout: 45
+timeout: 45 # The time players have to win the game. (in seconds)
 
 reward-commands:
   - "give {player} emerald {rand:1-3}"
@@ -288,14 +284,14 @@ questions:
   ```yml
 name: unscramble
 display-name: "<light_purple>Word Scramble</light_purple>"
-type: unscramble
-timeout: 60
+timeout: 60 # The time players have to win the game. (in seconds)
 
 reward-commands:
   - "give {player} gold_ingot {rand:1-5}"
 
 messages:
   start: |
+
     <light_purple><bold>WORD SCRAMBLE</bold></light_purple>
     <gray>Unscramble the word!</gray>
 

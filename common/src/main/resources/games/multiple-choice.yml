@@ -1,7 +1,6 @@
 name: multiple choice
 display-name: "<green>Multiple Choice</green>"
-type: multiple-choice
-timeout: 45
+timeout: 45 # The time players have to win the game. (in seconds)
 cooldown: 60 # Ticks to wait after wrong answer (60 ticks = 3 seconds)
 
 reward-commands:

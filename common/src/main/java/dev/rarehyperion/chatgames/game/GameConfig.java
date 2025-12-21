@@ -24,11 +24,11 @@ public final class GameConfig {
     private final List<ReactionVariant> reactionVariants;
     private final List<MultipleChoiceQuestion> multipleChoiceQuestions;
 
-    public GameConfig(final Config configuration) {
+    public GameConfig(final String type, final Config configuration) {
         this.name = configuration.getString("name", "Unknown");
         this.displayName = configuration.getString("display-name", this.name);
 
-        this.type = GameType.fromId(configuration.getString("type", ""));
+        this.type = GameType.fromId(type);
         this.timeoutSeconds = configuration.getInt("timeout", 60);
 
         this.rewardCommands = configuration.getStringList("reward-commands");

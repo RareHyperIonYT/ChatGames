@@ -1,7 +1,6 @@
 name: reaction
 display-name: "<red>Reaction Test</red>"
-type: reaction
-timeout: 30
+timeout: 30 # The time players have to win the game. (in seconds)
 
 reward-commands:
   - "give {player} diamond {rand:1-3}"

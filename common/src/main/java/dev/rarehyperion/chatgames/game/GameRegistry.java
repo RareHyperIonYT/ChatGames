@@ -49,8 +49,12 @@ public final class GameRegistry {
         }
 
         for(final File file : gameFiles) {
+            String fileName = file.getName();
+
             try {
-                final GameConfig config = new GameConfig(this.plugin.platform().loadConfig(file));
+                fileName = fileName.substring(0, fileName.lastIndexOf('.'));
+
+                final GameConfig config = new GameConfig(fileName, this.plugin.platform().loadConfig(file));
 
                 if(config.getType() != null) {
                     this.gameConfigs.add(config);
