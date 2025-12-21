@@ -97,7 +97,7 @@ public class PaperPlatform implements Platform {
     }
 
     @Override
-    public PlatformTask runTaskTimer(Runnable task, long initialDelay, long periodTicks) {
+    public PlatformTask runTaskTimer(final Runnable task, final long initialDelay, final long periodTicks) {
         return new PaperPlatformTask(Bukkit.getScheduler().runTaskTimer(this.plugin, task, initialDelay, periodTicks));
     }
 
@@ -128,6 +128,7 @@ public class PaperPlatform implements Platform {
         }
 
         final Object value = this.plugin.getConfig().get(path);
+
         if (value == null) {
             return defaultValue;
         }

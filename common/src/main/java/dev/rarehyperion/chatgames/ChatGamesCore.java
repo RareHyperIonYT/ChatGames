@@ -6,8 +6,6 @@ import dev.rarehyperion.chatgames.game.GameRegistry;
 import dev.rarehyperion.chatgames.platform.Platform;
 import net.kyori.adventure.text.Component;
 
-import java.util.UUID;
-
 public final class ChatGamesCore {
 
     private final Platform platform;
@@ -21,7 +19,6 @@ public final class ChatGamesCore {
     }
 
     public void load() {
-        this.platform.onLoad();
         this.platform.saveDefaultConfig();
     }
 
@@ -41,13 +38,11 @@ public final class ChatGamesCore {
         this.platform.registerCommands(this);
         this.platform.registerListeners(this);
 
-        this.platform.onEnable();
         this.platform.getLogger().info("ChatGames enabled!");
     }
 
     public void disable() {
         if (this.gameManager != null) this.gameManager.shutdown();
-        this.platform.onDisable();
         this.platform.getLogger().info("ChatGames disabled!");
     }
 
@@ -78,4 +73,5 @@ public final class ChatGamesCore {
     public ConfigManager configManager() {
         return this.configManager;
     }
+
 }

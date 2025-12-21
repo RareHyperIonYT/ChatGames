@@ -1,13 +1,13 @@
 name: unscramble
 display-name: "<light_purple>Word Scramble</light_purple>"
-type: unscramble
-timeout: 60
+timeout: 60 # The time players have to win the game. (in seconds)
 
 reward-commands:
   - "give {player} gold_ingot {rand:1-5}"
 
 messages:
   start: |
+    
     <light_purple><bold>WORD SCRAMBLE</bold></light_purple>
     <gray>Unscramble the word!</gray>
 

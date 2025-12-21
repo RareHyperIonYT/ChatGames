@@ -4,7 +4,7 @@
     <parent>
         <groupId>dev.rarehyperion.chatgames</groupId>
         <artifactId>chatgames-parent</artifactId>
-        <version>1.4.0</version>
+        <version>1.4.1</version>
     </parent>
 
 
@@ -25,12 +25,6 @@
             <version>8.0.0</version>
             <type>jar</type>
             <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.spongepowered</groupId>
-            <artifactId>configurate-hocon</artifactId>
-            <version>4.2.0</version>
         </dependency>
     </dependencies>
 

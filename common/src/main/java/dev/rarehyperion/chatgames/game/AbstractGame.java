@@ -2,7 +2,7 @@ package dev.rarehyperion.chatgames.game;
 
 import dev.rarehyperion.chatgames.ChatGamesCore;
 import dev.rarehyperion.chatgames.platform.PlatformPlayer;
-import dev.rarehyperion.chatgames.util.MessageUtil;
+import dev.rarehyperion.chatgames.util.Templater;
 import net.kyori.adventure.text.Component;
 
 import java.util.Collections;
@@ -34,7 +34,7 @@ public abstract class AbstractGame implements Game {
 
         this.plugin.platform().runTask(() -> {
             for(final String command : this.config.getRewardCommands()) {
-                final String processed = MessageUtil.process(command, winner);
+                final String processed = Templater.process(command, winner);
                 this.plugin.platform().dispatchCommand(processed);
             }
         });

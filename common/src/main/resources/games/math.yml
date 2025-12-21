@@ -1,7 +1,6 @@
 name: math
 display-name: "<gold>Math Wizard</gold>"
-type: math
-timeout: 60
+timeout: 60 # The time players have to win the game. (in seconds)
 
 reward-commands:
   - "give {player} diamond {rand:1-3}"

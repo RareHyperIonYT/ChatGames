@@ -132,6 +132,7 @@ public class FoliaPlatform implements Platform {
         }
 
         final Object value = this.plugin.getConfig().get(path);
+
         if (value == null) {
             return defaultValue;
         }

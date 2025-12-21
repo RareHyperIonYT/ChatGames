@@ -4,7 +4,7 @@
     <parent>
         <groupId>dev.rarehyperion.chatgames</groupId>
         <artifactId>chatgames-parent</artifactId>
-        <version>1.4.0</version>
+        <version>1.4.1</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -29,19 +29,6 @@
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-minimessage</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>${mc.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>me.clip</groupId>
-            <artifactId>placeholderapi</artifactId>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 

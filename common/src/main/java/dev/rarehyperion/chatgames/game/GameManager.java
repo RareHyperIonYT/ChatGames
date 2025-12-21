@@ -12,6 +12,8 @@ import java.util.UUID;
 
 public final class GameManager {
 
+    private static final String DEFAULT_COOLDOWN = "<red>You cannot answer this question as you've already tried recently.</red>";
+    
     private final ChatGamesCore plugin;
     private final ConfigManager configManager;
     private final GameRegistry gameRegistry;
@@ -77,7 +79,7 @@ public final class GameManager {
 
         if(this.activeGame.checkAnswer(answer)) {
             if(this.isOnCooldown(uuid)) {
-                player.sendMessage(MessageUtil.parse(this.configManager.getMessage("cooldown", "<red>You cannot answer this question as you've already tried recently.</red>")));
+                player.sendMessage(MessageUtil.parse(this.configManager.getMessage("cooldown", DEFAULT_COOLDOWN)));
                 return true;
             }
 
@@ -90,7 +92,7 @@ public final class GameManager {
 
             if(this.activeGame.getAnswerOptions().contains(lowerAnswer)) {
                 if(this.wrongAnswerCooldowns.containsKey(uuid)) {
-                    player.sendMessage(MessageUtil.parse(this.configManager.getMessage("cooldown", "<red>You cannot answer this question as you've already tried recently.</red>")));
+                    player.sendMessage(MessageUtil.parse(this.configManager.getMessage("cooldown", DEFAULT_COOLDOWN)));
                 }
 
                 this.wrongAnswerCooldowns.put(uuid, System.currentTimeMillis());

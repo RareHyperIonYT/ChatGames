@@ -1,72 +1,63 @@
 package dev.rarehyperion.chatgames.util;
 
-import dev.rarehyperion.chatgames.platform.PlatformPlayer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
-import java.util.Random;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Utility class for parsing, formatting, and converting chat messages.
+ *
+ * @author RareHyperIon
+ * @since 20/12/2025
+ */
 public final class MessageUtil {
 
     private static final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
     private static final PlainTextComponentSerializer PLAIN_SERIALIZER = PlainTextComponentSerializer.plainText();
     private static final LegacyComponentSerializer LEGACY_SERIALIZER = LegacyComponentSerializer.legacySection();
 
-//    private static final boolean PLACEHOLDER_API_ENABLED = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
-
     private static final Pattern HEX_PATTERN = Pattern.compile("&#([0-9a-fA-F]{6})");
-    private static final Pattern RAND_PATTERN = Pattern.compile("\\{rand:(\\d+)-(\\d+)}");
 
-    private MessageUtil() { /* no-op */ }
-
+    /**
+     * Parses a text string into a {@link Component}
+     *
+     * @param text The text to parse
+     * @return The parsed Component.
+     */
     public static Component parse(final String text) {
-        return parse(text, null);
-    }
-
-    public static Component parse(final String text, final PlatformPlayer player) {
         String processed = text;
 
-//        if(PLACEHOLDER_API_ENABLED && player != null) {
-//            processed = PlaceholderAPI.setPlaceholders(player, processed);
-//        }
-
         processed = convertLegacyToMiniMessage(processed);
-
         return MINI_MESSAGE.deserialize(processed);
+
     }
 
-    public static String process(final String text, final PlatformPlayer player) {
-        String processed = text.replace("{player}", player.name());
-
-        final Matcher matcher = RAND_PATTERN.matcher(processed);
-        final Random random = new Random();
-
-        final StringBuffer buffer = new StringBuffer();
-
-        while(matcher.find()) {
-            int min = Integer.parseInt(matcher.group(1));
-            int max = Integer.parseInt(matcher.group(2));
-            int value = random.nextInt(max - min + 1) + min;
-            matcher.appendReplacement(buffer, String.valueOf(value));
-        }
-
-        matcher.appendTail(buffer);
-
-        return buffer.toString();
-    }
-
+    /**
+     * Converts a {@link Component} to plain text.
+     * @param component The Component to convert.
+     * @return The plain text representation.
+     */
     public static String plainText(final Component component) {
         return PLAIN_SERIALIZER.serialize(component);
     }
 
+    /**
+     * Serializes a {@link Component} into a legacy text format using § codes.
+     * @param component The Component to serialize.
+     * @return The legacy-formatted string.
+     */
     public static String serialize(final Component component) {
         return LEGACY_SERIALIZER.serialize(component);
     }
 
+    /**
+     * Converts a legacy text string with color codes (&amp; codes and hex codes) into a MiniMessage-compatible format.
+     * @param text The legacy text.
+     * @return The converted MiniMessage string.
+     */
     public static String convertLegacyToMiniMessage(String text) {
         text = HEX_PATTERN.matcher(text).replaceAll("<#$1>");
 
@@ -95,24 +86,7 @@ public final class MessageUtil {
                 .replace("&r", "<reset>");
     }
 
-    public static String stripColors(final String text) {
-        final String miniMessage = convertLegacyToMiniMessage(text);
-        return PLAIN_SERIALIZER.serialize(MINI_MESSAGE.deserialize(miniMessage));
-    }
-
-    public static String format(final String template, Object... args) {
-        final StringBuilder result = new StringBuilder(template);
-        int placeholderIndex = result.indexOf("{}");
-        int argIndex = 0;
-
-        while (placeholderIndex != -1 && argIndex < args.length) {
-            result.replace(placeholderIndex, placeholderIndex + 2, args[argIndex].toString());
-            placeholderIndex = result.indexOf("{}", placeholderIndex);
-            argIndex++;
-        }
-
-        return result.toString();
-    }
-
+    // Not meant to be instantiated; shows clearly to anyone forking that this class isn't meant to be instantiated.
+    private MessageUtil() { /* no-op */ }
 
 }
