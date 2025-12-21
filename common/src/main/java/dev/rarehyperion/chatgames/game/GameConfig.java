@@ -20,7 +20,6 @@ public final class GameConfig {
     private final String startMessage, winMessage, timeoutMessage;
 
     private final List<QuestionAnswer> questions;
-    private final List<String> words;
     private final List<ReactionVariant> reactionVariants;
     private final List<MultipleChoiceQuestion> multipleChoiceQuestions;
 
@@ -38,7 +37,6 @@ public final class GameConfig {
         this.timeoutMessage = configuration.getString("messages.timeout", "<red>Failed to fetch message, report this to a server administrator.</red>");
 
         this.questions = this.loadQuestions(configuration.getList("questions"));
-        this.words = configuration.getStringList("words");
         this.reactionVariants = this.loadReactionVariants(configuration.getList("variants"));
         this.multipleChoiceQuestions = this.loadMultipleChoiceQuestions(configuration.getConfigurationSection("questions"));
     }
@@ -144,10 +142,6 @@ public final class GameConfig {
 
     public List<QuestionAnswer> getQuestions() {
         return this.questions;
-    }
-
-    public List<String> getWords() {
-        return this.words;
     }
 
     public List<ReactionVariant> getReactionVariants() {

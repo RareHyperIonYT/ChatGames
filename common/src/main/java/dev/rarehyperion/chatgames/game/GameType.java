@@ -14,10 +14,6 @@ public enum GameType {
         this.id = id;
     }
 
-    public String getId() {
-        return this.id;
-    }
-
     public static GameType fromId(final String id) {
         for(final GameType type : values()) {
             if(type.id.equalsIgnoreCase(id)) {
@@ -27,4 +23,5 @@ public enum GameType {
 
         return null;
     }
+
 }

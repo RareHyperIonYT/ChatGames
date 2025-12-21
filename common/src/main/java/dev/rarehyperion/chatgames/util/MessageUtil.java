@@ -86,25 +86,6 @@ public final class MessageUtil {
                 .replace("&r", "<reset>");
     }
 
-    public static String stripColors(final String text) {
-        final String miniMessage = convertLegacyToMiniMessage(text);
-        return PLAIN_SERIALIZER.serialize(MINI_MESSAGE.deserialize(miniMessage));
-    }
-
-    public static String format(final String template, Object... args) {
-        final StringBuilder result = new StringBuilder(template);
-        int placeholderIndex = result.indexOf("{}");
-        int argIndex = 0;
-
-        while (placeholderIndex != -1 && argIndex < args.length) {
-            result.replace(placeholderIndex, placeholderIndex + 2, args[argIndex].toString());
-            placeholderIndex = result.indexOf("{}", placeholderIndex);
-            argIndex++;
-        }
-
-        return result.toString();
-    }
-
     // Not meant to be instantiated; shows clearly to anyone forking that this class isn't meant to be instantiated.
     private MessageUtil() { /* no-op */ }
 

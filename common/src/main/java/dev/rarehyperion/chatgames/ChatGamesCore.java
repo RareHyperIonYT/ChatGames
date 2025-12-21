@@ -6,8 +6,6 @@ import dev.rarehyperion.chatgames.game.GameRegistry;
 import dev.rarehyperion.chatgames.platform.Platform;
 import net.kyori.adventure.text.Component;
 
-import java.util.UUID;
-
 public final class ChatGamesCore {
 
     private final Platform platform;
