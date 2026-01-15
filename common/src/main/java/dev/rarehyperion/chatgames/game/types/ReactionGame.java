@@ -9,6 +9,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -16,7 +18,8 @@ import java.util.regex.Pattern;
 
 public class ReactionGame extends AbstractGame {
 
-    private static final Pattern BUTTON_PATTERN = Pattern.compile("<button(?:\\s+hover='([^']*)')?>(.*?)</button>");
+//    private static final Pattern BUTTON_PATTERN = Pattern.compile("<button(?:\\s+hover='([^']*)')?>(.*?)</button>");
+    private static final Pattern BUTTON_PATTERN = Pattern.compile("<button(?:\\s+([^>]*?))?>(.*?)</button>", Pattern.DOTALL);
 
     private final GameConfig.ReactionVariant variant;
     public final String clickToken;
@@ -44,7 +47,7 @@ public class ReactionGame extends AbstractGame {
 
     @Override
     public Component getQuestion() {
-        final String challenge = this.variant.challenge();
+        final String challenge = this.normalizeEmojis(this.variant.challenge());
 
         if ("click".equalsIgnoreCase(this.variant.answer())) {
             return this.parseButton(challenge);
@@ -74,11 +77,21 @@ public class ReactionGame extends AbstractGame {
                 builder.append(MessageUtil.parse(beforeText));
             }
 
-            final String hoverText = matcher.group(1);
+            final String attrString = matcher.group(1);
             final String buttonText = matcher.group(2);
 
-            Component button = MessageUtil.parse(buttonText)
-                    .clickEvent(ClickEvent.runCommand("/chatgames answer " + this.clickToken));
+            final Map<String, String> attributes = this.parseAttributes(attrString);
+
+            final String hoverText = attributes.get("hover");
+
+
+            Component button = MessageUtil.parse(buttonText);
+
+            if(attributes.get("win") != null) {
+                button = button.clickEvent(ClickEvent.runCommand("/chatgames answer " + this.clickToken));
+            } else {
+                button = button.clickEvent(ClickEvent.runCommand("/chatgames answer " + UUID.randomUUID()));
+            }
 
             if(hoverText != null && !hoverText.isEmpty()) {
                 button = button.hoverEvent(MessageUtil.parse(hoverText));
@@ -95,5 +108,25 @@ public class ReactionGame extends AbstractGame {
 
         return builder.build();
     }
-    
+
+    private Map<String, String> parseAttributes(final String attrString) {
+        final Map<String, String> map = new HashMap<>();
+        if(attrString == null || attrString.trim().isEmpty()) return map;
+
+        final Pattern pattern = Pattern.compile("(\\w+)(?:='([^']*)')?");
+        final Matcher matcher = pattern.matcher(attrString);
+
+        while(matcher.find()) {
+            final String key = matcher.group(1), value = matcher.group(2);
+            map.put(key, value);
+        }
+
+        return map;
+    }
+
+    private String normalizeEmojis(final String text) {
+        if(text == null) return null;
+        return text.replaceAll("\\uFE0F", "");
+    }
+
 }
