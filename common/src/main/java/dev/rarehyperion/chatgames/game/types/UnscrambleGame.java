@@ -7,7 +7,7 @@ import dev.rarehyperion.chatgames.game.GameType;
 import dev.rarehyperion.chatgames.util.MessageUtil;
 import net.kyori.adventure.text.Component;
 
-import java.util.Optional;
+import java.util.*;
 
 public class UnscrambleGame extends AbstractGame {
 
@@ -15,7 +15,7 @@ public class UnscrambleGame extends AbstractGame {
 
     public UnscrambleGame(final ChatGamesCore plugin, final GameConfig config) {
         super(plugin, config, GameType.TRIVIA);
-        this.question = this.selectRandom(config.getQuestions());
+        this.question = this.getScramble(config.getWords());
     }
     
     @Override
@@ -37,5 +37,19 @@ public class UnscrambleGame extends AbstractGame {
     public Optional<String> getCorrectAnswer() {
         return Optional.of(this.question.answer());
     }
-    
+
+    private GameConfig.QuestionAnswer getScramble(final List<String> options) {
+        final Random random = new Random();
+        final String answer = options.get(new Random().nextInt(options.size()));
+
+        final List<Character> characters = new ArrayList<>();
+        for(char character : answer.toCharArray()) characters.add(character);
+        Collections.shuffle(characters, random);
+
+        final StringBuilder scrambled = new StringBuilder(characters.size());
+        for(char character : characters) scrambled.append(character);
+
+        return new GameConfig.QuestionAnswer(scrambled.toString(), answer);
+    }
+
 }
