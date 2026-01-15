@@ -21,11 +21,8 @@ messages:
     <red><bold>✗</bold> Time ran out!</red>
     <gray>Word: <white>{answer}</white></gray>
 
-questions:
-  - ["<yellow>TANESRIPHO</yellow>", "SMARTPHONE"]
-  - ["<yellow>TMUPOECR</yellow>", "COMPUTER"]
-  - ["<yellow>YGAMINL</yellow>", "GAMING"]
-  - ["<yellow>EATKBOY</yellow>", "KEYBOARD"]
-  - ["<yellow>IAMFRENTC</yellow>", "MINECRAFT"]
-  - ["<yellow>DAMONDI</yellow>", "DIAMOND"]
-  - ["<yellow>NTDAUEERV</yellow>", "ADVENTURE"]
+words: [
+  "SMARTPHONE", "COMPUTER", "GAMING",
+  "KEYBOARD", "MINECRAFT", "DIAMOND",
+  "ADVENTURE", "TREE", "GOLD", "LOG"
+]
