@@ -230,7 +230,11 @@ variants:
     answer: ""
 
   - name: "Click Fast"
-    challenge: "<button hover='Click to win!'><gold><bold>Click me to win!</bold></gold></button>"
+    challenge: "<button hover='Click to win!' win><gold><bold>Click me to win!</bold></gold></button>"
+    answer: "CLICK"
+
+  - name: "Click Fast"
+    challenge: "<yellow>Click the star!</yellow>\n\n<button win='true'>[<gold><bold>⭐</bold></gold>]</button> <button>[<red><bold>❤</bold></red>️]</button> <button>[<green><bold>🟢</bold></green>]</button>"
     answer: "CLICK"
 
   - name: "Color"
@@ -305,14 +309,11 @@ messages:
     <red><bold>✗</bold> Time ran out!</red>
     <gray>Word: <white>{answer}</white></gray>
 
-questions:
-  - ["<yellow>TANESRIPHO</yellow>", "SMARTPHONE"]
-  - ["<yellow>TMUPOECR</yellow>", "COMPUTER"]
-  - ["<yellow>YGAMINL</yellow>", "GAMING"]
-  - ["<yellow>EATKBOY</yellow>", "KEYBOARD"]
-  - ["<yellow>IAMFRENTC</yellow>", "MINECRAFT"]
-  - ["<yellow>DAMONDI</yellow>", "DIAMOND"]
-  - ["<yellow>NTDAUEERV</yellow>", "ADVENTURE"]
+words: [
+  "SMARTPHONE", "COMPUTER", "GAMING",
+  "KEYBOARD", "MINECRAFT", "DIAMOND",
+  "ADVENTURE", "TREE", "GOLD", "LOG"
+]
   ```
 </details>
 
