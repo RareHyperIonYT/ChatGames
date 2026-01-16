@@ -42,7 +42,7 @@ variants:
     answer: "CLICK"
 
   - name: "Click Fast"
-    challenge: "<yellow>Click the star!</yellow>\n\n<button win='true'>[<gold><bold>⭐</bold></gold>]</button> <button>[<red><bold>❤</bold></red>️]</button> <button>[<green><bold>🟢</bold></green>]</button>"
+    challenge: "<yellow>Click the star!</yellow>\n\n<button win>[<gold><bold>⭐</bold></gold>]</button> <button>[<red><bold>❤</bold></red>️]</button> <button>[<green><bold>🟢</bold></green>]</button>"
     answer: "CLICK"
 
   - name: "Color"
