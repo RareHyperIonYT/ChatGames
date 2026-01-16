@@ -6,7 +6,7 @@
 
     <groupId>dev.rarehyperion.chatgames</groupId>
     <artifactId>chatgames-parent</artifactId>
-    <version>1.4.2</version>
+    <version>1.4.4</version>
     <packaging>pom</packaging>
 
 
@@ -25,12 +25,13 @@
 
         <mc.version>1.21.4-R0.1-SNAPSHOT</mc.version>
         <adventure.version>4.16.0</adventure.version>
+        <placeholder-api.version>2.11.7</placeholder-api.version>
     </properties>
 
     <repositories>
         <repository>
-            <id>fabric</id>
-            <url>https://maven.fabricmc.net/</url>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
         <repository>
             <id>spigot-repo</id>
@@ -44,6 +45,10 @@
             <id>sponge-repo</id>
             <name>Sponge Maven Repository</name>
             <url>https://repo.spongepowered.org/repository/maven-public/</url>
+        </repository>
+        <repository>
+            <id>placeholderapi</id>
+            <url>https://repo.extendedclip.com/releases/</url>
         </repository>
     </repositories>
 
@@ -74,6 +79,20 @@
                 <groupId>net.kyori</groupId>
                 <artifactId>adventure-text-minimessage</artifactId>
                 <version>${adventure.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>me.clip</groupId>
+                <artifactId>placeholderapi</artifactId>
+                <version>${placeholder-api.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.rarehyperionyt</groupId>
+                <artifactId>chatgames-api</artifactId>
+                <version>0.1.1</version>
                 <scope>compile</scope>
             </dependency>
         </dependencies>

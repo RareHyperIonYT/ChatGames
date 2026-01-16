@@ -87,7 +87,7 @@ public class ReactionGame extends AbstractGame {
 
             Component button = MessageUtil.parse(buttonText);
 
-            if(attributes.get("win") != null) {
+            if(attributes.containsKey("win")) {
                 button = button.clickEvent(ClickEvent.runCommand("/chatgames answer " + this.clickToken));
             } else {
                 button = button.clickEvent(ClickEvent.runCommand("/chatgames answer " + UUID.randomUUID()));

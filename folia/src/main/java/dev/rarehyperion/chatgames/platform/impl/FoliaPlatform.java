@@ -5,6 +5,11 @@ import dev.rarehyperion.chatgames.ChatGamesCore;
 import dev.rarehyperion.chatgames.command.FoliaChatGamesCommand;
 import dev.rarehyperion.chatgames.config.Config;
 import dev.rarehyperion.chatgames.config.FoliaConfig;
+import dev.rarehyperion.chatgames.events.ChatGameEndEvent;
+import dev.rarehyperion.chatgames.events.ChatGameStartEvent;
+import dev.rarehyperion.chatgames.events.ChatGameWinEvent;
+import dev.rarehyperion.chatgames.game.EndReason;
+import dev.rarehyperion.chatgames.game.GameType;
 import dev.rarehyperion.chatgames.listener.FoliaChatListener;
 import dev.rarehyperion.chatgames.platform.*;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -16,11 +21,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.InputStream;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -173,6 +180,22 @@ public class FoliaPlatform implements Platform {
     @Override
     public PlatformLogger getLogger() {
         return this.logger;
+    }
+
+    @Override
+    public void dispatchStart(final GameType type, final String question, final String answer, final List<String> rewards) {
+        Bukkit.getPluginManager().callEvent(new ChatGameStartEvent(type, question, answer, rewards));
+    }
+
+    @Override
+    public void dispatchWin(final PlatformPlayer pp, final GameType type, final String question, final String answer, final List<String> rewards) {
+        final Player player = Bukkit.getPlayer(pp.id());
+        Bukkit.getPluginManager().callEvent(new ChatGameWinEvent(player, type, question, answer, rewards));
+    }
+
+    @Override
+    public void dispatchEnd(GameType type, String question, String answer, List<String> rewards, final EndReason reason) {
+        Bukkit.getPluginManager().callEvent(new ChatGameEndEvent(type, question, answer, rewards, reason));
     }
 
 }

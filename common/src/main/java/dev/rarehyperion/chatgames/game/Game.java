@@ -11,9 +11,10 @@ public interface Game {
     GameType getType();
 
     void start();
-
     boolean checkAnswer(final String answer);
 
+    void onEnd();
+    void onStart();
     void onWin(final PlatformPlayer winner);
     void onTimeout();
 

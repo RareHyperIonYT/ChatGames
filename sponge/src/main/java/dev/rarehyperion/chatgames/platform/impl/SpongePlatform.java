@@ -3,6 +3,8 @@ package dev.rarehyperion.chatgames.platform.impl;
 import dev.rarehyperion.chatgames.ChatGamesCore;
 import dev.rarehyperion.chatgames.config.Config;
 import dev.rarehyperion.chatgames.config.SpongeConfig;
+import dev.rarehyperion.chatgames.game.EndReason;
+import dev.rarehyperion.chatgames.game.GameType;
 import dev.rarehyperion.chatgames.listener.SpongeChatListener;
 import dev.rarehyperion.chatgames.platform.*;
 import net.kyori.adventure.text.Component;
@@ -25,6 +27,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -230,4 +233,14 @@ public class SpongePlatform implements Platform {
     public PlatformLogger getLogger() {
         return this.logger;
     }
+
+    @Override
+    public void dispatchStart(final GameType type, final String question, final String answer, final List<String> rewards) {}
+
+    @Override
+    public void dispatchWin(final PlatformPlayer pp, final GameType type, final String question, final String answer, final List<String> rewards) {}
+
+    @Override
+    public void dispatchEnd(final GameType type, final String question, final String answer, final List<String> rewards, final EndReason reason) {}
+
 }

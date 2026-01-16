@@ -5,7 +5,7 @@
     <parent>
         <groupId>dev.rarehyperion.chatgames</groupId>
         <artifactId>chatgames-parent</artifactId>
-        <version>1.4.2</version>
+        <version>1.4.4</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -44,6 +44,7 @@
                             <artifactSet>
                                 <includes>
                                     <include>dev.rarehyperion.chatgames:chatgames-common</include>
+                                    <include>com.github.rarehyperionyt:chatgames-api</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
