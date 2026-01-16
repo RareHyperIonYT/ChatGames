@@ -13,9 +13,9 @@ import java.util.regex.Pattern;
 
 public class VersionChecker {
 
-    private static final String PROJECT_SLUG = "chat-games";
+    public static final String PROJECT_SLUG = "chat-games";
     private static final String API_URL = "https://api.modrinth.com/v2/project/%s/version";
-    private static final String PROJECT_URL = "https://modrinth.com/plugin/%s";
+    public static final String PROJECT_URL = "https://modrinth.com/plugin/%s";
 
     private static final Pattern VERSION_PATTERN = Pattern.compile(
             "\\{[^}]*?\"version_number\"\\s*:\\s*\"([^\"]+)\"[^}]*?\"version_type\"\\s*:\\s*\"([^\"]+)\"[^}]*?}"
@@ -26,13 +26,14 @@ public class VersionChecker {
         logger.info("Checking for updates...");
 
         try {
-            checkInternal(logger, platform);
+            ConfigChecker.check(platform);
+            checkInternal(platform, logger);
         } catch (final IOException exception) {
             logger.error("Failed to check version.");
         }
     }
 
-    private static void checkInternal(final PlatformLogger logger, final Platform platform) throws IOException {
+    private static void checkInternal(final Platform platform, final PlatformLogger logger) throws IOException {
         final URL url = new URL(String.format(API_URL, PROJECT_SLUG));
         final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
@@ -42,6 +43,7 @@ public class VersionChecker {
         connection.setReadTimeout(5000);
 
         int status = connection.getResponseCode();
+
         if (status != 200) {
             throw new IOException("Modrinth API returned status '" + status + "'");
         }
