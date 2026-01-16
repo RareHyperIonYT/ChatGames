@@ -4,6 +4,7 @@ import dev.rarehyperion.chatgames.config.ConfigManager;
 import dev.rarehyperion.chatgames.game.GameManager;
 import dev.rarehyperion.chatgames.game.GameRegistry;
 import dev.rarehyperion.chatgames.platform.Platform;
+import dev.rarehyperion.chatgames.versioning.VersionChecker;
 import net.kyori.adventure.text.Component;
 
 public final class ChatGamesCore {
@@ -38,7 +39,10 @@ public final class ChatGamesCore {
         this.platform.registerCommands(this);
         this.platform.registerListeners(this);
 
+        VersionChecker.check(this.platform);
+
         this.platform.getLogger().info("ChatGames enabled!");
+
     }
 
     public void disable() {
