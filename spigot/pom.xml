@@ -44,6 +44,7 @@
                             <artifactSet>
                                 <includes>
                                     <include>dev.rarehyperion.chatgames:chatgames-common</include>
+                                    <include>com.github.rarehyperionyt:chatgames-api</include>
                                     <include>net.kyori:*</include>
                                 </includes>
                             </artifactSet>

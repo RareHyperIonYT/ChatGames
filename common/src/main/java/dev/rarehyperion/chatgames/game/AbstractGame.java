@@ -2,6 +2,7 @@ package dev.rarehyperion.chatgames.game;
 
 import dev.rarehyperion.chatgames.ChatGamesCore;
 import dev.rarehyperion.chatgames.platform.PlatformPlayer;
+import dev.rarehyperion.chatgames.util.MessageUtil;
 import dev.rarehyperion.chatgames.util.Templater;
 import net.kyori.adventure.text.Component;
 
@@ -27,6 +28,17 @@ public abstract class AbstractGame implements Game {
     }
 
     @Override
+    public void onStart() {
+        this.plugin.platform().dispatchStart(this.type, MessageUtil.plainText(this.getQuestion()), this.getCorrectAnswer().orElse(null), this.config.getRewardCommands());
+        this.start();
+    }
+
+    @Override
+    public void onEnd() {
+        this.plugin.platform().dispatchEnd(this.type, MessageUtil.plainText(this.getQuestion()), this.getCorrectAnswer().orElse(null), this.config.getRewardCommands(), EndReason.COMMAND);
+    }
+
+    @Override
     public void onWin(final PlatformPlayer winner) {
         final Component message = this.config.getWinMessage(winner.name(), this.getCorrectAnswer().orElse("Unknown"));
 
@@ -37,6 +49,8 @@ public abstract class AbstractGame implements Game {
                 final String processed = Templater.process(command, winner);
                 this.plugin.platform().dispatchCommand(processed);
             }
+
+            this.plugin.platform().dispatchWin(winner, this.type, MessageUtil.plainText(this.getQuestion()), this.getCorrectAnswer().orElse(null), this.config.getRewardCommands());
         });
     }
 
@@ -44,6 +58,7 @@ public abstract class AbstractGame implements Game {
     public void onTimeout() {
         final Component message = this.config.getTimeoutMessage(this.getCorrectAnswer().orElse("Unknown"));
         this.plugin.broadcast(message);
+        this.plugin.platform().dispatchEnd(this.type, MessageUtil.plainText(this.getQuestion()), this.getCorrectAnswer().orElse(null), this.config.getRewardCommands(), EndReason.TIMEOUT);
     }
 
     @Override

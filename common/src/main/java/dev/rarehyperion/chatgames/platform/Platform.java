@@ -2,11 +2,14 @@ package dev.rarehyperion.chatgames.platform;
 
 import dev.rarehyperion.chatgames.ChatGamesCore;
 import dev.rarehyperion.chatgames.config.Config;
+import dev.rarehyperion.chatgames.game.EndReason;
+import dev.rarehyperion.chatgames.game.GameType;
 import net.kyori.adventure.text.Component;
 
 import java.io.File;
 import java.io.InputStream;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -161,5 +164,9 @@ public interface Platform {
      * @return The platform logger.
      */
     PlatformLogger getLogger();
+
+    void dispatchStart(final GameType type, final String question, final String answer, final List<String> rewards);
+    void dispatchEnd(final GameType type, final String question, final String answer, final List<String> rewards, final EndReason reason);
+    void dispatchWin(final PlatformPlayer player, final GameType type, final String question, final String answer, final List<String> rewards);
 
 }

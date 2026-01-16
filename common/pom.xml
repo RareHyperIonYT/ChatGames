@@ -30,6 +30,16 @@
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-minimessage</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.rarehyperionyt</groupId>
+            <artifactId>chatgames-api</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

@@ -46,7 +46,7 @@ public final class GameManager {
 
         try {
             this.activeGame = this.gameRegistry.createGame(config);
-            this.activeGame.start();
+            this.activeGame.onStart();
 
             // Scheduling a timeout
             final long timeoutTicks = config.getTimeoutSeconds() * 20L;
@@ -64,6 +64,7 @@ public final class GameManager {
 
     public void stopGame() {
         if(this.activeGame != null) {
+            this.activeGame.onEnd();
             this.cancelTimeoutTask();
             this.activeGame = null;
             this.wrongAnswerCooldowns.clear();
