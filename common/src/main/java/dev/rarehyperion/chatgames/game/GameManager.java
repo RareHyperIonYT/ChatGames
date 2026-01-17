@@ -125,8 +125,8 @@ public final class GameManager {
     private void tryStartRandomGame() {
         if(this.activeGame != null) return;
 
-        final int onlinePlayers = this.plugin.platform().getOnlinePlayers().size();
-        if(onlinePlayers < this.configManager.getSettings().minimumPlayers()) return;
+        final int activePlayers = this.plugin.afkManager().getActivePlayerCount();
+        if(activePlayers < this.configManager.getSettings().minimumPlayers()) return;
 
         this.gameRegistry.getRandomConfig().ifPresent(this::startGame);
     }
