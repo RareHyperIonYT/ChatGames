@@ -2,6 +2,11 @@ package dev.rarehyperion.chatgames.platform.impl;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import dev.rarehyperion.chatgames.ChatGamesCore;
+import dev.rarehyperion.chatgames.afk.AfkProviderRegistry;
+import dev.rarehyperion.chatgames.afk.providers.AntiAfkPlusProvider;
+import dev.rarehyperion.chatgames.afk.providers.CmiAfkProvider;
+import dev.rarehyperion.chatgames.afk.providers.EssentialsAfkProvider;
+import dev.rarehyperion.chatgames.afk.providers.PaperIdleAfkProvider;
 import dev.rarehyperion.chatgames.command.FoliaChatGamesCommand;
 import dev.rarehyperion.chatgames.config.Config;
 import dev.rarehyperion.chatgames.config.FoliaConfig;
@@ -196,6 +201,14 @@ public class FoliaPlatform implements Platform {
     @Override
     public void dispatchEnd(GameType type, String question, String answer, List<String> rewards, final EndReason reason) {
         Bukkit.getPluginManager().callEvent(new ChatGameEndEvent(type, question, answer, rewards, reason));
+    }
+
+    @Override
+    public void registerAfkProviders(final AfkProviderRegistry registry) {
+        registry.register(new EssentialsAfkProvider());
+        registry.register(new CmiAfkProvider());
+        registry.register(new AntiAfkPlusProvider());
+        registry.register(new PaperIdleAfkProvider());
     }
 
 }

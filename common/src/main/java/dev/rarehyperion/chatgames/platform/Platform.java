@@ -1,6 +1,7 @@
 package dev.rarehyperion.chatgames.platform;
 
 import dev.rarehyperion.chatgames.ChatGamesCore;
+import dev.rarehyperion.chatgames.afk.AfkProviderRegistry;
 import dev.rarehyperion.chatgames.config.Config;
 import dev.rarehyperion.chatgames.game.EndReason;
 import dev.rarehyperion.chatgames.game.GameType;
@@ -168,5 +169,19 @@ public interface Platform {
     void dispatchStart(final GameType type, final String question, final String answer, final List<String> rewards);
     void dispatchEnd(final GameType type, final String question, final String answer, final List<String> rewards, final EndReason reason);
     void dispatchWin(final PlatformPlayer player, final GameType type, final String question, final String answer, final List<String> rewards);
+
+    /**
+     * Registers platform-specific AFK providers.
+     *
+     * <p>
+     *     Called during initialization to register AFK detection providers
+     *     specific to this platform (e.g., EssentialsX for Bukkit, Nucleus for Sponge).
+     * </p>
+     *
+     * @param registry The provider registry to register providers with
+     */
+    default void registerAfkProviders(final AfkProviderRegistry registry) {
+        // Default implementation does nothing - platforms override as needed
+    }
 
 }

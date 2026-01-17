@@ -1,6 +1,8 @@
 package dev.rarehyperion.chatgames.platform.impl;
 
 import dev.rarehyperion.chatgames.ChatGamesCore;
+import dev.rarehyperion.chatgames.afk.AfkProviderRegistry;
+import dev.rarehyperion.chatgames.afk.providers.NucleusAfkProvider;
 import dev.rarehyperion.chatgames.config.Config;
 import dev.rarehyperion.chatgames.config.SpongeConfig;
 import dev.rarehyperion.chatgames.game.EndReason;
@@ -242,5 +244,10 @@ public class SpongePlatform implements Platform {
 
     @Override
     public void dispatchEnd(final GameType type, final String question, final String answer, final List<String> rewards, final EndReason reason) {}
+
+    @Override
+    public void registerAfkProviders(final AfkProviderRegistry registry) {
+        registry.register(new NucleusAfkProvider());
+    }
 
 }

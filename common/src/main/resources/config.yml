@@ -18,3 +18,16 @@ answer-cooldown-ticks: 60
 
 # Enable debug logging
 debug: false
+
+# AFK Detection Settings
+# When enabled, AFK players are excluded from the minimum player count
+afk-detection:
+  # Enable AFK detection (default: false)
+  enabled: false
+  # List of allowed providers (empty = all available providers)
+  # Available providers by platform:
+  #   Spigot: essentialsx, cmi, antiafkplus
+  #   Paper/Folia: essentialsx, cmi, antiafkplus, paper-idle
+  #   Sponge: nucleus
+  # Providers are checked in priority order until one returns a definitive result
+  providers: []
