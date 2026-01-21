@@ -3,6 +3,7 @@ package dev.rarehyperion.chatgames.platform.impl;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import dev.rarehyperion.chatgames.ChatGamesCore;
 import dev.rarehyperion.chatgames.TestListener;
+import dev.rarehyperion.chatgames.command.CommandRegistry;
 import dev.rarehyperion.chatgames.command.PaperChatGamesCommand;
 import dev.rarehyperion.chatgames.config.Config;
 import dev.rarehyperion.chatgames.config.PaperConfig;
@@ -64,20 +65,13 @@ public class PaperPlatform implements Platform {
 
     @Override
     public void registerCommands(final ChatGamesCore core) {
-        // Papers API genuinely drives me insane... almost as much as Fabric API which says a lot.
-
-        final PaperChatGamesCommand command = new PaperChatGamesCommand(core);
+        final CommandRegistry registry = new CommandRegistry(core);
+        final PaperChatGamesCommand command = new PaperChatGamesCommand(core, registry);
         final LiteralCommandNode<CommandSourceStack> mainNode = command.build();
-
-        // Aliases don't work as expected, so Paper won't have command aliases for now unfortunately.
-//      final LiteralCommandNode<CommandSourceStack> aliasCg = Commands.literal("cg").redirect(mainNode).build();
-//      final LiteralCommandNode<CommandSourceStack> aliasChatgame = Commands.literal("chatgame").redirect(mainNode).build();
 
         this.plugin.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             commands.register(mainNode);
-//          commands.register(aliasCg);
-//          commands.register(aliasChatgame);
         });
     }
 

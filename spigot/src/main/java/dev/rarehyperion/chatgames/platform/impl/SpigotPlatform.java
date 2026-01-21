@@ -1,6 +1,7 @@
 package dev.rarehyperion.chatgames.platform.impl;
 
 import dev.rarehyperion.chatgames.ChatGamesCore;
+import dev.rarehyperion.chatgames.command.CommandRegistry;
 import dev.rarehyperion.chatgames.command.SpigotChatGamesCommand;
 import dev.rarehyperion.chatgames.config.Config;
 import dev.rarehyperion.chatgames.config.SpigotConfig;
@@ -59,7 +60,8 @@ public class SpigotPlatform implements Platform {
 
     @Override
     public void registerCommands(final ChatGamesCore core) {
-        final SpigotChatGamesCommand command = new SpigotChatGamesCommand(core);
+        final CommandRegistry registry = new CommandRegistry(core);
+        final SpigotChatGamesCommand command = new SpigotChatGamesCommand(core, registry);
         Objects.requireNonNull(this.plugin.getCommand("chatgames")).setExecutor(command);
         Objects.requireNonNull(this.plugin.getCommand("chatgames")).setTabCompleter(command);
     }

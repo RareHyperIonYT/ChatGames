@@ -1,6 +1,7 @@
 package dev.rarehyperion.chatgames;
 
 import com.google.inject.Inject;
+import dev.rarehyperion.chatgames.command.CommandRegistry;
 import dev.rarehyperion.chatgames.command.SpongeChatGamesCommand;
 import dev.rarehyperion.chatgames.platform.impl.SpongePlatform;
 import org.apache.logging.log4j.Logger;
@@ -45,7 +46,9 @@ public class ChatGamesSponge {
 
     @Listener
     public void onRegisterCommands(final RegisterCommandEvent<Command.Parameterized> event) {
-        event.register(this.container, new SpongeChatGamesCommand(this.core).build(), "chatgames", "chatgame", "cg");
+        final CommandRegistry registry = new CommandRegistry(this.core);
+        final SpongeChatGamesCommand command = new SpongeChatGamesCommand(this.core, registry);
+        event.register(this.container, command.build(), "chatgames", "chatgame", "cg");
     }
 
     @Listener

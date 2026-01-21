@@ -1,145 +1,126 @@
 package dev.rarehyperion.chatgames.command;
 
 import dev.rarehyperion.chatgames.ChatGamesCore;
-import dev.rarehyperion.chatgames.game.GameConfig;
 import dev.rarehyperion.chatgames.platform.PlatformSender;
 import org.spongepowered.api.command.Command;
 import org.spongepowered.api.command.CommandCompletion;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.parameter.Parameter;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.entity.living.player.server.ServerPlayer;
+import org.spongepowered.api.service.permission.Subject;
 
 import java.util.Collections;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * Sponge-specific command implementation.
+ * Builds command tree from SubCommand enum for single source of truth.
+ *
+ * @author RareHyperIon, tannerharkin
+ */
 public class SpongeChatGamesCommand extends ChatGamesCommand {
 
-    public SpongeChatGamesCommand(final ChatGamesCore plugin) {
-        super(plugin);
+    public SpongeChatGamesCommand(final ChatGamesCore plugin, final CommandRegistry registry) {
+        super(plugin, registry);
     }
 
+    /**
+     * Builds the full command tree from SubCommand enum.
+     *
+     * @return The root command.
+     */
     public Command.Parameterized build() {
-        return Command.builder()
+        final Command.Builder builder = Command.builder()
                 .executor(context -> {
-                    final PlatformSender sender = this.plugin.platform().wrapSender(context.cause().first(Player.class).orElse(context.cause().first(Player.class).orElse(null)));
+                    final PlatformSender sender = this.wrapCause(context);
                     this.handleCommand(sender, new String[]{});
                     return CommandResult.success();
-                })
-                .addChild(reloadCommand(), "reload")
-                .addChild(startCommand(), "start")
-                .addChild(stopCommand(), "stop")
-                .addChild(listCommand(), "list")
-                .addChild(toggleCommand(), "toggle")
-                .addChild(infoCommand(), "info")
-                .addChild(answerCommand(), "answer")
-                .addChild(helpCommand(), "help")
-                .build();
+                });
+
+        // Build subcommands from SubCommand enum
+        for (final SubCommand subCommand : SubCommand.values()) {
+            builder.addChild(this.buildSubCommand(subCommand), subCommand.getName());
+        }
+
+        return builder.build();
     }
 
-    private Command.Parameterized reloadCommand() {
-        return Command.builder()
-                .executor(ctx -> {
-                    PlatformSender sender = this.plugin.platform().wrapSender(ctx.cause().first(Player.class).orElse(null));
-                    handleCommand(sender, new String[]{"reload"});
+    /**
+     * Builds a subcommand from the SubCommand enum entry.
+     */
+    private Command.Parameterized buildSubCommand(final SubCommand subCommand) {
+        final Command.Builder builder = Command.builder();
+
+        // Add permission requirement if needed
+        if (subCommand.requiresPermission()) {
+            builder.permission(subCommand.getPermission());
+        }
+
+        // Handle argument types
+        switch (subCommand.getArgumentType()) {
+            case GAME_NAME:
+                final Parameter.Value<String> gameParam = Parameter.remainingJoinedStrings()
+                        .key("game")
+                        .completer((context, string) -> {
+                            final String permission = SubCommand.START.getPermission();
+                            final Subject subject = context.subject();
+
+                            if (permission == null || subject.hasPermission(permission)) {
+                                final String partial = string.toLowerCase();
+                                return this.registry.getGameNamesStartingWith(partial).stream()
+                                        .map(CommandCompletion::of)
+                                        .collect(Collectors.toList());
+                            }
+                            return Collections.emptyList();
+                        })
+                        .build();
+
+                builder.addParameter(gameParam)
+                        .executor(context -> {
+                            final PlatformSender sender = this.wrapCause(context);
+                            final String game = context.requireOne(gameParam);
+                            this.handleCommand(sender, new String[]{subCommand.getName(), game});
+                            return CommandResult.success();
+                        });
+                break;
+
+            case TOKEN:
+                final Parameter.Value<String> tokenParam = Parameter.string()
+                        .key("token")
+                        .build();
+
+                builder.addParameter(tokenParam)
+                        .executor(context -> {
+                            final PlatformSender sender = this.wrapCause(context);
+                            final String token = context.requireOne(tokenParam);
+                            this.handleCommand(sender, new String[]{subCommand.getName(), token});
+                            return CommandResult.success();
+                        });
+                break;
+
+            case NONE:
+            default:
+                builder.executor(context -> {
+                    final PlatformSender sender = this.wrapCause(context);
+                    this.handleCommand(sender, new String[]{subCommand.getName()});
                     return CommandResult.success();
-                })
-                .build();
+                });
+                break;
+        }
+
+        return builder.build();
     }
 
-    private Command.Parameterized startCommand() {
-        Parameter.Value<String> gameParam = Parameter.remainingJoinedStrings()
-                .key("game")
-                .completer((context, string) -> {
-                    if (context.hasPermission("chatgames.start")) {
-                        final String partial = string.toLowerCase();
-
-                        return this.plugin.gameRegistry().getAllConfigs().stream()
-                                .map(GameConfig::getName).filter(Objects::nonNull)
-                                .filter(name -> name.toLowerCase().startsWith(partial))
-                                .map(CommandCompletion::of)
-                                .collect(Collectors.toList());
-                    }
-
-                    return Collections.emptyList();
-                })
-                .build();
-
-        return Command.builder()
-                .addParameter(gameParam)
-                .executor(ctx -> {
-                    PlatformSender sender = this.plugin.platform().wrapSender(ctx.cause().first(Player.class).orElse(null));
-                    String game = ctx.requireOne(gameParam);
-                    handleCommand(sender, new String[]{"start", game});
-                    return CommandResult.success();
-                })
-                .build();
+    /**
+     * Wraps the command cause to a PlatformSender.
+     * Handles both player and console senders.
+     */
+    private PlatformSender wrapCause(final org.spongepowered.api.command.parameter.CommandContext context) {
+        // Try to get a player from the cause, otherwise treat as console
+        final Object sender = context.cause().first(ServerPlayer.class)
+                .map(p -> (Object) p)
+                .orElse(null);
+        return this.plugin.platform().wrapSender(sender);
     }
-
-    private Command.Parameterized stopCommand() {
-        return Command.builder()
-                .executor(ctx -> {
-                    PlatformSender sender = this.plugin.platform().wrapSender(ctx.cause().first(Player.class).orElse(null));
-                    handleCommand(sender, new String[]{"stop"});
-                    return CommandResult.success();
-                })
-                .build();
-    }
-
-    private Command.Parameterized listCommand() {
-        return Command.builder()
-                .executor(ctx -> {
-                    PlatformSender sender = this.plugin.platform().wrapSender(ctx.cause().first(Player.class).orElse(null));
-                    handleCommand(sender, new String[]{"list"});
-                    return CommandResult.success();
-                })
-                .build();
-    }
-
-    private Command.Parameterized toggleCommand() {
-        return Command.builder()
-                .executor(ctx -> {
-                    PlatformSender sender = this.plugin.platform().wrapSender(ctx.cause().first(Player.class).orElse(null));
-                    handleCommand(sender, new String[]{"toggle"});
-                    return CommandResult.success();
-                })
-                .build();
-    }
-
-    private Command.Parameterized infoCommand() {
-        return Command.builder()
-                .executor(ctx -> {
-                    PlatformSender sender = this.plugin.platform().wrapSender(ctx.cause().first(Player.class).orElse(null));
-                    handleCommand(sender, new String[]{"info"});
-                    return CommandResult.success();
-                })
-                .build();
-    }
-
-    private Command.Parameterized answerCommand() {
-        Parameter.Value<String> tokenParam = Parameter.string()
-                .key("token")
-                .build();
-
-        return Command.builder()
-                .addParameter(tokenParam)
-                .executor(ctx -> {
-                    PlatformSender sender = this.plugin.platform().wrapSender(ctx.cause().first(Player.class).orElse(null));
-                    String token = ctx.requireOne(tokenParam);
-                    handleCommand(sender, new String[]{"answer", token});
-                    return CommandResult.success();
-                })
-                .build();
-    }
-
-    private Command.Parameterized helpCommand() {
-        return Command.builder()
-                .executor(ctx -> {
-                    PlatformSender sender = this.plugin.platform().wrapSender(ctx.cause().first(Player.class).orElse(null));
-                    handleCommand(sender, new String[]{});
-                    return CommandResult.success();
-                })
-                .build();
-    }
-
 }
