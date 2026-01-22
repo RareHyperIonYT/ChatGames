@@ -62,8 +62,7 @@ public final class GameRegistry {
                     this.plugin.platform().getLogger().warn("Invalid game type in: " + file.getName());
                 }
             } catch (final Exception exception) {
-                this.plugin.platform().getLogger().error("Failed to load game: " + file.getName());
-                exception.printStackTrace(System.err);
+                this.plugin.platform().getLogger().error("Failed to load game: " + file.getName(), exception);
             }
         }
 

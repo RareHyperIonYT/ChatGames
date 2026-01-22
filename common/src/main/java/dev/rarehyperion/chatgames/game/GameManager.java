@@ -56,8 +56,7 @@ public final class GameManager {
                 this.plugin.platform().getLogger().info("Started game: " + config.getName());
             }
         } catch (final Exception exception) {
-            this.plugin.platform().getLogger().error("Failed to start game: " + config.getName());
-            exception.printStackTrace(System.err);
+            this.plugin.platform().getLogger().error("Failed to start game: " + config.getName(), exception);
             this.activeGame = null;
         }
     }

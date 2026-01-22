@@ -27,4 +27,14 @@ public class SpongePlatformLogger implements PlatformLogger {
         this.logger.error(message);
     }
 
+    @Override
+    public void warn(final String message, final Throwable throwable) {
+        this.logger.warn(message, throwable);
+    }
+
+    @Override
+    public void error(final String message, final Throwable throwable) {
+        this.logger.error(message, throwable);
+    }
+
 }

@@ -2,6 +2,7 @@ package dev.rarehyperion.chatgames.platform.impl;
 
 import dev.rarehyperion.chatgames.platform.PlatformLogger;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class PaperPlatformLogger implements PlatformLogger {
@@ -25,6 +26,16 @@ public class PaperPlatformLogger implements PlatformLogger {
     @Override
     public void error(final String message) {
         this.logger.severe(message);
+    }
+
+    @Override
+    public void warn(final String message, final Throwable throwable) {
+        this.logger.log(Level.WARNING, message, throwable);
+    }
+
+    @Override
+    public void error(final String message, final Throwable throwable) {
+        this.logger.log(Level.SEVERE, message, throwable);
     }
 
 }

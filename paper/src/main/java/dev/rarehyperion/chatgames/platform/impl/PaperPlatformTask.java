@@ -17,11 +17,7 @@ public class PaperPlatformTask implements PlatformTask {
     @Override
     public void cancel() {
         if(this.cancelled.compareAndSet(false, true)) {
-            try {
-                this.task.cancel();
-            } catch (final Exception exception) {
-                exception.printStackTrace(System.err);
-            }
+            this.task.cancel();
         }
     }
 

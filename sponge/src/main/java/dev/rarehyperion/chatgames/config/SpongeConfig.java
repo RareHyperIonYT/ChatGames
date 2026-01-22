@@ -39,8 +39,7 @@ public class SpongeConfig implements Config {
     public List<String> getStringList(final String path) {
         try {
             return this.node(path).getList(TypeToken.get(String.class), Collections.emptyList());
-        } catch (final Exception exception) {
-            exception.printStackTrace(System.err);
+        } catch (final Exception ignored) {
             return Collections.emptyList();
         }
     }

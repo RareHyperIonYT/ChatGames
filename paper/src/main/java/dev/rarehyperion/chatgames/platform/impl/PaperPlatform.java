@@ -83,7 +83,7 @@ public class PaperPlatform implements Platform {
 
     @Override
     public void registerListeners(final ChatGamesCore core) {
-        this.plugin.getServer().getPluginManager().registerEvents(new TestListener(), this.plugin);
+        this.plugin.getServer().getPluginManager().registerEvents(new TestListener(this.logger), this.plugin);
         this.plugin.getServer().getPluginManager().registerEvents(new PaperChatListener(core.gameManager()), this.plugin);
     }
 

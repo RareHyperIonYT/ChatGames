@@ -17,11 +17,7 @@ public class SpongePlatformTask implements PlatformTask {
     @Override
     public void cancel() {
         if(this.cancelled.compareAndSet(false, true)) {
-            try {
-                this.task.cancel();
-            } catch (final Throwable throwable) {
-                throwable.printStackTrace(System.err);
-            }
+            this.task.cancel();
         }
     }
 

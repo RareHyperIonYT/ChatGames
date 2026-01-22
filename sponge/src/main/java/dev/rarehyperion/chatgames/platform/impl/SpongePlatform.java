@@ -146,8 +146,7 @@ public class SpongePlatform implements Platform {
 
             this.rootNode = this.configLoader.load();
         } catch (final IOException exception) {
-            this.logger.warn("Failed to save/load default config");
-            exception.printStackTrace(System.err);
+            this.logger.warn("Failed to save/load default config", exception);
         }
     }
 
@@ -160,8 +159,7 @@ public class SpongePlatform implements Platform {
 
             this.rootNode = this.configLoader.load();
         } catch (final IOException exception) {
-            this.logger.warn("Failed to reload config");
-            exception.printStackTrace(System.err);
+            this.logger.warn("Failed to reload config", exception);
         }
     }
 
@@ -215,8 +213,7 @@ public class SpongePlatform implements Platform {
         try {
             Files.createDirectories(this.privateConfigDir);
         } catch (final IOException exception) {
-            this.logger.warn("Failed to create data folder: " + this.privateConfigDir);
-            exception.printStackTrace(System.err);
+            this.logger.warn("Failed to create data folder: " + this.privateConfigDir, exception);
         }
 
         return this.privateConfigDir.toFile();
