@@ -1,7 +1,6 @@
 package dev.rarehyperion.chatgames.command.handlers;
 
 import dev.rarehyperion.chatgames.command.CommandContext;
-import dev.rarehyperion.chatgames.command.SubCommand;
 import dev.rarehyperion.chatgames.command.SubCommandHandler;
 import dev.rarehyperion.chatgames.config.ConfigManager;
 import dev.rarehyperion.chatgames.game.GameConfig;
@@ -20,11 +19,25 @@ public class ListHandler implements SubCommandHandler {
     private static final String DEFAULT_ENTRY = "<gray>-</gray> <green>%game%</green>";
 
     @Override
+    public String getPermission() {
+        return "chatgames.list";
+    }
+
+    @Override
+    public String getUsage() {
+        return "/chatgames list";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Lists all available games";
+    }
+
+    @Override
     public void execute(final CommandContext context) {
         final ConfigManager configManager = context.getPlugin().configManager();
-        final String permission = SubCommand.LIST.getPermission();
 
-        if (!context.hasPermission(permission)) {
+        if (!hasPermission(context)) {
             context.getSender().sendMessage(MessageUtil.parse(
                     configManager.getMessage("permission", DEFAULT_NO_PERMISSION)
             ));

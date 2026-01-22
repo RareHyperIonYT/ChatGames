@@ -18,6 +18,16 @@ public class InfoHandler implements SubCommandHandler {
             "<green>A simple plugin that adds chat-based games by <aqua>%authors%</aqua></green>";
 
     @Override
+    public String getUsage() {
+        return "/chatgames info";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Displays plugin information";
+    }
+
+    @Override
     public void execute(final CommandContext context) {
         final ConfigManager configManager = context.getPlugin().configManager();
         final String authors = String.join(", and ", context.getPlugin().platform().pluginMeta().getAuthors());

@@ -1,7 +1,6 @@
 package dev.rarehyperion.chatgames.command.handlers;
 
 import dev.rarehyperion.chatgames.command.CommandContext;
-import dev.rarehyperion.chatgames.command.SubCommand;
 import dev.rarehyperion.chatgames.command.SubCommandHandler;
 import dev.rarehyperion.chatgames.config.ConfigManager;
 import dev.rarehyperion.chatgames.util.MessageUtil;
@@ -18,11 +17,25 @@ public class StopHandler implements SubCommandHandler {
     private static final String DEFAULT_STOP_SUCCESS = "<green>Game stopped.</green>";
 
     @Override
+    public String getPermission() {
+        return "chatgames.stop";
+    }
+
+    @Override
+    public String getUsage() {
+        return "/chatgames stop";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Stops the current game";
+    }
+
+    @Override
     public void execute(final CommandContext context) {
         final ConfigManager configManager = context.getPlugin().configManager();
-        final String permission = SubCommand.STOP.getPermission();
 
-        if (!context.hasPermission(permission)) {
+        if (!hasPermission(context)) {
             context.getSender().sendMessage(MessageUtil.parse(
                     configManager.getMessage("permission", DEFAULT_NO_PERMISSION)
             ));

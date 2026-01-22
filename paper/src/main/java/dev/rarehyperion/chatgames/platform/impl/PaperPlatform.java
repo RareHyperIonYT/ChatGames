@@ -66,6 +66,7 @@ public class PaperPlatform implements Platform {
     @Override
     public void registerCommands(final ChatGamesCore core) {
         final CommandRegistry registry = new CommandRegistry(core);
+        core.setCommandRegistry(registry);
         final PaperChatGamesCommand command = new PaperChatGamesCommand(core, registry);
         final LiteralCommandNode<CommandSourceStack> mainNode = command.build();
 

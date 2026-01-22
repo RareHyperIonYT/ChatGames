@@ -47,6 +47,7 @@ public class ChatGamesSponge {
     @Listener
     public void onRegisterCommands(final RegisterCommandEvent<Command.Parameterized> event) {
         final CommandRegistry registry = new CommandRegistry(this.core);
+        this.core.setCommandRegistry(registry);
         final SpongeChatGamesCommand command = new SpongeChatGamesCommand(this.core, registry);
         event.register(this.container, command.build(), "chatgames", "chatgame", "cg");
     }

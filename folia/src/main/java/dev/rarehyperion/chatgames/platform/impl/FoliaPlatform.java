@@ -66,6 +66,7 @@ public class FoliaPlatform implements Platform {
     @Override
     public void registerCommands(final ChatGamesCore core) {
         final CommandRegistry registry = new CommandRegistry(core);
+        core.setCommandRegistry(registry);
         final FoliaChatGamesCommand command = new FoliaChatGamesCommand(core, registry);
         final LiteralCommandNode<CommandSourceStack> mainNode = command.build();
 

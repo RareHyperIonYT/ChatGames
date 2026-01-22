@@ -1,7 +1,6 @@
 package dev.rarehyperion.chatgames.command.handlers;
 
 import dev.rarehyperion.chatgames.command.CommandContext;
-import dev.rarehyperion.chatgames.command.SubCommand;
 import dev.rarehyperion.chatgames.command.SubCommandHandler;
 import dev.rarehyperion.chatgames.config.ConfigManager;
 import dev.rarehyperion.chatgames.util.MessageUtil;
@@ -18,11 +17,25 @@ public class ReloadHandler implements SubCommandHandler {
     private static final String DEFAULT_RELOAD = "<green>Successfully reloaded ChatGames!</green>";
 
     @Override
+    public String getPermission() {
+        return "chatgames.reload";
+    }
+
+    @Override
+    public String getUsage() {
+        return "/chatgames reload";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Reloads the plugin configuration";
+    }
+
+    @Override
     public void execute(final CommandContext context) {
         final ConfigManager configManager = context.getPlugin().configManager();
-        final String permission = SubCommand.RELOAD.getPermission();
 
-        if (!context.hasPermission(permission)) {
+        if (!hasPermission(context)) {
             context.getSender().sendMessage(MessageUtil.parse(
                     configManager.getMessage("permission", DEFAULT_NO_PERMISSION)
             ));

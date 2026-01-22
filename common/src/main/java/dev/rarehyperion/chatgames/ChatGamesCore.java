@@ -1,5 +1,6 @@
 package dev.rarehyperion.chatgames;
 
+import dev.rarehyperion.chatgames.command.CommandRegistry;
 import dev.rarehyperion.chatgames.config.ConfigManager;
 import dev.rarehyperion.chatgames.game.GameManager;
 import dev.rarehyperion.chatgames.game.GameRegistry;
@@ -14,6 +15,7 @@ public final class ChatGamesCore {
     private ConfigManager configManager;
     private GameRegistry gameRegistry;
     private GameManager gameManager;
+    private CommandRegistry commandRegistry;
 
     public ChatGamesCore(final Platform platform) {
         this.platform = platform;
@@ -76,6 +78,14 @@ public final class ChatGamesCore {
 
     public ConfigManager configManager() {
         return this.configManager;
+    }
+
+    public CommandRegistry commandRegistry() {
+        return this.commandRegistry;
+    }
+
+    public void setCommandRegistry(final CommandRegistry commandRegistry) {
+        this.commandRegistry = commandRegistry;
     }
 
 }

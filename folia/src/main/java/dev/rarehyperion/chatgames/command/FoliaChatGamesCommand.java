@@ -1,7 +1,6 @@
 package dev.rarehyperion.chatgames.command;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
-import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.Suggestions;
@@ -17,7 +16,7 @@ import java.util.concurrent.CompletableFuture;
 
 /**
  * Folia-specific command implementation using Brigadier.
- * Delegates tab completion to handlers via CommandRegistry.
+ * Delegates tab completion and permissions to handlers via CommandRegistry.
  *
  * @author RareHyperIon, tannerharkin
  */
@@ -30,6 +29,7 @@ public class FoliaChatGamesCommand extends ChatGamesCommand {
 
     /**
      * Builds the full command tree from SubCommand enum.
+     * Permission checks and argument handling are delegated to handlers.
      *
      * @return The root command node.
      */
@@ -43,53 +43,37 @@ public class FoliaChatGamesCommand extends ChatGamesCommand {
 
         // Build subcommands from SubCommand enum
         for (final SubCommand subCommand : SubCommand.values()) {
+            final SubCommandHandler handler = this.registry.getHandler(subCommand);
             final LiteralArgumentBuilder<CommandSourceStack> node = Commands.literal(subCommand.getName());
 
-            // Add permission requirement if needed
-            if (subCommand.requiresPermission()) {
-                node.requires(ctx -> ctx.getSender().hasPermission(subCommand.getPermission()));
+            // Add permission requirement from handler if needed
+            final String permission = handler != null ? handler.getPermission() : null;
+            if (permission != null) {
+                node.requires(ctx -> ctx.getSender().hasPermission(permission));
             }
 
-            // Handle argument types
-            switch (subCommand.getArgumentType()) {
-                case GAME_NAME:
-                    node.then(this.createStringArgument(subCommand, "game", true));
-                    break;
-                case TOKEN:
-                    node.then(this.createStringArgument(subCommand, "token", false));
-                    break;
-                case NONE:
-                default:
-                    node.executes(ctx -> {
+            // Execute without arguments
+            node.executes(ctx -> {
+                final PlatformSender sender = this.plugin.platform().wrapSender(ctx.getSource().getSender());
+                this.handleCommand(sender, new String[]{subCommand.getName()});
+                return 1;
+            });
+
+            // Add optional greedy argument for commands that may need arguments
+            // The handler will validate and use arguments as needed
+            node.then(Commands.argument("args", StringArgumentType.greedyString())
+                    .suggests((ctx, builder) -> this.suggestFromHandler(subCommand, ctx, builder))
+                    .executes(ctx -> {
                         final PlatformSender sender = this.plugin.platform().wrapSender(ctx.getSource().getSender());
-                        this.handleCommand(sender, new String[]{subCommand.getName()});
+                        final String args = StringArgumentType.getString(ctx, "args");
+                        this.handleCommand(sender, new String[]{subCommand.getName(), args});
                         return 1;
-                    });
-                    break;
-            }
+                    }));
 
             root.then(node);
         }
 
         return root.build();
-    }
-
-    /**
-     * Creates a string argument node that delegates suggestions to the handler.
-     */
-    private ArgumentBuilder<CommandSourceStack, ?> createStringArgument(
-            final SubCommand subCommand,
-            final String argName,
-            final boolean greedy
-    ) {
-        return Commands.argument(argName, greedy ? StringArgumentType.greedyString() : StringArgumentType.string())
-                .suggests((ctx, builder) -> this.suggestFromHandler(subCommand, ctx, builder))
-                .executes(ctx -> {
-                    final PlatformSender sender = this.plugin.platform().wrapSender(ctx.getSource().getSender());
-                    final String arg = StringArgumentType.getString(ctx, argName);
-                    this.handleCommand(sender, new String[]{subCommand.getName(), arg});
-                    return 1;
-                });
     }
 
     /**

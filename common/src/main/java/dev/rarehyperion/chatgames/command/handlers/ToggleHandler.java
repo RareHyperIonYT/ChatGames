@@ -1,7 +1,6 @@
 package dev.rarehyperion.chatgames.command.handlers;
 
 import dev.rarehyperion.chatgames.command.CommandContext;
-import dev.rarehyperion.chatgames.command.SubCommand;
 import dev.rarehyperion.chatgames.command.SubCommandHandler;
 import dev.rarehyperion.chatgames.config.ConfigManager;
 import dev.rarehyperion.chatgames.util.MessageUtil;
@@ -19,11 +18,25 @@ public class ToggleHandler implements SubCommandHandler {
     private static final String DEFAULT_DISABLED = "<red>Automatic games disabled!</red>";
 
     @Override
+    public String getPermission() {
+        return "chatgames.toggle";
+    }
+
+    @Override
+    public String getUsage() {
+        return "/chatgames toggle";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Toggles automatic games on/off";
+    }
+
+    @Override
     public void execute(final CommandContext context) {
         final ConfigManager configManager = context.getPlugin().configManager();
-        final String permission = SubCommand.TOGGLE.getPermission();
 
-        if (!context.hasPermission(permission)) {
+        if (!hasPermission(context)) {
             context.getSender().sendMessage(MessageUtil.parse(
                     configManager.getMessage("permission", DEFAULT_NO_PERMISSION)
             ));

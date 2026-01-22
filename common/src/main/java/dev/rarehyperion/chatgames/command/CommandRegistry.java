@@ -97,4 +97,13 @@ public class CommandRegistry {
     public ChatGamesCore getPlugin() {
         return this.plugin;
     }
+
+    /**
+     * Returns an unmodifiable view of all registered handlers.
+     *
+     * @return Map of subcommands to their handlers.
+     */
+    public Map<SubCommand, SubCommandHandler> getHandlers() {
+        return Collections.unmodifiableMap(this.handlers);
+    }
 }

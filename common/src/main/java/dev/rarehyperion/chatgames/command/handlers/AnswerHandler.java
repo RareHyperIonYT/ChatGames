@@ -8,10 +8,17 @@ import dev.rarehyperion.chatgames.game.types.ReactionGame;
 /**
  * Handler for the answer subcommand.
  * Processes game answers for ReactionGame click events.
+ * This is an internal command and is hidden from help output.
  *
  * @author RareHyperIon, tannerharkin
  */
 public class AnswerHandler implements SubCommandHandler {
+
+    // Returns null to hide from help - this is an internal command
+    @Override
+    public String getUsage() {
+        return null;
+    }
 
     @Override
     public void execute(final CommandContext context) {

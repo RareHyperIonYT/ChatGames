@@ -1,7 +1,6 @@
 package dev.rarehyperion.chatgames.command.handlers;
 
 import dev.rarehyperion.chatgames.command.CommandContext;
-import dev.rarehyperion.chatgames.command.SubCommand;
 import dev.rarehyperion.chatgames.command.SubCommandHandler;
 import dev.rarehyperion.chatgames.config.ConfigManager;
 import dev.rarehyperion.chatgames.game.GameConfig;
@@ -26,11 +25,25 @@ public class StartHandler implements SubCommandHandler {
     private static final String DEFAULT_UNKNOWN_GAME = "<red>Unknown game: %game%</red>";
 
     @Override
+    public String getPermission() {
+        return "chatgames.start";
+    }
+
+    @Override
+    public String getUsage() {
+        return "/chatgames start <game>";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Starts the specified game";
+    }
+
+    @Override
     public void execute(final CommandContext context) {
         final ConfigManager configManager = context.getPlugin().configManager();
-        final String permission = SubCommand.START.getPermission();
 
-        if (!context.hasPermission(permission)) {
+        if (!hasPermission(context)) {
             context.getSender().sendMessage(MessageUtil.parse(
                     configManager.getMessage("permission", DEFAULT_NO_PERMISSION)
             ));
@@ -39,7 +52,7 @@ public class StartHandler implements SubCommandHandler {
 
         if (context.getArgCount() < 1) {
             final String usage = configManager.getMessage("command-usage", DEFAULT_USAGE)
-                    .replace("%usage%", SubCommand.START.getUsage());
+                    .replace("%usage%", getUsage());
             context.getSender().sendMessage(MessageUtil.parse(usage));
             return;
         }
@@ -59,14 +72,11 @@ public class StartHandler implements SubCommandHandler {
 
     @Override
     public List<String> tabComplete(final CommandContext context) {
-        // Check permission before providing suggestions
-        final String permission = SubCommand.START.getPermission();
-        if (permission != null && !context.hasPermission(permission)) {
+        if (!hasPermission(context)) {
             return Collections.emptyList();
         }
 
         final String partial = context.joinArgs(0).toLowerCase();
-
         return context.getPlugin().gameRegistry().getAllConfigs().stream()
                 .map(GameConfig::getName)
                 .filter(Objects::nonNull)

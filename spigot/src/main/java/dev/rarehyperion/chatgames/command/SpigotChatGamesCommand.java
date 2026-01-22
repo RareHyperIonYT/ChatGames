@@ -9,15 +9,15 @@ import org.bukkit.command.TabCompleter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Spigot-specific command implementation using CommandExecutor and TabCompleter.
- * Delegates tab completion to handlers via CommandRegistry.
+ * Delegates tab completion and permissions to handlers via CommandRegistry.
  *
  * @author RareHyperIon, tannerharkin
  */
@@ -36,12 +36,34 @@ public class SpigotChatGamesCommand extends ChatGamesCommand implements CommandE
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         if (args.length == 1) {
-            // Complete subcommand names, filtered by permission
-            return SubCommand.getVisibleCommands().stream()
-                    .filter(cmd -> !cmd.requiresPermission() || sender.hasPermission(cmd.getPermission()))
-                    .map(SubCommand::getName)
-                    .filter(name -> name.startsWith(args[0].toLowerCase()))
-                    .collect(Collectors.toList());
+            // Complete subcommand names, filtered by permission from handlers
+            final List<String> suggestions = new ArrayList<>();
+            final String partial = args[0].toLowerCase();
+
+            for (final SubCommand subCommand : SubCommand.values()) {
+                final SubCommandHandler handler = this.registry.getHandler(subCommand);
+                if (handler == null) {
+                    continue;
+                }
+
+                // Skip commands with null usage (hidden commands)
+                if (handler.getUsage() == null) {
+                    continue;
+                }
+
+                // Check permission from handler
+                final String permission = handler.getPermission();
+                if (permission != null && !sender.hasPermission(permission)) {
+                    continue;
+                }
+
+                final String name = subCommand.getName();
+                if (name.startsWith(partial)) {
+                    suggestions.add(name);
+                }
+            }
+
+            return suggestions;
         }
 
         if (args.length > 1) {
@@ -49,12 +71,6 @@ public class SpigotChatGamesCommand extends ChatGamesCommand implements CommandE
             final Optional<SubCommand> optionalCmd = SubCommand.fromName(args[0]);
             if (optionalCmd.isPresent()) {
                 final SubCommand subCommand = optionalCmd.get();
-
-                // Check permission before offering completions
-                if (subCommand.requiresPermission() && !sender.hasPermission(subCommand.getPermission())) {
-                    return Collections.emptyList();
-                }
-
                 final PlatformSender platformSender = this.plugin.platform().wrapSender(sender);
                 final String[] subArgs = Arrays.copyOfRange(args, 1, args.length);
                 return this.registry.tabComplete(subCommand, platformSender, subArgs);

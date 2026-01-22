@@ -61,6 +61,7 @@ public class SpigotPlatform implements Platform {
     @Override
     public void registerCommands(final ChatGamesCore core) {
         final CommandRegistry registry = new CommandRegistry(core);
+        core.setCommandRegistry(registry);
         final SpigotChatGamesCommand command = new SpigotChatGamesCommand(core, registry);
         Objects.requireNonNull(this.plugin.getCommand("chatgames")).setExecutor(command);
         Objects.requireNonNull(this.plugin.getCommand("chatgames")).setTabCompleter(command);
