@@ -8,3 +8,28 @@ reload: "<green>Successfully reloaded ChatGames!</green>"
 
 # Cooldown message when player tries to answer too quickly after wrong answer
 cooldown: "<red>You cannot answer this question as you've already tried recently.</red>"
+
+# Command Messages
+command-unknown: "<red>Unknown command. Type /chatgames help for help.</red>"
+command-usage: "<red>Incorrect usage. Usage: %usage%</red>"
+
+# Help Command
+help-header: "<gray><bold>ChatGames Commands:</bold></gray>"
+help-entry: "<yellow>%usage%</yellow> <gray>- %description%</gray>"
+
+# Stop Command
+stop-success: "<green>Game stopped.</green>"
+
+# Toggle Command
+toggle-enabled: "<green>Automatic games enabled!</green>"
+toggle-disabled: "<red>Automatic games disabled!</red>"
+
+# List Command
+list-header: "<aqua><bold>Available Games:</bold></aqua>"
+list-entry: "<gray>-</gray> <green>%game%</green>"
+
+# Start Command
+start-unknown-game: "<red>Unknown game: %game%</red>"
+
+# Info Command
+info: "<gold>ChatGames <white>•</white> <yellow>%version%</yellow></gold>\n<green>A simple plugin that adds chat-based games by <aqua>%authors%</aqua></green>"

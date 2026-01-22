@@ -43,7 +43,11 @@ public class ChatGamesCommand {
         final Optional<SubCommand> optionalSubCommand = SubCommand.fromName(subCommandName);
 
         if (!optionalSubCommand.isPresent()) {
-            sender.sendMessage(MessageUtil.parse("<red>Unknown command. Type /chatgames for help.</red>"));
+            final String message = this.plugin.configManager().getMessage(
+                    "command-unknown",
+                    "<red>Unknown command. Type /chatgames help for help.</red>"
+            );
+            sender.sendMessage(MessageUtil.parse(message));
             return true;
         }
 

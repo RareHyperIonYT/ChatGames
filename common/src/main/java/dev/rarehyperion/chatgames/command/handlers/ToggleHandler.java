@@ -3,6 +3,7 @@ package dev.rarehyperion.chatgames.command.handlers;
 import dev.rarehyperion.chatgames.command.CommandContext;
 import dev.rarehyperion.chatgames.command.SubCommand;
 import dev.rarehyperion.chatgames.command.SubCommandHandler;
+import dev.rarehyperion.chatgames.config.ConfigManager;
 import dev.rarehyperion.chatgames.util.MessageUtil;
 
 /**
@@ -13,15 +14,18 @@ import dev.rarehyperion.chatgames.util.MessageUtil;
  */
 public class ToggleHandler implements SubCommandHandler {
 
-    private static final String NO_PERMISSION_DEFAULT = "<red>You don't have permission to use this command.</red>";
+    private static final String DEFAULT_NO_PERMISSION = "<red>You don't have permission to use this command.</red>";
+    private static final String DEFAULT_ENABLED = "<green>Automatic games enabled!</green>";
+    private static final String DEFAULT_DISABLED = "<red>Automatic games disabled!</red>";
 
     @Override
     public void execute(final CommandContext context) {
+        final ConfigManager configManager = context.getPlugin().configManager();
         final String permission = SubCommand.TOGGLE.getPermission();
 
         if (!context.hasPermission(permission)) {
             context.getSender().sendMessage(MessageUtil.parse(
-                    context.getPlugin().configManager().getMessage("permission", NO_PERMISSION_DEFAULT)
+                    configManager.getMessage("permission", DEFAULT_NO_PERMISSION)
             ));
             return;
         }
@@ -35,10 +39,14 @@ public class ToggleHandler implements SubCommandHandler {
 
         if (newValue) {
             context.getPlugin().gameManager().startScheduler();
-            context.getSender().sendMessage(MessageUtil.parse("<green>Automatic games enabled!</green>"));
+            context.getSender().sendMessage(MessageUtil.parse(
+                    configManager.getMessage("toggle-enabled", DEFAULT_ENABLED)
+            ));
         } else {
             context.getPlugin().gameManager().shutdown();
-            context.getSender().sendMessage(MessageUtil.parse("<red>Automatic games disabled!</red>"));
+            context.getSender().sendMessage(MessageUtil.parse(
+                    configManager.getMessage("toggle-disabled", DEFAULT_DISABLED)
+            ));
         }
     }
 }

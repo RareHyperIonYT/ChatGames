@@ -12,13 +12,13 @@ import java.util.stream.Collectors;
  * @author RareHyperIon, tannerharkin
  */
 public enum SubCommand {
-    RELOAD("reload", "chatgames.reload", "Reloads configuration", ArgumentType.NONE),
-    START("start", "chatgames.start", "Starts a game", ArgumentType.GAME_NAME),
-    STOP("stop", "chatgames.stop", "Stops current game", ArgumentType.NONE),
-    LIST("list", "chatgames.list", "Lists available games", ArgumentType.NONE),
+    RELOAD("reload", "chatgames.reload", "Reloads the plugin", ArgumentType.NONE),
+    START("start", "chatgames.start", "Starts the specified game", ArgumentType.GAME_NAME),
+    STOP("stop", "chatgames.stop", "Stops the current game", ArgumentType.NONE),
+    LIST("list", "chatgames.list", "Lists all available games", ArgumentType.NONE),
     TOGGLE("toggle", "chatgames.toggle", "Toggles automatic games", ArgumentType.NONE),
-    INFO("info", null, "Plugin information", ArgumentType.NONE),
-    HELP("help", null, "Shows help", ArgumentType.NONE),
+    INFO("info", null, "Displays plugin information", ArgumentType.NONE),
+    HELP("help", null, "Shows this help message", ArgumentType.NONE),
     ANSWER("answer", null, "Submit answer", ArgumentType.TOKEN);
 
     private final String name;
@@ -67,6 +67,28 @@ public enum SubCommand {
      */
     public ArgumentType getArgumentType() {
         return this.argumentType;
+    }
+
+    /**
+     * Returns the full usage string for this command.
+     * Example: "/chatgames start <game>"
+     *
+     * @return The usage string.
+     */
+    public String getUsage() {
+        final StringBuilder usage = new StringBuilder("/chatgames ").append(this.name);
+        switch (this.argumentType) {
+            case GAME_NAME:
+                usage.append(" <game>");
+                break;
+            case TOKEN:
+                usage.append(" <token>");
+                break;
+            case NONE:
+            default:
+                break;
+        }
+        return usage.toString();
     }
 
     /**
