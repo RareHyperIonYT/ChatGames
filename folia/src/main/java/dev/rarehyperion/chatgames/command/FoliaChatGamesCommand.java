@@ -12,12 +12,12 @@ import dev.rarehyperion.chatgames.platform.PlatformSender;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
  * Folia-specific command implementation using Brigadier.
- * Builds command tree from SubCommand enum for single source of truth.
- * Uses the same Brigadier API as Paper.
+ * Delegates tab completion to handlers via CommandRegistry.
  *
  * @author RareHyperIon, tannerharkin
  */
@@ -53,10 +53,10 @@ public class FoliaChatGamesCommand extends ChatGamesCommand {
             // Handle argument types
             switch (subCommand.getArgumentType()) {
                 case GAME_NAME:
-                    node.then(this.createGameArgument(subCommand.getName()));
+                    node.then(this.createStringArgument(subCommand, "game", true));
                     break;
                 case TOKEN:
-                    node.then(this.createTokenArgument(subCommand.getName()));
+                    node.then(this.createStringArgument(subCommand, "token", false));
                     break;
                 case NONE:
                 default:
@@ -75,39 +75,39 @@ public class FoliaChatGamesCommand extends ChatGamesCommand {
     }
 
     /**
-     * Creates an argument node for game name arguments with suggestions.
+     * Creates a string argument node that delegates suggestions to the handler.
      */
-    private ArgumentBuilder<CommandSourceStack, ?> createGameArgument(final String commandName) {
-        return Commands.argument("game", StringArgumentType.greedyString())
-                .suggests(this::suggestGameNames)
+    private ArgumentBuilder<CommandSourceStack, ?> createStringArgument(
+            final SubCommand subCommand,
+            final String argName,
+            final boolean greedy
+    ) {
+        return Commands.argument(argName, greedy ? StringArgumentType.greedyString() : StringArgumentType.string())
+                .suggests((ctx, builder) -> this.suggestFromHandler(subCommand, ctx, builder))
                 .executes(ctx -> {
                     final PlatformSender sender = this.plugin.platform().wrapSender(ctx.getSource().getSender());
-                    final String game = StringArgumentType.getString(ctx, "game");
-                    this.handleCommand(sender, new String[]{commandName, game});
+                    final String arg = StringArgumentType.getString(ctx, argName);
+                    this.handleCommand(sender, new String[]{subCommand.getName(), arg});
                     return 1;
                 });
     }
 
     /**
-     * Creates an argument node for token arguments (no suggestions).
+     * Gets suggestions from the handler's tabComplete method.
      */
-    private ArgumentBuilder<CommandSourceStack, ?> createTokenArgument(final String commandName) {
-        return Commands.argument("token", StringArgumentType.string())
-                .executes(ctx -> {
-                    final PlatformSender sender = this.plugin.platform().wrapSender(ctx.getSource().getSender());
-                    final String token = StringArgumentType.getString(ctx, "token");
-                    this.handleCommand(sender, new String[]{commandName, token});
-                    return 1;
-                });
-    }
+    private CompletableFuture<Suggestions> suggestFromHandler(
+            final SubCommand subCommand,
+            final CommandContext<CommandSourceStack> ctx,
+            final SuggestionsBuilder builder
+    ) {
+        final PlatformSender sender = this.plugin.platform().wrapSender(ctx.getSource().getSender());
+        final String partial = builder.getRemaining();
+        final List<String> suggestions = this.registry.tabComplete(subCommand, sender, new String[]{partial});
 
-    /**
-     * Provides game name suggestions for tab completion.
-     */
-    private CompletableFuture<Suggestions> suggestGameNames(final CommandContext<CommandSourceStack> ctx, final SuggestionsBuilder builder) {
-        for (final String gameName : this.registry.getGameNames()) {
-            builder.suggest(gameName);
+        for (final String suggestion : suggestions) {
+            builder.suggest(suggestion);
         }
+
         return builder.buildFuture();
     }
 }

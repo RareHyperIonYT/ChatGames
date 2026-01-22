@@ -7,7 +7,11 @@ import dev.rarehyperion.chatgames.config.ConfigManager;
 import dev.rarehyperion.chatgames.game.GameConfig;
 import dev.rarehyperion.chatgames.util.MessageUtil;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Handler for the start subcommand.
@@ -51,5 +55,22 @@ public class StartHandler implements SubCommandHandler {
                     .replace("%game%", gameName);
             context.getSender().sendMessage(MessageUtil.parse(message));
         }
+    }
+
+    @Override
+    public List<String> tabComplete(final CommandContext context) {
+        // Check permission before providing suggestions
+        final String permission = SubCommand.START.getPermission();
+        if (permission != null && !context.hasPermission(permission)) {
+            return Collections.emptyList();
+        }
+
+        final String partial = context.joinArgs(0).toLowerCase();
+
+        return context.getPlugin().gameRegistry().getAllConfigs().stream()
+                .map(GameConfig::getName)
+                .filter(Objects::nonNull)
+                .filter(name -> name.toLowerCase().startsWith(partial))
+                .collect(Collectors.toList());
     }
 }

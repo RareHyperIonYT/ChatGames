@@ -6,16 +6,14 @@ import org.spongepowered.api.command.Command;
 import org.spongepowered.api.command.CommandCompletion;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.parameter.Parameter;
-import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.server.ServerPlayer;
-import org.spongepowered.api.service.permission.Subject;
 
-import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * Sponge-specific command implementation.
- * Builds command tree from SubCommand enum for single source of truth.
+ * Delegates tab completion to handlers via CommandRegistry.
  *
  * @author RareHyperIon, tannerharkin
  */
@@ -62,17 +60,14 @@ public class SpongeChatGamesCommand extends ChatGamesCommand {
             case GAME_NAME:
                 final Parameter.Value<String> gameParam = Parameter.remainingJoinedStrings()
                         .key("game")
-                        .completer((context, string) -> {
-                            final String permission = SubCommand.START.getPermission();
-                            final Subject subject = context.subject();
-
-                            if (permission == null || subject.hasPermission(permission)) {
-                                final String partial = string.toLowerCase();
-                                return this.registry.getGameNamesStartingWith(partial).stream()
-                                        .map(CommandCompletion::of)
-                                        .collect(Collectors.toList());
-                            }
-                            return Collections.emptyList();
+                        .completer((context, partial) -> {
+                            final PlatformSender sender = this.wrapCause(context);
+                            final List<String> suggestions = this.registry.tabComplete(
+                                    subCommand, sender, new String[]{partial}
+                            );
+                            return suggestions.stream()
+                                    .map(CommandCompletion::of)
+                                    .collect(Collectors.toList());
                         })
                         .build();
 
@@ -88,6 +83,15 @@ public class SpongeChatGamesCommand extends ChatGamesCommand {
             case TOKEN:
                 final Parameter.Value<String> tokenParam = Parameter.string()
                         .key("token")
+                        .completer((context, partial) -> {
+                            final PlatformSender sender = this.wrapCause(context);
+                            final List<String> suggestions = this.registry.tabComplete(
+                                    subCommand, sender, new String[]{partial}
+                            );
+                            return suggestions.stream()
+                                    .map(CommandCompletion::of)
+                                    .collect(Collectors.toList());
+                        })
                         .build();
 
                 builder.addParameter(tokenParam)
@@ -117,7 +121,6 @@ public class SpongeChatGamesCommand extends ChatGamesCommand {
      * Handles both player and console senders.
      */
     private PlatformSender wrapCause(final org.spongepowered.api.command.parameter.CommandContext context) {
-        // Try to get a player from the cause, otherwise treat as console
         final Object sender = context.cause().first(ServerPlayer.class)
                 .map(p -> (Object) p)
                 .orElse(null);

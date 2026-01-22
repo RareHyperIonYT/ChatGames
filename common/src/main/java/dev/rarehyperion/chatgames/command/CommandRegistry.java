@@ -2,17 +2,16 @@ package dev.rarehyperion.chatgames.command;
 
 import dev.rarehyperion.chatgames.ChatGamesCore;
 import dev.rarehyperion.chatgames.command.handlers.*;
-import dev.rarehyperion.chatgames.game.GameConfig;
+import dev.rarehyperion.chatgames.platform.PlatformSender;
 
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Central registry for command handlers.
- * Provides handler registration and game name suggestions.
+ * Provides handler registration, execution, and tab completion.
  *
  * @author tannerharkin
  */
@@ -73,28 +72,21 @@ public class CommandRegistry {
     }
 
     /**
-     * Returns a list of all game names for tab completion.
+     * Gets tab completion suggestions for a subcommand.
      *
-     * @return List of game names.
+     * @param subCommand The subcommand.
+     * @param sender     The command sender (for permission checks if needed).
+     * @param args       The current arguments (after the subcommand name).
+     * @return List of completion suggestions.
      */
-    public List<String> getGameNames() {
-        return this.plugin.gameRegistry().getAllConfigs().stream()
-                .map(GameConfig::getName)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-    }
+    public List<String> tabComplete(final SubCommand subCommand, final PlatformSender sender, final String[] args) {
+        final SubCommandHandler handler = this.handlers.get(subCommand);
+        if (handler == null) {
+            return Collections.emptyList();
+        }
 
-    /**
-     * Returns game names that start with the given prefix (case-insensitive).
-     *
-     * @param prefix The prefix to filter by.
-     * @return List of matching game names.
-     */
-    public List<String> getGameNamesStartingWith(final String prefix) {
-        final String lowerPrefix = prefix.toLowerCase();
-        return this.getGameNames().stream()
-                .filter(name -> name.toLowerCase().startsWith(lowerPrefix))
-                .collect(Collectors.toList());
+        final CommandContext context = new CommandContext(this.plugin, sender, args);
+        return handler.tabComplete(context);
     }
 
     /**

@@ -9,14 +9,15 @@ import org.bukkit.command.TabCompleter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
  * Spigot-specific command implementation using CommandExecutor and TabCompleter.
- * Uses SubCommand enum for tab completion suggestions.
+ * Delegates tab completion to handlers via CommandRegistry.
  *
  * @author RareHyperIon, tannerharkin
  */
@@ -35,7 +36,7 @@ public class SpigotChatGamesCommand extends ChatGamesCommand implements CommandE
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         if (args.length == 1) {
-            // Filter visible subcommands by permission and prefix
+            // Complete subcommand names, filtered by permission
             return SubCommand.getVisibleCommands().stream()
                     .filter(cmd -> !cmd.requiresPermission() || sender.hasPermission(cmd.getPermission()))
                     .map(SubCommand::getName)
@@ -43,15 +44,23 @@ public class SpigotChatGamesCommand extends ChatGamesCommand implements CommandE
                     .collect(Collectors.toList());
         }
 
-        // Handle second-level arguments for "start" command
-        if (args.length > 1 && args[0].equalsIgnoreCase("start")) {
-            final SubCommand startCmd = SubCommand.START;
-            if (!startCmd.requiresPermission() || sender.hasPermission(startCmd.getPermission())) {
-                final String partial = String.join(" ", Arrays.copyOfRange(args, 1, args.length)).toLowerCase();
-                return this.registry.getGameNamesStartingWith(partial);
+        if (args.length > 1) {
+            // Delegate to handler's tab completion
+            final Optional<SubCommand> optionalCmd = SubCommand.fromName(args[0]);
+            if (optionalCmd.isPresent()) {
+                final SubCommand subCommand = optionalCmd.get();
+
+                // Check permission before offering completions
+                if (subCommand.requiresPermission() && !sender.hasPermission(subCommand.getPermission())) {
+                    return Collections.emptyList();
+                }
+
+                final PlatformSender platformSender = this.plugin.platform().wrapSender(sender);
+                final String[] subArgs = Arrays.copyOfRange(args, 1, args.length);
+                return this.registry.tabComplete(subCommand, platformSender, subArgs);
             }
         }
 
-        return new ArrayList<>();
+        return Collections.emptyList();
     }
 }
