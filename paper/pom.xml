@@ -45,8 +45,20 @@
                                 <includes>
                                     <include>dev.rarehyperion.chatgames:chatgames-common</include>
                                     <include>com.github.rarehyperionyt:chatgames-api</include>
+                                    <include>com.zaxxer:HikariCP</include>
+                                    <include>org.mariadb.jdbc:mariadb-java-client</include>
                                 </includes>
                             </artifactSet>
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.zaxxer.hikari</pattern>
+                                    <shadedPattern>dev.rarehyperion.chatgames.libs.hikari</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.mariadb.jdbc</pattern>
+                                    <shadedPattern>dev.rarehyperion.chatgames.libs.mariadb</shadedPattern>
+                                </relocation>
+                            </relocations>
                         </configuration>
                     </execution>
                 </executions>

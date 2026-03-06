@@ -12,6 +12,8 @@ import dev.rarehyperion.chatgames.events.ChatGameWinEvent;
 import dev.rarehyperion.chatgames.game.EndReason;
 import dev.rarehyperion.chatgames.game.GameType;
 import dev.rarehyperion.chatgames.listener.PaperChatListener;
+import dev.rarehyperion.chatgames.listener.PointsListener;
+import dev.rarehyperion.chatgames.placeholder.ChatGamesExpansion;
 import dev.rarehyperion.chatgames.platform.*;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
@@ -85,6 +87,20 @@ public class PaperPlatform implements Platform {
     public void registerListeners(final ChatGamesCore core) {
         this.plugin.getServer().getPluginManager().registerEvents(new TestListener(), this.plugin);
         this.plugin.getServer().getPluginManager().registerEvents(new PaperChatListener(core.gameManager()), this.plugin);
+
+        if (core.pointsManager() != null) {
+            this.plugin.getServer().getPluginManager().registerEvents(new PointsListener(core.pointsManager()), this.plugin);
+
+            if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+                new ChatGamesExpansion(core.pointsManager()).register();
+                this.logger.info("PlaceholderAPI found! Registered chatgames placeholders.");
+            }
+
+            // Load points for already online players (in case of reload)
+            for (final Player player : Bukkit.getOnlinePlayers()) {
+                core.pointsManager().loadPlayer(player.getUniqueId());
+            }
+        }
     }
 
     @Override
