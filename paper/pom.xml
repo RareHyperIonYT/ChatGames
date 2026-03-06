@@ -25,6 +25,11 @@
             <version>${mc.version}</version>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
