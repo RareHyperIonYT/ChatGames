@@ -18,3 +18,15 @@ answer-cooldown-ticks: 60
 
 # Enable debug logging
 debug: false
+
+# Database configuration (MariaDB) for the points system
+# Points are awarded when a player wins a chatgame (+1 per win)
+# Use PlaceholderAPI: %chatgames_points% or %chatgames_points_<player>%
+database:
+  enabled: false
+  host: localhost
+  port: 3306
+  database: minecraft
+  username: root
+  password: ""
+  pool-size: 5
