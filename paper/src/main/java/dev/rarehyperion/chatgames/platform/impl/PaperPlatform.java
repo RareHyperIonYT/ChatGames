@@ -2,7 +2,6 @@ package dev.rarehyperion.chatgames.platform.impl;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import dev.rarehyperion.chatgames.ChatGamesCore;
-import dev.rarehyperion.chatgames.TestListener;
 import dev.rarehyperion.chatgames.command.PaperChatGamesCommand;
 import dev.rarehyperion.chatgames.config.Config;
 import dev.rarehyperion.chatgames.config.PaperConfig;
@@ -83,7 +82,6 @@ public class PaperPlatform implements Platform {
 
     @Override
     public void registerListeners(final ChatGamesCore core) {
-        this.plugin.getServer().getPluginManager().registerEvents(new TestListener(), this.plugin);
         this.plugin.getServer().getPluginManager().registerEvents(new PaperChatListener(core.gameManager()), this.plugin);
     }
 

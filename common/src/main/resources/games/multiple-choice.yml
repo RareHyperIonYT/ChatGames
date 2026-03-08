@@ -11,6 +11,8 @@ messages:
     
     <green><bold>MULTIPLE CHOICE</bold></green>
     <gray>Type the correct letter!</gray>
+    
+    {question}
 
   win: |
 

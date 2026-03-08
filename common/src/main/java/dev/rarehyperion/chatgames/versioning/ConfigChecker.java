@@ -46,7 +46,7 @@ public final class ConfigChecker {
 
         if(!outdated.isEmpty()) {
             logger.warn("The following configurations are out-of-date: " + String.join(", ", outdated));
-            logger.warn("To ensure that they function as expected, migrate them to their new schema.");
+            logger.warn("To ensure that they function as expected, checkout the new configurations here:");
             logger.warn(String.format(String.format(VersionChecker.PROJECT_URL, VersionChecker.PROJECT_SLUG)));
             setVersion(platform);
         }
@@ -131,11 +131,11 @@ public final class ConfigChecker {
 
     static {
         EXPECTED_VERSIONS.put("config.yml", 1);
-        EXPECTED_VERSIONS.put("math.yml", 1);
-        EXPECTED_VERSIONS.put("multiple-choice.yml", 1);
-        EXPECTED_VERSIONS.put("reaction.yml", 1);
-        EXPECTED_VERSIONS.put("trivia.yml", 1);
-        EXPECTED_VERSIONS.put("unscramble.yml", 1);
+        EXPECTED_VERSIONS.put("math.yml", 2);
+        EXPECTED_VERSIONS.put("multiple-choice.yml", 2);
+        EXPECTED_VERSIONS.put("reaction.yml", 2);
+        EXPECTED_VERSIONS.put("trivia.yml", 2);
+        EXPECTED_VERSIONS.put("unscramble.yml", 2);
     }
 
 }

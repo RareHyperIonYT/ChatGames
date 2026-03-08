@@ -10,6 +10,8 @@ messages:
     
     <red><bold>REACTION TEST</bold></red>
     <gray>Be the first to respond!</gray>
+    
+    {question}
 
   win: |
 
