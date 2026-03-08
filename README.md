@@ -95,6 +95,8 @@ messages:
     <gold><bold>MATH WIZARD</bold></gold>
     <gray>Solve the equation below!</gray>
 
+    {question}
+
   win: |
 
     <green><bold>✓</bold> <yellow>{player}</yellow> solved it!</green>
@@ -135,6 +137,8 @@ messages:
 
     <green><bold>MULTIPLE CHOICE</bold></green>
     <gray>Type the correct letter!</gray>
+
+    {question}
 
   win: |
 
@@ -203,6 +207,8 @@ messages:
     <red><bold>REACTION TEST</bold></red>
     <gray>Be the first to respond!</gray>
 
+    {question}
+
   win: |
 
     <green><bold>✓</bold> <yellow>{player}</yellow> was fastest!</green>
@@ -260,6 +266,8 @@ messages:
     <aqua><bold>TRIVIA TIME</bold></aqua>
     <gray>Answer the question below!</gray>
 
+    {question}
+
   win: |
 
     <green><bold>✓</bold> <yellow>{player}</yellow> got it right!</green>
@@ -298,6 +306,8 @@ messages:
 
     <light_purple><bold>WORD SCRAMBLE</bold></light_purple>
     <gray>Unscramble the word!</gray>
+
+    {question}
 
   win: |
 
