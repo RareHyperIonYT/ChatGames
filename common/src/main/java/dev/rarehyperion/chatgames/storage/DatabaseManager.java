@@ -19,6 +19,7 @@ public final class DatabaseManager {
         this.logger = logger;
 
         final HikariConfig config = new HikariConfig();
+        config.setDriverClassName("org.mariadb.jdbc.Driver");
         config.setJdbcUrl("jdbc:mariadb://" + host + ":" + port + "/" + database);
         config.setUsername(username);
         config.setPassword(password);
