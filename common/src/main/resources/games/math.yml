@@ -10,6 +10,8 @@ messages:
 
     <gold><bold>MATH WIZARD</bold></gold>
     <gray>Solve the equation below!</gray>
+    
+    {question}
 
   win: |
 

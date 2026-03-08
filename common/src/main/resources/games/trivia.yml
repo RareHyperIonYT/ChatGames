@@ -10,6 +10,8 @@ messages:
 
     <aqua><bold>TRIVIA TIME</bold></aqua>
     <gray>Answer the question below!</gray>
+    
+    {question}
 
   win: |
 

@@ -104,7 +104,10 @@ public final class GameConfig {
         return MessageUtil.parse(this.startMessage
                 .replace("{name}", this.displayName)
                 .replace("{timeout}", String.valueOf(this.timeoutSeconds))
-        ).append(Component.newline()).append(question);
+        ).replaceText(config -> config
+                .matchLiteral("{question}")
+                .replacement(question)
+        );
     }
 
     public Component getWinMessage(final String playerName, final String answer) {

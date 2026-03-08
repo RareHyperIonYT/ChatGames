@@ -10,6 +10,8 @@ messages:
     
     <light_purple><bold>WORD SCRAMBLE</bold></light_purple>
     <gray>Unscramble the word!</gray>
+    
+    {question}
 
   win: |
 
