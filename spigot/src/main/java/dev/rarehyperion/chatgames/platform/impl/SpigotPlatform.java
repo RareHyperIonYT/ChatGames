@@ -55,7 +55,9 @@ public class SpigotPlatform implements Platform {
     }
 
     @Override
-    public void dispatchCommand(String command) {}
+    public void dispatchCommand(final String command) {
+        this.plugin.getServer().dispatchCommand(this.plugin.getServer().getConsoleSender(), command);
+    }
 
     @Override
     public void registerCommands(final ChatGamesCore core) {
