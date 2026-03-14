@@ -66,20 +66,12 @@ public class PaperPlatform implements Platform {
 
     @Override
     public void registerCommands(final ChatGamesCore core) {
-        // Papers API genuinely drives me insane... almost as much as Fabric API which says a lot.
-
         final PaperChatGamesCommand command = new PaperChatGamesCommand(core);
         final LiteralCommandNode<CommandSourceStack> mainNode = command.build();
-
-        // Aliases don't work as expected, so Paper won't have command aliases for now unfortunately.
-//      final LiteralCommandNode<CommandSourceStack> aliasCg = Commands.literal("cg").redirect(mainNode).build();
-//      final LiteralCommandNode<CommandSourceStack> aliasChatgame = Commands.literal("chatgame").redirect(mainNode).build();
 
         this.plugin.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             commands.register(mainNode);
-//          commands.register(aliasCg);
-//          commands.register(aliasChatgame);
         });
     }
 
@@ -210,6 +202,17 @@ public class PaperPlatform implements Platform {
     @Override
     public void dispatchEnd(GameType type, String question, String answer, List<String> rewards, final EndReason reason) {
         Bukkit.getPluginManager().callEvent(new ChatGameEndEvent(type, question, answer, rewards, reason));
+    }
+
+    @Override
+    public void broadcastSound(final String soundName) {
+        if (soundName == null || soundName.isEmpty() || soundName.equalsIgnoreCase("none")) return;
+        try {
+            org.bukkit.Sound sound = org.bukkit.Sound.valueOf(soundName.toUpperCase());
+            Bukkit.getOnlinePlayers().forEach(player -> player.playSound(player.getLocation(), sound, 1.0f, 1.0f));
+        } catch (IllegalArgumentException e) {
+            this.logger.warn("Invalid start-sound in config: " + soundName);
+        }
     }
 
 }
