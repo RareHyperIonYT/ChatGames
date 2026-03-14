@@ -16,8 +16,8 @@ import java.util.UUID;
  * Represents a platform abstraction for running ChatGames.
  *
  * <p>
- *     Implementations handle differences between server types (e.g., Spigot, Paper, Sponge) and provie methods for broadcasting messages,
- *     scheduling tasks, accessing configurations, registering commands and listeners, and wrapping platform-specific senders.
+ * Implementations handle differences between server types (e.g., Spigot, Paper, Sponge) and provie methods for broadcasting messages,
+ * scheduling tasks, accessing configurations, registering commands and listeners, and wrapping platform-specific senders.
  * </p>
  *
  * @author RareHyperIon
@@ -168,5 +168,11 @@ public interface Platform {
     void dispatchStart(final GameType type, final String question, final String answer, final List<String> rewards);
     void dispatchEnd(final GameType type, final String question, final String answer, final List<String> rewards, final EndReason reason);
     void dispatchWin(final PlatformPlayer player, final GameType type, final String question, final String answer, final List<String> rewards);
+
+    /**
+     * Broadcasts a sound to all online players.
+     * @param soundName The sound name.
+     */
+    void broadcastSound(final String soundName);
 
 }
