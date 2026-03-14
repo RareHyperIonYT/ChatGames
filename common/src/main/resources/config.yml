@@ -9,7 +9,11 @@ game-interval: 300
 
 # Minimum players online to start automatic games
 minimum-players: 1
-
+# Sound played when a chat game starts.
+# Set to "none" to disable.
+# Example (Spigot/Paper): ENTITY_PLAYER_LEVELUP, ENTITY_EXPERIENCE_ORB_PICKUP
+# Example (Sponge): entity.player.levelup
+start-sound: "ENTITY_PLAYER_LEVELUP"
 # Whether to automatically start games at intervals
 automatic-games: true
 
