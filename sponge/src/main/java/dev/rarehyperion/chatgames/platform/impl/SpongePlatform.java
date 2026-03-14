@@ -244,3 +244,18 @@ public class SpongePlatform implements Platform {
     public void dispatchEnd(final GameType type, final String question, final String answer, final List<String> rewards, final EndReason reason) {}
 
 }
+@Override
+    public void broadcastSound(final String soundName) {
+        if (soundName == null || soundName.isEmpty() || soundName.equalsIgnoreCase("none")) return;
+        try {
+            final net.kyori.adventure.sound.Sound sound = net.kyori.adventure.sound.Sound.sound(
+                    net.kyori.adventure.key.Key.key("minecraft", soundName.toLowerCase()),
+                    net.kyori.adventure.sound.Sound.Source.MASTER,
+                    1.0f, 1.0f
+            );
+            Sponge.server().onlinePlayers().forEach(player -> player.playSound(sound));
+        } catch (Exception e) {
+            this.logger.warn("Invalid start-sound in config: " + soundName);
+        }
+    }
+}
