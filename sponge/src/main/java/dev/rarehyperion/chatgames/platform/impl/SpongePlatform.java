@@ -243,8 +243,7 @@ public class SpongePlatform implements Platform {
     @Override
     public void dispatchEnd(final GameType type, final String question, final String answer, final List<String> rewards, final EndReason reason) {}
 
-}
-@Override
+    @Override
     public void broadcastSound(final String soundName) {
         if (soundName == null || soundName.isEmpty() || soundName.equalsIgnoreCase("none")) return;
         try {
@@ -258,4 +257,5 @@ public class SpongePlatform implements Platform {
             this.logger.warn("Invalid start-sound in config: " + soundName);
         }
     }
+
 }
