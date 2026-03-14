@@ -30,6 +30,10 @@ public abstract class AbstractGame implements Game {
     @Override
     public void onStart() {
         this.plugin.platform().dispatchStart(this.type, MessageUtil.plainText(this.getQuestion()), this.getCorrectAnswer().orElse(null), this.config.getRewardCommands());
+        
+        final String sound = this.plugin.configManager().getSettings().startSound();
+        this.plugin.platform().broadcastSound(sound);
+        
         this.start();
     }
 
@@ -73,5 +77,4 @@ public abstract class AbstractGame implements Game {
     protected <T> T selectRandom(final List<T> list) {
         return list.get(new Random().nextInt(list.size()));
     }
-
 }
