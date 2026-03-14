@@ -25,7 +25,8 @@ public final class ConfigManager {
                 this.plugin.getConfigValue("minimum-players", Integer.class, 1),
                 this.plugin.getConfigValue("automatic-games", Boolean.class, true),
                 this.plugin.getConfigValue("answer-cooldown-ticks", Integer.class, 60),
-                this.plugin.getConfigValue("debug", Boolean.class, false)
+                this.plugin.getConfigValue("debug", Boolean.class, false),
+                this.plugin.getConfigValue("start-sound", String.class, "ENTITY_PLAYER_LEVELUP")
         );
 
         this.loadLanguage(this.plugin.getConfigValue("languages", String.class, "en-us"));
@@ -90,13 +91,15 @@ public final class ConfigManager {
         private final boolean automaticGames;
         private final int answerCooldownTicks;
         private final boolean debug;
+        private final String startSound;
 
-        public PluginSettings(int gameInterval, int minimumPlayers, boolean automaticGames, int answerCooldownTicks, boolean debug) {
+        public PluginSettings(int gameInterval, int minimumPlayers, boolean automaticGames, int answerCooldownTicks, boolean debug, String startSound) {
             this.gameInterval = gameInterval;
             this.minimumPlayers = minimumPlayers;
             this.automaticGames = automaticGames;
             this.answerCooldownTicks = answerCooldownTicks;
             this.debug = debug;
+            this.startSound = startSound;
         }
 
         public int gameInterval() {
@@ -119,6 +122,8 @@ public final class ConfigManager {
             return this.debug;
         }
 
+        public String startSound() {
+            return this.startSound;
+        }
     }
-
 }
