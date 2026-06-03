@@ -82,41 +82,41 @@ cooldown: "<red>You cannot answer this question as you've already tried recently
   <summary>games/math.yml</summary>
 
   ```yml
-name: math
-display-name: "<gold>Math Wizard</gold>"
-timeout: 60 # The time players have to win the game. (in seconds)
-
-reward-commands:
-  - "give {player} diamond {rand:1-3}"
-
-messages:
-  start: |
-
-    <gold><bold>MATH WIZARD</bold></gold>
-    <gray>Solve the equation below!</gray>
-
-    {question}
-
-  win: |
-
-    <green><bold>✓</bold> <yellow>{player}</yellow> solved it!</green>
-    <gray>Answer: <white>{answer}</white></gray>
-
-  timeout: |
-
-    <red><bold>✗</bold> Time's up!</red>
-    <gray>Answer: <white>{answer}</white></gray>
-
-
-questions:
-  - ["<yellow>12 + 8 = ?</yellow>", "20"]
-  - ["<yellow>25 - 7 = ?</yellow>", "18"]
-  - ["<yellow>6 × 7 = ?</yellow>", "42"]
-  - ["<yellow>144 ÷ 12 = ?</yellow>", "12"]
-  - ["<yellow>15 + 23 = ?</yellow>", "38"]
-  - ["<yellow>50 - 18 = ?</yellow>", "32"]
-  - ["<yellow>9 × 8 = ?</yellow>", "72"]
-  - ["<yellow>100 ÷ 5 = ?</yellow>", "20"]
+  name: math
+  display-name: "<gold>Math Wizard</gold>"
+  timeout: 60 # The time players have to win the game. (in seconds)
+  
+  reward-commands:
+    - "give {player} diamond {rand:1-3}"
+  
+  messages:
+    start: |
+  
+      <gold><bold>MATH WIZARD</bold></gold>
+      <gray>Solve the equation below!</gray>
+  
+      {question}
+  
+    win: |
+  
+      <green><bold>✓</bold> <yellow>{player}</yellow> solved it!</green>
+      <gray>Answer: <white>{answer}</white></gray>
+  
+    timeout: |
+  
+      <red><bold>✗</bold> Time's up!</red>
+      <gray>Answer: <white>{answer}</white></gray>
+  
+  
+  questions:
+    - ["<yellow>12 + 8 = ?</yellow>", "20"]
+    - ["<yellow>25 - 7 = ?</yellow>", "18"]
+    - ["<yellow>6 × 7 = ?</yellow>", "42"]
+    - ["<yellow>144 ÷ 12 = ?</yellow>", "12"]
+    - ["<yellow>15 + 23 = ?</yellow>", "38"]
+    - ["<yellow>50 - 18 = ?</yellow>", "32"]
+    - ["<yellow>9 × 8 = ?</yellow>", "72"]
+    - ["<yellow>100 ÷ 5 = ?</yellow>", "20"]
   ```
 </details>
 
@@ -124,69 +124,69 @@ questions:
   <summary>games/multiple-choice.yml</summary>
 
   ```yml
-name: multiple choice
-display-name: "<green>Multiple Choice</green>"
-timeout: 45 # The time players have to win the game. (in seconds)
-cooldown: 60 # Ticks to wait after wrong answer (60 ticks = 3 seconds)
-
-reward-commands:
-  - "give {player} emerald {rand:1-3}"
-
-messages:
-  start: |
-
-    <green><bold>MULTIPLE CHOICE</bold></green>
-    <gray>Type the correct letter!</gray>
-
-    {question}
-
-  win: |
-
-    <green><bold>✓</bold> <yellow>{player}</yellow> chose correctly!</green>
-    <gray>Answer: <white>{answer}</white></gray>
-
-  timeout: |
-
-    <red><bold>✗</bold> Nobody answered!</red>
-    <gray>Correct: <white>{answer}</white></gray>
-
-
-questions:
-  q1:
-    question: "<yellow>What is the largest planet in our solar system?</yellow>"
-    answers:
-      - "A. Earth"
-      - "B. Jupiter"
-      - "C. Saturn"
-      - "D. Mars"
-    correct-answer: "B"
-
-  q2:
-    question: "<yellow>Which programming language is Minecraft written in?</yellow>"
-    answers:
-      - "A. Python"
-      - "B. C++"
-      - "C. Java"
-      - "D. JavaScript"
-    correct-answer: "C"
-
-  q3:
-    question: "<yellow>What is 2 + 2 × 2?</yellow>"
-    answers:
-      - "A. 6"
-      - "B. 8"
-      - "C. 4"
-      - "D. 10"
-    correct-answer: "A"
-
-  q4:
-    question: "<yellow>Which mob drops blaze rods?</yellow>"
-    answers:
-      - "A. Ghast"
-      - "B. Blaze"
-      - "C. Wither Skeleton"
-      - "D. Magma Cube"
-    correct-answer: "B"
+  name: multiple choice
+  display-name: "<green>Multiple Choice</green>"
+  timeout: 45 # The time players have to win the game. (in seconds)
+  cooldown: 60 # Ticks to wait after wrong answer (60 ticks = 3 seconds)
+  
+  reward-commands:
+    - "give {player} emerald {rand:1-3}"
+  
+  messages:
+    start: |
+  
+      <green><bold>MULTIPLE CHOICE</bold></green>
+      <gray>Type the correct letter!</gray>
+  
+      {question}
+  
+    win: |
+  
+      <green><bold>✓</bold> <yellow>{player}</yellow> chose correctly!</green>
+      <gray>Answer: <white>{answer}</white></gray>
+  
+    timeout: |
+  
+      <red><bold>✗</bold> Nobody answered!</red>
+      <gray>Correct: <white>{answer}</white></gray>
+  
+  
+  questions:
+    q1:
+      question: "<yellow>What is the largest planet in our solar system?</yellow>"
+      answers:
+        - "A. Earth"
+        - "B. Jupiter"
+        - "C. Saturn"
+        - "D. Mars"
+      correct-answer: "B"
+  
+    q2:
+      question: "<yellow>Which programming language is Minecraft written in?</yellow>"
+      answers:
+        - "A. Python"
+        - "B. C++"
+        - "C. Java"
+        - "D. JavaScript"
+      correct-answer: "C"
+  
+    q3:
+      question: "<yellow>What is 2 + 2 × 2?</yellow>"
+      answers:
+        - "A. 6"
+        - "B. 8"
+        - "C. 4"
+        - "D. 10"
+      correct-answer: "A"
+  
+    q4:
+      question: "<yellow>Which mob drops blaze rods?</yellow>"
+      answers:
+        - "A. Ghast"
+        - "B. Blaze"
+        - "C. Wither Skeleton"
+        - "D. Magma Cube"
+      correct-answer: "B"
   ```
 </details>
 
@@ -194,58 +194,58 @@ questions:
   <summary>games/reaction.yml</summary>
 
   ```yml
-name: reaction
-display-name: "<red>Reaction Test</red>"
-timeout: 30 # The time players have to win the game. (in seconds)
-
-reward-commands:
-  - "give {player} diamond {rand:1-3}"
-
-messages:
-  start: |
-
-    <red><bold>REACTION TEST</bold></red>
-    <gray>Be the first to respond!</gray>
-
-    {question}
-
-  win: |
-
-    <green><bold>✓</bold> <yellow>{player}</yellow> was fastest!</green>
-
-  timeout: |
-
-    <red><bold>✗</bold> Nobody reacted in time!</red>
-
-
-# Variants allow different reaction challenges
-# If answer is empty string "", any message wins (fastest typer)
-# If answer is specified, must type that exact word
-# If answer is "CLICK", then it will be clickable.
-#   - Optional: Add hover="Your text" for custom hover message
-#   - Example: <button hover='Click me!'>Press here</button>
-#   - Without hover attribute, no hover text will be shown
-#   - You can include colors in the hover attribute.
-variants:
-  - name: "Type Fast"
-    challenge: "<gold><bold>Type: <yellow>MINECRAFT</yellow></bold></gold>"
-    answer: "MINECRAFT"
-
-  - name: "First Word"
-    challenge: "<gold><bold>Type any word now!</bold></gold>"
-    answer: ""
-
-  - name: "Click Fast"
-    challenge: "<button hover='Click to win!' win><gold><bold>Click me to win!</bold></gold></button>"
-    answer: "CLICK"
-
-  - name: "Click Fast"
-    challenge: "<yellow>Click the star!</yellow>\n\n<button win>[<gold><bold>⭐</bold></gold>]</button> <button>[<red><bold>❤</bold></red>️]</button> <button>[<green><bold>🟢</bold></green>]</button>"
-    answer: "CLICK"
-
-  - name: "Color"
-    challenge: "<gold><bold>Type: <yellow>RED</yellow></bold></gold>"
-    answer: "RED"
+  name: reaction
+  display-name: "<red>Reaction Test</red>"
+  timeout: 30 # The time players have to win the game. (in seconds)
+  
+  reward-commands:
+    - "give {player} diamond {rand:1-3}"
+  
+  messages:
+    start: |
+  
+      <red><bold>REACTION TEST</bold></red>
+      <gray>Be the first to respond!</gray>
+  
+      {question}
+  
+    win: |
+  
+      <green><bold>✓</bold> <yellow>{player}</yellow> was fastest!</green>
+  
+    timeout: |
+  
+      <red><bold>✗</bold> Nobody reacted in time!</red>
+  
+  
+  # Variants allow different reaction challenges
+  # If answer is empty string "", any message wins (fastest typer)
+  # If answer is specified, must type that exact word
+  # If answer is "CLICK", then it will be clickable.
+  #   - Optional: Add hover="Your text" for custom hover message
+  #   - Example: <button hover='Click me!'>Press here</button>
+  #   - Without hover attribute, no hover text will be shown
+  #   - You can include colors in the hover attribute.
+  variants:
+    - name: "Type Fast"
+      challenge: "<gold><bold>Type: <yellow>MINECRAFT</yellow></bold></gold>"
+      answer: "MINECRAFT"
+  
+    - name: "First Word"
+      challenge: "<gold><bold>Type any word now!</bold></gold>"
+      answer: ""
+  
+    - name: "Click Fast"
+      challenge: "<button hover='Click to win!' win><gold><bold>Click me to win!</bold></gold></button>"
+      answer: "CLICK"
+  
+    - name: "Click Fast"
+      challenge: "<yellow>Click the star!</yellow>\n\n<button win>[<gold><bold>⭐</bold></gold>]</button> <button>[<red><bold>❤</bold></red>️]</button> <button>[<green><bold>🟢</bold></green>]</button>"
+      answer: "CLICK"
+  
+    - name: "Color"
+      challenge: "<gold><bold>Type: <yellow>RED</yellow></bold></gold>"
+      answer: "RED"
   ```
 </details>
 
@@ -253,77 +253,77 @@ variants:
   <summary>games/trivia.yml</summary>
 
   ```yml
-name: trivia
-display-name: "<aqua>Trivia Time</aqua>"
-timeout: 45 # The time players have to win the game. (in seconds)
-
-reward-commands:
-  - "give {player} emerald {rand:1-3}"
-
-messages:
-  start: |
-
-    <aqua><bold>TRIVIA TIME</bold></aqua>
-    <gray>Answer the question below!</gray>
-
-    {question}
-
-  win: |
-
-    <green><bold>✓</bold> <yellow>{player}</yellow> got it right!</green>
-    <gray>Answer: <white>{answer}</white></gray>
-
-  timeout: |
-
-    <red><bold>✗</bold> Nobody got it!</red>
-    <gray>Answer: <white>{answer}</white></gray>
-
-
-questions:
-  - ["<yellow>What is the capital of France?</yellow>", "Paris"]
-  - ["<yellow>How many continents are there?</yellow>", "7"]
-  - ["<yellow>What year did the Titanic sink?</yellow>", "1912"]
-  - ["<yellow>What is the largest ocean?</yellow>", "Pacific"]
-  - ["<yellow>Who painted the Mona Lisa?</yellow>", "Leonardo da Vinci"]
-  - ["<yellow>What is the speed of light?</yellow>", "299792458"]
-  - ["<yellow>What is H2O commonly known as?</yellow>", "Water"]
-  ```
+  name: trivia
+  display-name: "<aqua>Trivia Time</aqua>"
+  timeout: 45 # The time players have to win the game. (in seconds)
+  
+  reward-commands:
+    - "give {player} emerald {rand:1-3}"
+  
+  messages:
+    start: |
+  
+      <aqua><bold>TRIVIA TIME</bold></aqua>
+      <gray>Answer the question below!</gray>
+  
+      {question}
+  
+    win: |
+  
+      <green><bold>✓</bold> <yellow>{player}</yellow> got it right!</green>
+      <gray>Answer: <white>{answer}</white></gray>
+  
+    timeout: |
+  
+      <red><bold>✗</bold> Nobody got it!</red>
+      <gray>Answer: <white>{answer}</white></gray>
+  
+  
+  questions:
+    - ["<yellow>What is the capital of France?</yellow>", "Paris"]
+    - ["<yellow>How many continents are there?</yellow>", "7"]
+    - ["<yellow>What year did the Titanic sink?</yellow>", "1912"]
+    - ["<yellow>What is the largest ocean?</yellow>", "Pacific"]
+    - ["<yellow>Who painted the Mona Lisa?</yellow>", "Leonardo da Vinci"]
+    - ["<yellow>What is the speed of light?</yellow>", "299792458"]
+    - ["<yellow>What is H2O commonly known as?</yellow>", "Water"]
+    ```
 </details>
 
 <details>
   <summary>games/unscramble.yml</summary>
 
   ```yml
-name: unscramble
-display-name: "<light_purple>Word Scramble</light_purple>"
-timeout: 60 # The time players have to win the game. (in seconds)
-
-reward-commands:
-  - "give {player} gold_ingot {rand:1-5}"
-
-messages:
-  start: |
-
-    <light_purple><bold>WORD SCRAMBLE</bold></light_purple>
-    <gray>Unscramble the word!</gray>
-
-    {question}
-
-  win: |
-
-    <green><bold>✓</bold> <yellow>{player}</yellow> unscrambled it!</green>
-    <gray>Word: <white>{answer}</white></gray>
-
-  timeout: |
-
-    <red><bold>✗</bold> Time ran out!</red>
-    <gray>Word: <white>{answer}</white></gray>
-
-words: [
-  "SMARTPHONE", "COMPUTER", "GAMING",
-  "KEYBOARD", "MINECRAFT", "DIAMOND",
-  "ADVENTURE", "TREE", "GOLD", "LOG"
-]
+  name: unscramble
+  display-name: "<light_purple>Word Scramble</light_purple>"
+  timeout: 60 # The time players have to win the game. (in seconds)
+  
+  reward-commands:
+    - "give {player} gold_ingot {rand:1-5}"
+  
+  messages:
+    start: |
+  
+      <light_purple><bold>WORD SCRAMBLE</bold></light_purple>
+      <gray>Unscramble the word!</gray>
+  
+      {question}
+  
+    win: |
+  
+      <green><bold>✓</bold> <yellow>{player}</yellow> unscrambled it!</green>
+      <gray>Word: <white>{answer}</white></gray>
+  
+    timeout: |
+  
+      <red><bold>✗</bold> Time ran out!</red>
+      <gray>Word: <white>{answer}</white></gray>
+  
+  words: [
+    "SMARTPHONE", "COMPUTER", "GAMING",
+    "KEYBOARD", "MINECRAFT", "DIAMOND",
+    "ADVENTURE", "TREE", "GOLD", "LOG"
+  ]
   ```
 </details>
 
