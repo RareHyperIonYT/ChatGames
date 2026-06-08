@@ -5,6 +5,7 @@ description: 'A plugin aimed to add fun chat based games to your server.'
 main: dev.rarehyperion.chatgames.ChatGamesFolia
 api-version: '1.21'
 folia-supported: true
+loader: dev.rarehyperion.chatgames.library.RedisLibraryLoader
 
 dependencies:
   server:

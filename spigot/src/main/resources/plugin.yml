@@ -5,6 +5,12 @@ description: 'A plugin aimed to add fun chat based games to your server.'
 main: dev.rarehyperion.chatgames.ChatGamesSpigot
 api-version: '1.13'
 softdepend: [PlaceholderAPI]
+libraries:
+  - redis.clients:jedis:${jedis.version}
+  - org.apache.commons:commons-pool2:${commons-pool2.version}
+  - org.json:json:${json.version}
+  - com.google.code.gson:gson:${gson.version}
+  - org.slf4j:slf4j-api:${slf4j.version}
 
 commands:
   chatgames:

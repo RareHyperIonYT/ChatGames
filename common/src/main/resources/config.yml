@@ -13,6 +13,28 @@ minimum-players: 1
 # Whether to automatically start games at intervals
 automatic-games: true
 
+# Enable shared games across multiple servers.
+# Requires redis.enabled: true on every server using the shared game state.
+multi-server:
+  enabled: false
+  # Only servers with this enabled will compete for the Redis leader lock and create automatic games.
+  # Keep this false on normal gameplay servers; enable it on one or a small number of controller servers.
+  leader: false
+
+# Redis is only used when both redis.enabled and multi-server.enabled are true.
+redis:
+  enabled: false
+  host: "127.0.0.1"
+  port: 6379
+  username: ""
+  password: ""
+  database: 0
+  ssl: false
+  timeout-ms: 2000
+  key-prefix: "chatgame"
+  leader-lock-seconds: 15
+  reward-dedup-seconds: 86400
+
 # Cooldown after wrong answer in multiple choice (in ticks, 20 ticks = 1 second)
 answer-cooldown-ticks: 60
 

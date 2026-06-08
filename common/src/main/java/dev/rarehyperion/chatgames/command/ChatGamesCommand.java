@@ -4,7 +4,6 @@ import dev.rarehyperion.chatgames.ChatGamesCore;
 import dev.rarehyperion.chatgames.config.ConfigManager;
 import dev.rarehyperion.chatgames.game.Game;
 import dev.rarehyperion.chatgames.game.GameConfig;
-import dev.rarehyperion.chatgames.game.types.ReactionGame;
 import dev.rarehyperion.chatgames.platform.PlatformSender;
 import dev.rarehyperion.chatgames.util.MessageUtil;
 
@@ -166,7 +165,7 @@ public class ChatGamesCommand {
             this.plugin.gameManager().startScheduler();
             sender.sendMessage(MessageUtil.parse("<green>Automatic games enabled!</green>"));
         } else {
-            this.plugin.gameManager().shutdown();
+            this.plugin.gameManager().stopScheduler();
             sender.sendMessage(MessageUtil.parse("<red>Automatic games disabled!</red>"));
         }
     }
@@ -174,7 +173,7 @@ public class ChatGamesCommand {
     private void handleAnswer(final PlatformSender sender, final String[] args) {
         final Game game = this.plugin.gameManager().getActiveGame();
         if(sender.isConsole()) return;
-        if(!(game instanceof ReactionGame)) return;
+        if(game == null || !this.plugin.gameManager().isReactionGameActive()) return;
         if (args.length < 2) return;
 
         this.plugin.gameManager().processAnswer(sender.player(), args[1]);

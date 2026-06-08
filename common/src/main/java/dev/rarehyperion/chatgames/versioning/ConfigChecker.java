@@ -130,7 +130,7 @@ public final class ConfigChecker {
     }
 
     static {
-        EXPECTED_VERSIONS.put("config.yml", 1);
+        EXPECTED_VERSIONS.put("config.yml", 2);
         EXPECTED_VERSIONS.put("math.yml", 2);
         EXPECTED_VERSIONS.put("multiple-choice.yml", 2);
         EXPECTED_VERSIONS.put("reaction.yml", 2);

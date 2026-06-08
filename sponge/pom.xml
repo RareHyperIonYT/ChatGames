@@ -45,8 +45,32 @@
                             <artifactSet>
                                 <includes>
                                     <include>dev.rarehyperion.chatgames:chatgames-common</include>
+                                    <include>com.github.rarehyperionyt:chatgames-api</include>
+                                    <include>redis.clients:jedis</include>
+                                    <include>org.apache.commons:commons-pool2</include>
+                                    <include>org.json:json</include>
+                                    <include>com.google.code.gson:gson</include>
+                                    <include>org.slf4j:slf4j-api</include>
                                 </includes>
                             </artifactSet>
+                            <relocations>
+                                <relocation>
+                                    <pattern>redis.clients.jedis</pattern>
+                                    <shadedPattern>dev.rarehyperion.chatgames.libs.jedis</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache.commons.pool2</pattern>
+                                    <shadedPattern>dev.rarehyperion.chatgames.libs.commons.pool2</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.google.gson</pattern>
+                                    <shadedPattern>dev.rarehyperion.chatgames.libs.gson</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.json</pattern>
+                                    <shadedPattern>dev.rarehyperion.chatgames.libs.json</shadedPattern>
+                                </relocation>
+                            </relocations>
                         </configuration>
                     </execution>
                 </executions>

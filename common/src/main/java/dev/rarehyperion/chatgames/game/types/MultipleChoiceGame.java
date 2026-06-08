@@ -3,7 +3,9 @@ package dev.rarehyperion.chatgames.game.types;
 import dev.rarehyperion.chatgames.ChatGamesCore;
 import dev.rarehyperion.chatgames.game.AbstractGame;
 import dev.rarehyperion.chatgames.game.GameConfig;
+import dev.rarehyperion.chatgames.game.GameSnapshot;
 import dev.rarehyperion.chatgames.game.GameType;
+import dev.rarehyperion.chatgames.game.SnapshotSource;
 import dev.rarehyperion.chatgames.util.MessageUtil;
 import net.kyori.adventure.text.Component;
 
@@ -13,7 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class MultipleChoiceGame extends AbstractGame {
+public class MultipleChoiceGame extends AbstractGame implements SnapshotSource {
 
     private static final Pattern OPTION_PATTERN = Pattern.compile("^([A-H])\\.");
 
@@ -21,7 +23,7 @@ public class MultipleChoiceGame extends AbstractGame {
     private final List<String> answerOptions;
 
     public MultipleChoiceGame(final ChatGamesCore plugin, final GameConfig config) {
-        super(plugin, config, GameType.TRIVIA);
+        super(plugin, config, GameType.MULTIPLE_CHOICE);
         this.question = this.config.nextChoice();
         this.answerOptions = extractAnswerOptions(this.question.answers());
     }
@@ -63,6 +65,20 @@ public class MultipleChoiceGame extends AbstractGame {
 
                     return answer.trim().toLowerCase();
                 }).collect(Collectors.toList());
+    }
+
+    @Override
+    public GameSnapshot createSnapshot(final String gameId, final long startedAtMillis, final long expiresAtMillis) {
+        return GameSnapshot.exact(
+                gameId,
+                this.config.getName(),
+                GameType.MULTIPLE_CHOICE,
+                this.question.question() + "\n" + String.join("\n", this.question.answers()),
+                this.question.correctAnswer(),
+                this.answerOptions,
+                startedAtMillis,
+                expiresAtMillis
+        );
     }
 
 }

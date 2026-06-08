@@ -3,13 +3,16 @@ package dev.rarehyperion.chatgames.game.types;
 import dev.rarehyperion.chatgames.ChatGamesCore;
 import dev.rarehyperion.chatgames.game.AbstractGame;
 import dev.rarehyperion.chatgames.game.GameConfig;
+import dev.rarehyperion.chatgames.game.GameSnapshot;
 import dev.rarehyperion.chatgames.game.GameType;
+import dev.rarehyperion.chatgames.game.SnapshotSource;
 import dev.rarehyperion.chatgames.util.MessageUtil;
 import net.kyori.adventure.text.Component;
 
+import java.util.Collections;
 import java.util.Optional;
 
-public class MathGame extends AbstractGame {
+public class MathGame extends AbstractGame implements SnapshotSource {
 
     private final GameConfig.QuestionAnswer question;
 
@@ -38,5 +41,18 @@ public class MathGame extends AbstractGame {
         return Optional.of(this.question.answer());
     }
 
+    @Override
+    public GameSnapshot createSnapshot(final String gameId, final long startedAtMillis, final long expiresAtMillis) {
+        return GameSnapshot.exact(
+                gameId,
+                this.config.getName(),
+                GameType.MATH,
+                this.question.question(),
+                this.question.answer(),
+                Collections.emptyList(),
+                startedAtMillis,
+                expiresAtMillis
+        );
+    }
 
 }

@@ -40,6 +40,11 @@
             <groupId>com.github.rarehyperionyt</groupId>
             <artifactId>chatgames-api</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
